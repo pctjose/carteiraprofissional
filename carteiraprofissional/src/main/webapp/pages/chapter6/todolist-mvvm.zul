@@ -1,0 +1,6 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="TO DO LIST MVVM" border="normal">
+Coisas por fazer em MVVM
+</window>
+</zk>

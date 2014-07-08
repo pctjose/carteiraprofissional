@@ -1,0 +1,79 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+ <window id="Escolaridade" border="none"
+      apply="org.zkoss.bind.BindComposer"
+     viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.escolaridade.EscolaridadeVM')">
+       <div
+         form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+           <separator />
+         <div width="96%">
+             <span width="100%">
+                   <div sclass="sectionTitle">
+                       <separator />
+                     <label id="lcaption" sclass="sectionTitleLabel"
+                          value="Adicionar/Editar Escolaridades" />
+                        <label id="readonly" sclass="sectionTitleLabel"
+                          value="(ReadOnly)" visible="@load(vm.makeAsReadOnly)" />
+                     <image
+                           src="@load(fxStatus.dirty?'images/unsaved32x32.png':'')" />
+                      <separator />
+                 </div>
+                </span>
+               <div id="buttonsDiv"
+                 style="float:right;margin-top:6px;">
+                 <button label="Gravar e Fechar" mold="trendy"
+                     visible="@load(not vm.makeAsReadOnly)"
+                      onClick="@command('saveThis', action=0)"
+                        sclass="mybutton button blue small">
+                 </button>
+                 <button label="Gravar e Adicionar" mold="trendy"
+                       visible="@load(not vm.makeAsReadOnly)"
+                      onClick="@command('saveThis', action=1)"
+                        sclass="mybutton button blue small">
+                 </button>
+                 <button
+                      label="@load(vm.makeAsReadOnly ?'Fechar':'Cancelar')" mold="trendy"
+                        onClick="@command('cancel')"
+                        sclass="mybutton button blue small">
+                 </button>
+             </div>
+                <div style="clear: both;"></div>
+                <div sclass="sectionSeperator"></div>
+           </div>
+ 
+            <span width="100%">
+               <div sclass="sectionTitle">
+                   <separator />
+                 <label value="Detalhes"
+                      sclass="sectionTitleLabel" />
+                    <separator />
+             </div>
+            </span>
+ 
+           <panel width="95%" sclass="sectionPanel">
+             <panelchildren>
+                   <separator />
+                 <grid sclass="vgrid">
+                     <columns>
+                         <column hflex="10%"></column>
+                       </columns>
+                        <rows>
+                            <row>
+                             <vlayout>
+                                 <label value="Designacao"
+                                       sclass="flabel" />
+                                   <textbox id="designacao"
+                                      readonly="@load(vm.makeAsReadOnly)" mold="rounded" hflex="1"
+                                        value="@bind(fx.designacao)" />
+                               </vlayout>   
+ 
+                            </row>
+ 
+                        </rows>
+                   </grid>
+               </panelchildren>
+          </panel>
+          <separator />          
+      </div>
+    </window>
+</zk>

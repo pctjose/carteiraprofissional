@@ -1,0 +1,48 @@
+<?page title="Users List" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="listaRequisicaoSingleUser" border="normal" title="REQUISIÇÕES DE CARTEIRA"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.ListaRequisicaoSingleUserVM')">
+		
+		<div width="100%">
+			
+			<div style="float:right">
+				<button label="Adicionar" onClick="@command('onAddNew')"
+					mold="trendy" sclass="mybutton button blue small" />
+			</div>
+			<div style="clear: both;"></div>
+			<div sclass="sectionSeperator"></div>
+		</div>
+		<separator />
+		<listbox id="" mold="paging" pageSize="11" pagingPosition="top"
+			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
+			model="@load(vm.dataSet)">
+			<listhead sizable="true">
+				<listheader label="REQUISITANTE" sortDirection="ascending"
+					sort="auto(requisitante.nomeCompleto)" />
+				<listheader label="DATA REQUISICAO" sort="auto(dataRequisiao)" />
+				<listheader label="ANALISADA" sort="auto(analisadaString)" />
+				<listheader label="ACEITE" sort="auto(aceiteString)" />
+				<listheader label="ACCAO" />
+			</listhead>
+			<template name="model" var="p1">
+				<listitem>
+					<listcell label="@load(p1.requisitante.nomeCompleto)" />
+					<listcell label="@load(p1.dataRequisiao)" />
+					<listcell label="@load(p1.analisadaString)" />
+					<listcell label="@load(p1.aceiteString)" />
+					<listcell>
+						<hbox spacing="20px">
+							<button label="Editar"
+								onClick="@command('onEdit',userRecord=p1)">
+							</button>
+							<button label="Visualizar"
+								onClick="@command('openAsReadOnly',userRecord=p1)">
+							</button>							
+						</hbox>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</window>
+</zk>

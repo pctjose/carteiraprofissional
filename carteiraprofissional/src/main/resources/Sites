@@ -1,0 +1,1075 @@
+http://books.zkoss.org/wiki/ZK_Essentials
+
+http://emrpms.blogspot.in/2013/03/zk-mvvm-form-binding-crud-with-spring_28.html
+
+
+http://books.zkoss.org/wiki/ZK_Developer's_Reference/MVVM/Data_Binding/Collection_and_Selection#Binding_to_Selected_Item
+
+http://books.zkoss.org/wiki/ZK_Component_Reference/Essential_Components/Button
+
+
+
+http://forum.zkoss.org/question/85365/binding-uploaded-file/
+
+http://emrpms.blogspot.com/2013/06/zk-mvvm-form-binding-crud-with-spring.html
+
+http://emrpms.blogspot.in/2013/07/zk-mvvm-form-binding-crud-with-spring.html
+
+http://emrpms.blogspot.com/2013/08/zk-upload-pdf-to-server-and-show-in.html
+
+
+
+=================================BACKUP NOVO UTILIZADOR========================================
+
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="criarUtilizador" border="none"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.UtilizadorVM')"
+		width="70%">
+		<div
+			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+			<separator />
+
+			<panel width="605px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label id="lcaption"
+									sclass="sectionTitleLabel"
+									value="REGISTO DE NOVO UTILIZADOR DO SISTEMA" />
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+
+			<hbox>
+
+				<panel width="300px" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column
+									label="INFORMAÇÃO DEMOGRÁFICA">
+								</column>
+							</columns>
+							<rows>
+								<row>
+									<vlayout>
+										<label value="Apelido"
+											sclass="flabel" />
+										<textbox id="apelido"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(fx.apelido)"
+											constraint="no empty: O APELIDO deve ser preenchido"
+											width="200px" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Nome"
+											sclass="flabel" />
+										<textbox id="nome"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(fx.nome)"
+											constraint="no empty: O NOME deve ser preenchido"
+											width="200px" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Sexo"
+											sclass="flabel" />
+										<radiogroup
+											selectedItem="@bind(fx.sexo)" id="sexo">
+											<radio label="M" value="M"
+												checked="true" />
+											<radio label="F" value="F" />
+										</radiogroup>
+									</vlayout>
+								</row>
+
+								<row>
+
+									<vlayout>
+										<label value="Data Nascimento"
+											sclass="flabel" />
+										<datebox id="dataNascimento"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											width="100px" value="@bind(fx.dataNascimento)"
+											constraint="no future" format="dd-MM-yyyy" />
+									</vlayout>
+
+								</row>
+
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>
+
+
+				<panel width="300px" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="ENDEREÇO"></column>
+							</columns>
+							<rows>
+								<row>
+
+									<vlayout>
+										<label value="Pais"
+											sclass="flabel" />
+										<listbox
+											model="@load(vm.paises)" mold="select" width="200px"
+											id="paises" onSelect="@command('changePais')">
+											<template name="model">
+												<listitem
+													label="@load(each)" width="200px" />
+											</template>
+										</listbox>
+									</vlayout>
+								</row>
+								<row>
+
+									<vlayout>
+										<label value="Província"
+											sclass="flabel" />
+										<listbox
+											model="@bind(vm.provincias)"
+											selectedItem="@bind(fx.provincia)" mold="select"
+											id="provincias" width="200px">
+											<template name="model">
+												<listitem
+													label="@load(each)" width="200px" />
+											</template>
+										</listbox>
+									</vlayout>
+
+								</row>
+								<row>
+									<vlayout>
+										<label value="Cidade"
+											sclass="flabel" />
+										<textbox id="cidade"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(fx.cidade)" width="200px" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Endereço"
+											sclass="flabel" />
+										<textbox id="endereco"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(fx.endereco)" width="250px" />
+									</vlayout>
+								</row>
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>
+			</hbox>
+
+			<separator />
+			<separator />
+			<separator />
+
+
+			<hbox>
+				<panel width="300px" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="CONTACTO"></column>
+							</columns>
+							<rows>
+								<row>
+
+									<vlayout>
+										<label value="Contacto 1"
+											sclass="flabel" />
+										<textbox id="contacto1"
+											width="100px" readonly="@load(vm.makeAsReadOnly)"
+											mold="rounded" value="@bind(fx.contacto1)" />
+									</vlayout>
+
+								</row>
+								<row>
+
+									<vlayout>
+										<label value="Contacto 2"
+											sclass="flabel" />
+										<textbox id="contacto2"
+											width="100px" readonly="@load(vm.makeAsReadOnly)"
+											mold="rounded" value="@bind(fx.contacto2)" />
+									</vlayout>
+
+								</row>
+								<row>
+									<vlayout>
+										<label value="Email"
+											sclass="flabel" />
+										<textbox id="email"
+											width="200px" readonly="@load(vm.makeAsReadOnly)"
+											mold="rounded" value="@bind(fx.email)" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Outro Contacto"
+											sclass="flabel" />
+										<textbox id="outroContacto"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(fx.outroContacto)" width="200px" />
+									</vlayout>
+								</row>
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>
+				<panel width="300px" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="ENTRADA NO SISTEMA"></column>
+							</columns>
+							<rows>
+
+
+								<row>
+
+									<vlayout>
+										<label value="Grupo Utilizador"
+											sclass="flabel" />
+										<listbox
+											model="@bind(vm.userGrupos)" selectedItem="@bind(fx.grupo)"
+											mold="select" id="userGrupos" width="200px">
+											<template name="model">
+												<listitem
+													label="@load(each)" width="200px" />
+											</template>
+										</listbox>
+									</vlayout>
+
+								</row>
+
+								<row>
+									<vlayout>
+										<label value="Nome Utilizador"
+											sclass="flabel" />
+										<textbox id="userName"
+											width="200px" readonly="@load(vm.makeAsReadOnly)"
+											mold="rounded" value="@bind(fx.userName)"
+											constraint="no empty: Nome de Utilizador deve ser preenchido" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Senha"
+											sclass="flabel" />
+										<textbox id="senha"
+											width="200px" type="password"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(fx.senha)" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Repetir Senha"
+											sclass="flabel" />
+										<textbox id="repetirSenha"
+											width="200px" type="password"
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+											value="@bind(vm.repetirSenha)" />
+									</vlayout>
+								</row>
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>
+			</hbox>
+			<separator />
+			<separator />
+			<separator />
+
+
+			<panel width="605px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+								<hlayout>
+									<button label="Gravar" mold="trendy"
+										visible="@load(not vm.makeAsReadOnly)"
+										onClick="@command('saveThis')"
+										sclass="mybutton button blue small">
+									</button>
+									<button
+										label="@load(vm.makeAsReadOnly ?'Fechar':'Cancelar')"
+										mold="trendy" onClick="@command('cancel')"
+										sclass="mybutton button blue small">
+									</button>
+								</hlayout>
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+		</div>
+	</window>
+</zk>
+
+
+
+===============================================BACKUP LOGIN===========================================
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="login" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.LoginVM')"
+		width="40%" title="Entrar" position="right,center">
+		<div form="@id('fx')">
+			<separator />
+			<panel width="95%" sclass="sectionPanel">
+				<panelchildren>
+					<separator />
+					<grid sclass="vgrid">
+						<columns>
+							<column></column>
+							<column></column>
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label value="Nome Utilizador"
+									sclass="flabel" />
+								<textbox id="userName" mold="rounded"
+									value="@bind(vm.userName)"
+									constraint="no empty: Nome de Utilizador deve ser preechido"
+									width="100px" />
+
+							</row>
+							<row align="center">
+
+								<label value="Senha" sclass="flabel" />
+								<textbox id="password" type="password"
+									mold="rounded" value="@bind(vm.password)"
+									constraint="no empty: Senha deve ser preenchida" width="100px" />
+
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+
+			<panel width="95%" sclass="sectionPanel">
+				<panelchildren>
+					<separator />
+					<grid sclass="vgrid">
+						<columns>
+							<column></column>
+						</columns>
+						<rows>
+							<row align="center">
+							<vbox>
+							
+
+								<button label="Entrar" mold="trendy"
+									onClick="@command('login')"
+									sclass="mybutton button blue small">
+								</button>
+								
+								<label id="errorSMS" ></label>
+								
+							</vbox>
+
+							</row>
+							<row align="center">
+								<hbox>
+									<a label="Registar-se"
+										onClick="@command('onAddNew')" />
+									<a label="Esqueci senha"
+										onClick="@command('esqueciSenha')" />
+								</hbox>
+
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+		</div>
+	</window>
+</zk>
+
+====================================BACKUP NOVA REQUISICAO==========================================
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="novaRequisicao" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM')"
+		width="100%">
+		<div
+			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+			<separator />
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label id="lcaption"
+									sclass="sectionTitleLabel"
+									value="REGISTO DE NOVA REQUISIÇÃO DE CARTEIRA" />
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+
+			<panel sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="INFORMAÇÃO DEMOGRÁFICA" />
+							<column label="ENDEREÇO E CONTACTO" />
+						</columns>
+						<rows>
+							<row>
+								<grid sclass="vgrid">
+									<columns>
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<vlayout>
+												<label
+													value="Apelido" sclass="flabel" />
+												<label
+													value="@load(fx.requisitante.nomeCompleto)"
+													sclass="flabel" />
+											</vlayout>
+										</row>
+										<row>
+											<vlayout>
+												<label value="Sexo"
+													sclass="flabel" />
+												<label
+													value="@load(fx.requisitante.sexo)" sclass="flabel" />
+											</vlayout>
+										</row>
+
+										<row>
+
+											<vlayout>
+												<label
+													value="Data Nascimento" sclass="flabel" />
+
+												<label
+													value="@load(fx.requisitante.dataNascimento)"
+													sclass="flabel" />
+
+											</vlayout>
+
+										</row>
+
+										<row>
+
+											<vlayout>
+												<label
+													value="Nivel Acadêmico" sclass="flabel" />
+												<listbox
+													model="@bind(vm.escolaridades)"
+													selectedItem="@bind(fx.escolaridade)" mold="select"
+													id="escolaridades" width="100px">
+													<template
+														name="model">
+														<listitem
+															label="@load(each)" width="100px" />
+													</template>
+												</listbox>
+											</vlayout>
+
+										</row>
+
+									</rows>
+								</grid>
+								<vbox>
+
+									<image id="userImage"
+										content="@bind(vm.userImage)" height="150px" width="300px" />
+									<hbox>
+										<button label="Upload Foto"
+											upload="true,maxsize=300">
+											<attribute name="onUpload"><![CDATA[
+	org.zkoss.util.media.Media media = event.getMedia();
+	if (media instanceof org.zkoss.image.Image) {
+
+		userImage.setContent(media);
+	} else {
+		Messagebox.show("Não seleccionou uma imagem: " + media, "Error",
+				Messagebox.OK, Messagebox.ERROR);
+		break;
+	}
+]]></attribute>
+										</button>
+
+
+										<button label="WebCam"
+											onClick="@command('getWebCam')" />
+									</hbox>
+
+								</vbox>
+
+
+							</row>
+						</rows>
+
+					</grid>
+
+				</panelchildren>
+			</panel>
+			<panel sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="IDENTIFICAÇÃO" />
+							<column label="DADOS DA REQUISICAO" />
+						</columns>
+						<rows>
+							<row>
+								<grid sclass="vgrid">
+									<columns>
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<hlayout>
+												<vlayout>
+													<label
+														value="Doc Identificação" sclass="flabel" />
+													<textbox
+														id="numeroBi" readonly="@load(vm.makeAsReadOnly)"
+														mold="rounded" value="@bind(fx.numeroBi)" width="150px" />
+												</vlayout>
+												<vlayout>
+													<label value="Tipo"
+														sclass="flabel" />
+													<listbox
+														model="@bind(vm.tipoDocs)"
+														selectedItem="@bind(fx.tipoDoc)" mold="select"
+														id="tipoDocs" width="100px">
+														<template
+															name="model">
+															<listitem
+																label="@load(each)" width="50px" />
+														</template>
+													</listbox>
+												</vlayout>
+											</hlayout>
+
+										</row>
+										<row>
+											<vlayout>
+												<label
+													value="Data Emissão" sclass="flabel" />
+
+
+												<datebox
+													id="dataEmissao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" width="100px" value="@bind(fx.dataEmissao)"
+													constraint="no future" format="dd-MM-yyyy" />
+											</vlayout>
+										</row>
+										<row>
+											<vlayout>
+												<label
+													value="Data Validade" sclass="flabel" />
+												<datebox
+													id="dataValidade" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" width="100px" value="@bind(fx.dataValidade)"
+													format="dd-MM-yyyy" />
+											</vlayout>
+										</row>
+
+										<row>
+											<vlayout>
+												<label
+													value="Local Emissão" sclass="flabel" />
+												<textbox
+													id="localEmissao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fx.localEmissao)"
+													width="200px" />
+											</vlayout>
+										</row>
+
+										<row>
+
+											<vlayout>
+												<label sclass="flabel" />
+												<button
+													label="Upload Copia Doc" upload="true"
+													onUpload="@command('uploadDoc', upEvent=event)" />
+											</vlayout>
+
+										</row>
+
+										<row>
+											<vlayout>
+												<label value="NUIT"
+													sclass="flabel" />
+												<textbox id="numeroNuit"
+													readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+													value="@bind(fx.numeroNuit)" width="200px" />
+											</vlayout>
+										</row>
+
+									</rows>
+								</grid>
+
+
+								<grid sclass="vgrid">
+									<columns>
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<vlayout>
+												<label
+													value="Data Requisição" sclass="flabel" />
+												<datebox
+													id="dataRequisiao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" width="100px"
+													value="@bind(fx.dataRequisiao)" constraint="no future"
+													format="dd-MM-yyyy" />
+											</vlayout>
+										</row>
+										<row>
+											<vlayout>
+												<label
+													value="Local Requisicao" sclass="flabel" />
+												<textbox
+													id="localRequisicao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fx.localRequisicao)"
+													width="200px" />
+											</vlayout>
+										</row>
+
+										<row>
+
+											<checkbox
+												id="assinouCompromisso" value="@bind(fx.assinouCompromisso)"
+												label="Assinou termo de compromisso" />
+
+										</row>
+
+										<row>
+
+											<checkbox
+												id="concordaTermos" value="@bind(fx.concordaTermos)"
+												label="Concorda com os termos" />
+
+										</row>
+
+									</rows>
+								</grid>
+
+							</row>
+						</rows>
+
+					</grid>
+
+				</panelchildren>
+			</panel>
+		</div>
+
+		<separator />
+		<separator />
+		<separator />
+
+		<div form="@id('fedu') @load(vm.formacao)">
+
+			<panel sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column
+								label="FORMAÇÃO ACADÊMICA E PROFISSIONAL" />
+						</columns>
+						<rows>
+							<row>
+								<grid sclass="vgrid">
+									<columns>
+										<column />
+										<column />
+										<column />
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<vlayout>
+												<label
+													value="Instituição" sclass="flabel" />
+
+												<textbox
+													id="instituicao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fedu.instituicao)"
+													width="130px" />
+
+
+											</vlayout>
+
+											<vlayout>
+												<label
+													value="Localização" sclass="flabel" />
+												<textbox
+													id="localizacao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fedu.localizacao)"
+													width="130px" />
+											</vlayout>
+
+											<vlayout>
+												<label value="Ano"
+													sclass="flabel" />
+												<intbox id="ano"
+													readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+													value="@bind(fedu.ano)" width="50px" />
+											</vlayout>
+											<vlayout>
+												<label value="Grau"
+													sclass="flabel" />
+												<hlayout>
+												<listbox
+													model="@bind(vm.escolaridades)"
+													selectedItem="@bind(fedu.grauObtido)" mold="select"
+													id="grauObtido" width="100px">
+													<template
+														name="model">
+														<listitem
+															label="@load(each)" width="100px" />
+													</template>	
+												</listbox>
+												<button
+													label="Adicionar" onClick="@command('onAddFormacao')" />
+												</hlayout>
+											</vlayout>
+										</row>										
+									</rows>
+								</grid>
+							</row>
+						</rows>
+					</grid>
+					<separator />
+					<div>
+
+						<listbox id="listaFormacao" mold="paging"
+							pageSize="11" pagingPosition="top" sclass="mylist"
+							selectedItem="@bind(vm.formacao)"
+							model="@load(vm.formacoesAdicionadas)">
+							<listhead sizable="true">
+								<listheader label="Instituicao"
+									sortDirection="ascending" sort="auto(instituicao)" />
+								<listheader label="Ano"
+									sort="auto(ano)" />
+								<listheader label="Grau Obtido"
+									sort="auto(grauObtido)" />
+								<listheader label="Acção" />
+							</listhead>
+							<template name="model" var="p2">
+								<listitem>
+									<listcell
+										label="@load(p2.instituicao)" />
+									<listcell
+										label="@load(p2.ano)" />
+									<listcell
+										label="@load(p2.grauObtido)" />									
+									<listcell>
+										<hbox spacing="20px">
+											<button label="Remover"
+												onClick="@command('onRemoveFormacao',eduRemoved=p2)">
+											</button>
+										</hbox>
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+					</div>
+
+				</panelchildren>
+			</panel>
+		</div>
+		<separator/>
+		<separator/>
+		<separator/>
+		<div form="@id('fexp') @load(vm.experiencia)">
+
+			<panel sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="EXPERIENCIAS" />
+						</columns>
+						<rows>
+							<row>
+								<grid sclass="vgrid">
+									<columns>
+										<column />
+										<column />
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<vlayout>
+												<label
+													value="Empregador" sclass="flabel" />
+												<hlayout>
+													<textbox
+														id="empregador" readonly="@load(vm.makeAsReadOnly)"
+														mold="rounded" value="@bind(fexp.empregador)"
+														width="150px" />
+													<checkbox
+														id="actual" value="@bind(fexp.actual)" label="Actual" />
+												</hlayout>
+											</vlayout>
+
+											<vlayout>
+												<label value="Endereço"
+													sclass="flabel" />
+												<textbox
+													id="empregadorEndereco" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fexp.empregadorEndereco)"
+													width="150px" />
+											</vlayout>
+
+											<vlayout>
+												<label value="Contacto"
+													sclass="flabel" />
+												<textbox
+													id="empregadorContacto" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fexp.empregadorContacto)"
+													width="150px" />
+											</vlayout>
+										</row>
+
+										<row>
+
+											<vlayout>
+												<label
+													value="Data Inicio" sclass="flabel" />
+												<datebox
+													id="dataInicial" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" width="100px"
+													value="@bind(fexp.dataInicial)" constraint="no future"
+													format="dd-MM-yyyy" />
+											</vlayout>
+
+											<vlayout>
+												<label
+													value="Data Final" sclass="flabel" />
+												<datebox id="dataFinal"
+													readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+													width="100px" value="@bind(fexp.dataFinal)"
+													constraint="no future" format="dd-MM-yyyy" />
+											</vlayout>
+
+											<vlayout>
+												<label value="Categoria"
+													sclass="flabel" />
+												<listbox
+													model="@bind(vm.categorias)"
+													selectedItem="@bind(fexp.categoria)" mold="select"
+													id="categorias" width="100px">
+													<template
+														name="model">
+														<listitem
+															label="@load(each)" width="50px" />
+													</template>
+												</listbox>
+											</vlayout>
+										</row>
+
+
+										<row>
+
+											<vlayout>
+												<label value="Função"
+													sclass="flabel" />
+												<textbox
+													id="funcaoExercida" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fexp.funcaoExercida)"
+													width="200px" />
+											</vlayout>
+											<vlayout>
+												<label
+													value="Experiência Relevante" sclass="flabel" />
+												<textbox
+													id="experienciaRelevante"
+													readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+													value="@bind(fexp.experienciaRelevante)" width="200px"
+													rows="3" multiline="true" />
+											</vlayout>
+											<vlayout>
+												<button
+													label="Adicionar" onClick="@command('onAddExperiencia')" />
+
+											</vlayout>
+										</row>
+									</rows>
+								</grid>
+							</row>
+						</rows>
+
+					</grid>
+					<separator />
+					<div>
+
+						<listbox id="listaExperiencia" mold="paging"
+							pageSize="11" pagingPosition="top" sclass="mylist"
+							selectedItem="@bind(vm.experiencia)"
+							model="@load(vm.experienciasAdicionadas)">
+							<listhead sizable="true">
+								<listheader label="Empregador"
+									sortDirection="ascending" sort="auto(empregador)" />
+								<listheader label="Data"
+									sort="auto(dataInicial)" />
+								<listheader label="Função"
+									sort="auto(funcaoExercida)" />
+								<listheader label="Actual"
+									sort="auto(actual)" />
+								<listheader label="Acção" />
+							</listhead>
+							<template name="model" var="p1">
+								<listitem>
+									<listcell
+										label="@load(p1.empregador)" />
+									<listcell
+										label="@load(p1.dataInicial)" />
+									<listcell
+										label="@load(p1.funcaoExercida)" />
+									<listcell label="@load(p1.actual)" />
+									<listcell>
+										<hbox spacing="20px">
+											<button label="Remover"
+												onClick="@command('onRemoveExperiencia',expRemoved=p1)">
+											</button>
+										</hbox>
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+					</div>
+
+				</panelchildren>
+			</panel>
+		</div>
+	</window>
+</zk>
+
+
+
+
+=====================================REQUISICAO=========================================
+// Outros Metadados
+	@Column(name = "assinou_compromisso")
+	private Boolean assinouCompromisso;
+	@Column(name = "concorda_termos")
+	private Boolean concordaTermos;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_requisicao")
+	private Date dataRequisiao;
+	@Column(name = "local_requisicao")
+	private String localRequisicao;
+	@Column(name = "analisada")
+	private Boolean analisada;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_analise")
+	private Date dataAnalise;
+	@Column(name = "relatorio_analise")
+	private String relatorioAnalise;
+	@Column(name = "aceite")
+	private Boolean aceite;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "data_aceite")
+	private Date dataAceite;
+	@Column(name = "justificacao_aceite")
+	private String justificacaoAceitacao;
+	
+	============================= DESIGN===============================================
+	
+	<grid sclass="vgrid">
+									<columns>
+										<column />
+									</columns>
+									<rows>
+										<row>
+											<vlayout>
+												<label
+													value="Data Requisição" sclass="flabel" />
+												<datebox
+													id="dataRequisiao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" width="100px"
+													value="@bind(fx.dataRequisiao)" constraint="no future"
+													format="dd-MM-yyyy" />
+											</vlayout>
+										</row>
+										<row>
+											<vlayout>
+												<label
+													value="Local Requisicao" sclass="flabel" />
+												<textbox
+													id="localRequisicao" readonly="@load(vm.makeAsReadOnly)"
+													mold="rounded" value="@bind(fx.localRequisicao)"
+													width="200px" />
+											</vlayout>
+										</row>
+
+										<row>
+
+											<checkbox
+												id="assinouCompromisso" value="@bind(fx.assinouCompromisso)"
+												label="Assinou termo de compromisso" />
+
+										</row>
+
+										<row>
+											<hlayout>
+												<checkbox
+													id="concordaTermos" value="@bind(fx.concordaTermos)"
+													label="Concorda com os termos" />
+											
+
+												<button
+													label="Visualizar Termos">
+													<attribute name="onClick"><![CDATA[Filedownload.save("/docs/termos/Regulamento.pdf", "pdf");
+													]]></attribute>
+												</button>
+
+											</hlayout>
+
+
+
+										</row>
+
+									</rows>
+								</grid>

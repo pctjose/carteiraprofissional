@@ -1,0 +1,77 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="login" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.LoginVM')"
+		width="40%" title="Entrar" position="center" mode="overlapped">
+		<div form="@id('fx')">
+			<separator />
+			<panel width="95%" sclass="sectionPanel">
+				<panelchildren>
+					<separator />
+					<grid sclass="vgrid">
+						<columns>
+							<column></column>
+							<column></column>
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label value="Nome Utilizador"
+									sclass="flabel" />
+								<textbox id="userName" mold="rounded"
+									value="@bind(vm.userName)"
+									constraint="no empty: Nome de Utilizador deve ser preechido"
+									width="100px" />
+
+							</row>
+							<row align="center">
+
+								<label value="Senha" sclass="flabel" />
+								<textbox id="password" type="password"
+									mold="rounded" value="@bind(vm.password)"
+									constraint="no empty: Senha deve ser preenchida" width="100px" />
+
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+
+			<panel width="95%" sclass="sectionPanel">
+				<panelchildren>
+					<separator />
+					<grid sclass="vgrid">
+						<columns>
+							<column></column>
+						</columns>
+						<rows>
+							<row align="center">
+							<vbox>
+							
+
+								<button label="Entrar" mold="trendy"
+									onClick="@command('login')"
+									sclass="mybutton button blue small">
+								</button>
+								
+								<label id="errorSMS" ></label>
+								
+							</vbox>
+
+							</row>
+							<row align="center">
+								<hbox>									
+									<a label="Esqueci senha"
+										onClick="@command('esqueciSenha')" />
+								</hbox>
+
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+		</div>
+	</window>
+</zk>

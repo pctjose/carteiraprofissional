@@ -1,0 +1,114 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.menu.MainMenuVM')"
+		validationMessages="@id('vmsgs')" id="mainPage">
+
+
+		<style>
+			.breeze .complex-layout, .breeze .complex-layout .z-south,
+			.breeze .complex-layout .z-west { background: #F7F7F7; }
+			.z-borderlayout { background: #FFFFFF } .complex-layout
+			.z-north { background: #008BB6; }
+			img.complex-layout-header-img { padding: 0 10px; }
+			.complex-layout-header-label { position: relative; top:
+			-30px; padding-left: 40px; font-size: 24px; color: White;
+			font-weight: bold; } .inner-border, .inner-border .z-north,
+			.inner-border .z-west, .inner-border .z-south, .inner-border
+			.z-east { background: #FFFFFF; } .dl-link { text-decoration:
+			none; cursor: pointer; }
+		</style>
+		<div>
+			<borderlayout sclass="complex-layout" height="810px">
+				<north size="90px" border="0">
+					<div>
+						<div style="float:right">
+							<textbox sclass="demo-search-inp"
+								value="@bind(vm.search)" />
+							<button
+								label="Pesquisa de Informação no Sistema"
+								onClick="@command('search')" />
+						</div>
+						<image sclass="complex-layout-header-img"
+							src="/images/ZK-Logo.gif" />
+						<label sclass="complex-layout-header-label"
+							value="Projecto SIS" />
+					</div>
+				</north>
+				<!-- Sidebar -->
+				<west width="200px" border="0" flex="true"
+					splittable="true" margins="0,5,0,0">
+					<vlayout spacing="0">
+						<panel width="100%" border="normal"
+							title="MENU">
+							<panelchildren style="padding:5px;">
+								<menubar id="menubar" autodrop="true"
+									orient="vertical">
+									<menu label="Administração">
+										<menupopup>
+											<menuitem
+												label="Escolaridades" onClick="alert(self.label)" />
+											<menuitem
+												label="Categorias Profissionais"
+												onClick="alert(self.label)" />
+										</menupopup>
+									</menu>
+									<menu label="Requisição Carteira">
+										<menupopup>
+											<menuitem label="Registar"
+												id="registarRequisicao"
+												forward="onClick=alert(self.label)" />
+											<menuitem label="Avaliar"
+												onClick="alert(self.label)" />
+											<menuitem label="Autorizar"
+												onClick="alert(self.label)" />
+
+											<menuseparator></menuseparator>
+											<menuitem label="Pesquisar"
+												onClick="alert(self.label)" />
+										</menupopup>
+									</menu>
+
+									<menu label="Carteira">
+										<menupopup>
+											<menuitem label="Registar"
+												onClick="alert(self.label)" />
+											<menuitem label="Pesquisar"
+												onClick="alert(self.label)" />
+										</menupopup>
+									</menu>
+								</menubar>
+							</panelchildren>
+						</panel>
+					</vlayout>
+				</west>
+				<!-- Content -->
+				<center>
+					<vlayout sclass="inner-border">
+
+
+						<panel title="Reference" border="normal"
+							height="100%">
+							<panelchildren>
+								<div id="contentSection">
+									ESPACO RESERVADO
+								</div>
+							</panelchildren>
+						</panel>
+
+					</vlayout>
+				</center>
+				<south size="40px" border="0"
+					style="background: none repeat scroll 0 0 ;">
+					<toolbar mold="panel" align="center">
+						<toolbarbutton label="Sair do Sistema" />
+						<toolbarbutton label="Página Inicial" />
+						<toolbarbutton label="Termos e Condições" />
+						<separator orient="vertical" bar="true" />
+						Todos direitos Reservados
+					</toolbar>
+				</south>
+			</borderlayout>
+		</div>
+	</window>
+</zk>

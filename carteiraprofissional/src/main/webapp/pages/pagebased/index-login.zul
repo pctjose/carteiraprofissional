@@ -1,0 +1,4 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/pages/pagebased/layout/template_login.zul"?>
+<zk>
+	<include self="@define(content)" src="/pages/login/login.zul"/>	
+</zk>

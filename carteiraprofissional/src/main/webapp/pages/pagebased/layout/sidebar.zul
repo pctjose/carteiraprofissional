@@ -1,0 +1,10 @@
+<grid hflex="1" vflex="1" sclass="sidebar" 
+	id="fnList" 
+	apply="org.apm.carteiraprofissional.view.menu.SidebarPagebasedController" 
+	viewModel="@id('vmbar') @init('org.apm.carteiraprofissional.view.menu.SidebarPagebasedController')">
+	<columns>
+		<column width="36px"/>
+		<column/>
+	</columns>
+	<rows/>
+</grid>
