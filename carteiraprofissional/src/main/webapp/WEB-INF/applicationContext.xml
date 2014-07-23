@@ -89,13 +89,21 @@
 		class="org.apm.carteiraprofissional.dao.impl.CategoriaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	
+	<bean id="requisicaoDAO"
+		class="org.apm.carteiraprofissional.dao.impl.RequisicaoDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="numeroRequisicaoDAO"
+		class="org.apm.carteiraprofissional.dao.impl.NumeroRequisicaoDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 
 	<!-- SERVICOS -->
 
-	<bean id="grupoUtilizadorService"
-		class="org.apm.carteiraprofissional.service.impl.GrupoUtilizadorServiceImpl">
-		<property name="grupoUtilizadorDAO" ref="grupoUtilizadorDAO" />
-	</bean>
+	<bean id="grupoUtilizadorService" class="org.apm.carteiraprofissional.service.impl.GrupoUtilizadorServiceImpl"/>
+
 	<bean id="paisService"
 		class="org.apm.carteiraprofissional.service.impl.PaisServiceImpl">
 		<property name="paisDAO" ref="paisDAO" />
@@ -133,6 +141,16 @@
 	<bean id="categoriaService"
 		class="org.apm.carteiraprofissional.service.impl.CategoriaServiceImpl">
 		<property name="categoriaDAO" ref="categoriaDAO"/>
+	</bean>
+	
+	<bean id="requisicaoService"
+		class="org.apm.carteiraprofissional.service.impl.RequisicaoServiceImpl">
+		<property name="requisicaoDAO" ref="requisicaoDAO"/>
+	</bean>
+	
+	<bean id="numeroRequisicaoService"
+		class="org.apm.carteiraprofissional.service.impl.NumeroRequisicaoServiceImpl">
+		<property name="numeroRequisicaoDAO" ref="numeroRequisicaoDAO"/>
 	</bean>
 
 </beans>

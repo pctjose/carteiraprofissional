@@ -34,6 +34,7 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Images;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -435,11 +436,14 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
-		System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
+		/*System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
 		System.out.println("Experiencias:"+selectedRecord.getExperiencias().size());
 		requisitanteService.saveRequisitante(selectedRecord);
 		
-		System.out.println("ID GRAVADO: "+selectedRecord.getId());
+		System.out.println("ID GRAVADO: "+selectedRecord.getId());*/
+		
+		Sessions.getCurrent().setAttribute("requisitante", selectedRecord);
+		Executions.sendRedirect("/pages/requisicao/Requisicao.zul");
 
 	}
 
