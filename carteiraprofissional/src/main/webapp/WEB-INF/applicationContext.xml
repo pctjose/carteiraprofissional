@@ -99,6 +99,16 @@
 		class="org.apm.carteiraprofissional.dao.impl.NumeroRequisicaoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	
+	<bean id="formaPagamentoDAO"
+		class="org.apm.carteiraprofissional.dao.impl.FormaPagamentoDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="carteiraDAO"
+		class="org.apm.carteiraprofissional.dao.impl.CarteiraDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 
 	<!-- SERVICOS -->
 
@@ -151,6 +161,16 @@
 	<bean id="numeroRequisicaoService"
 		class="org.apm.carteiraprofissional.service.impl.NumeroRequisicaoServiceImpl">
 		<property name="numeroRequisicaoDAO" ref="numeroRequisicaoDAO"/>
+	</bean>
+	
+	<bean id="formaPagamentoService"
+		class="org.apm.carteiraprofissional.service.impl.FormaPagamentoServiceImpl">
+		<property name="formaPagamentoDAO" ref="formaPagamentoDAO"/>
+	</bean>
+	
+	<bean id="carteiraService"
+		class="org.apm.carteiraprofissional.service.impl.CarteiraServiceImpl">
+		<property name="carteiraDAO" ref="carteiraDAO"/>
 	</bean>
 
 </beans>

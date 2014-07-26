@@ -7,7 +7,6 @@ import org.apm.carteiraprofissional.dao.GrupoUtilizadorDAO;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -42,15 +41,16 @@ public class GrupoUtilizadorDAOImpl implements GrupoUtilizadorDAO {
 
 	public GrupoUtilizador getByDesignacao(String designacao) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(GrupoUtilizador.class);
 		cr.add(Restrictions.eq("designacao", designacao));
 		GrupoUtilizador grupo = (GrupoUtilizador) cr.uniqueResult();
-		tx.commit();
+		//tx.commit();
 		return grupo;
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public List<GrupoUtilizador> getAllGrupos() {
 		Session sessao = sessionFactory.getCurrentSession();
 		//Transaction tx = sessao.beginTransaction();

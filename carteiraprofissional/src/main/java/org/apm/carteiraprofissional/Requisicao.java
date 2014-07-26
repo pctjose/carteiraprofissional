@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 @Table(name = "requisicao")
 public class Requisicao {
 
+	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

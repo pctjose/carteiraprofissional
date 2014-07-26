@@ -41,6 +41,7 @@ public class SubCategoriaDAOImpl implements SubCategoriaDAO{
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public List<SubCategoria> getAllProfissoes() {
 		Session sessao = sessionFactory.getCurrentSession();
 		//Transaction tx = sessao.beginTransaction();

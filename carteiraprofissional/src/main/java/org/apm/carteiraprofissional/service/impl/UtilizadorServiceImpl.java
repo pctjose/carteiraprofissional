@@ -17,6 +17,7 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	@Autowired
 	private UtilizadorDAO utilizadorDAO;
 	
+	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(UtilizadorServiceImpl.class);
 
 	

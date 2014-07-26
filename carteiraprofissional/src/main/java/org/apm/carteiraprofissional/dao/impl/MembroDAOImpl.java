@@ -100,7 +100,8 @@ public class MembroDAOImpl implements MembroDAO {
 	    }
 
 	    
-	    public List<Membro> getAllMembros() {
+	    @SuppressWarnings("unchecked")
+		public List<Membro> getAllMembros() {
 	        Session sessao = sessionFactory.getCurrentSession();
 	        //Transaction tx = sessao.beginTransaction();
 	        Criteria c = sessao.createCriteria(Membro.class);
@@ -111,7 +112,8 @@ public class MembroDAOImpl implements MembroDAO {
 	    }
 
 	    
-	    public List<Membro> getAllByAttributes(SubCategoria profissao, Escolaridade escolaridade, String nome, Empregador empregador) {
+	    @SuppressWarnings("unchecked")
+		public List<Membro> getAllByAttributes(SubCategoria profissao, Escolaridade escolaridade, String nome, Empregador empregador) {
 	        Session sessao = sessionFactory.getCurrentSession();
 	        //Transaction tx = sessao.beginTransaction();
 	        Criteria c = sessao.createCriteria(Membro.class);

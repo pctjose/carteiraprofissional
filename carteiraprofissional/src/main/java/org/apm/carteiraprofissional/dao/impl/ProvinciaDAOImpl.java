@@ -8,7 +8,6 @@ import org.apm.carteiraprofissional.dao.ProvinciaDAO;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,25 +33,26 @@ public class ProvinciaDAOImpl implements ProvinciaDAO {
 
 	public Provincia getByID(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Provincia provincia = (Provincia) sessao.get(Provincia.class, id);
-		tx.commit();
+		//tx.commit();
 		return provincia;
 	}
 
 	public Provincia getByDesignacao(String designacao) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(Provincia.class);
 		cr.add(Restrictions.eq("designacao", designacao));
 		Provincia provincia = (Provincia) cr.uniqueResult();
-		tx.commit();
+		//tx.commit();
 		return provincia;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Provincia> getAllProvincia(Pais... paises) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 
 		Criteria c = sessao.createCriteria(Provincia.class);
 		if (paises.length > 0) {
@@ -60,7 +60,7 @@ public class ProvinciaDAOImpl implements ProvinciaDAO {
 		}
 
 		List<Provincia> provincias = c.list();
-		tx.commit();
+		//tx.commit();
 		return provincias;
 	}
 

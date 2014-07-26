@@ -38,8 +38,6 @@ public class RoleServiceImpl implements RoleService{
 		roleDAO.saveRole(role);
 	}
 
-	@SuppressWarnings("unchecked")
-	
 	public List<Role> getAllRole() {
 		log.info(roleDAO);
 		return (List<Role>) roleDAO.getAllRole();
