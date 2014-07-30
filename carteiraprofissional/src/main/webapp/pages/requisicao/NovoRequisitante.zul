@@ -2,10 +2,8 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="novaRequisicao" border="normal"
-		apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM')"
-		width="100%">
+	<window id="novaRequisicao" border="normal" apply="org.zkoss.bind.BindComposer" width="100%"
+		    viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM')">
 		<div
 			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
 			<separator />
@@ -46,8 +44,7 @@
 											<hlayout>
 
 												<vlayout>
-													<label
-														value="Apelido" sclass="flabel" />
+													<label value="Apelido" sclass="flabel" />
 													<textbox
 														id="apelido" readonly="@load(vm.makeAsReadOnly)"
 														mold="rounded" value="@bind(fx.apelido)" width="150px" />
@@ -66,12 +63,9 @@
 												<vlayout>
 													<label value="Sexo"
 														sclass="flabel" />
-													<radiogroup
-														selectedItem="@bind(fx.sexo)" id="sexo">
-														<radio label="M"
-															value="M" />
-														<radio label="F"
-															value="F" />
+													<radiogroup selectedItem="@bind(fx.sexo)" id="sexo">
+														<radio label="M" value="M" id="sexoM"/>
+														<radio label="F" value="F" id="sexoF"/>
 													</radiogroup>
 												</vlayout>
 												<separator />
