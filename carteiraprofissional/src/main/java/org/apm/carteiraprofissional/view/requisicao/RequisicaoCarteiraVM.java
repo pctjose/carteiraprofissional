@@ -34,7 +34,9 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Images;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
@@ -46,6 +48,8 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Textbox;
 
 import com.github.sarxos.webcam.Webcam;
@@ -135,6 +139,22 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	Intbox ano;
 	@Wire
 	Listbox grauObtido;
+	
+	//=====================Dados pessoais==================//
+	@Wire
+	Textbox apelido;
+	
+	@Wire
+	Textbox nome;
+	
+	@Wire
+	Radiogroup sexo;
+	
+	@Wire
+	Radio sexoM;
+	
+	@Wire
+	Radio sexoF;
 
 	public Requisitante getSelectedRecord() {
 		return selectedRecord;
@@ -434,13 +454,35 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	
 	@Command
 	public void saveThis() {
+		
+		//form validation
+		validate();
 
-		System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
+		/*System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
 		System.out.println("Experiencias:"+selectedRecord.getExperiencias().size());
 		requisitanteService.saveRequisitante(selectedRecord);
 		
-		System.out.println("ID GRAVADO: "+selectedRecord.getId());
+		System.out.println("ID GRAVADO: "+selectedRecord.getId());*/
+		
+		Sessions.getCurrent().setAttribute("requisitante", selectedRecord);
+		Executions.sendRedirect("/pages/requisicao/Requisicao.zul");
 
 	}
 
+	private boolean validate() {
+		
+		if (apelido.getValue().isEmpty()) {
+			throw new WrongValueException(apelido, "Apelido é um campo obrigatório.");
+		}
+		
+		if (nome.getValue().isEmpty()) {
+			throw new WrongValueException(nome, "Nome é um campo obrigatório.");
+		}
+		
+		if ((sexoM.isChecked() ? "M" : "S").isEmpty()) {
+			throw new WrongValueException(sexo, "Sexo é uma seleção obrigatória.");
+		} 
+		
+		return true;
+	}
 }
