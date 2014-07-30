@@ -7,7 +7,6 @@ import org.apm.carteiraprofissional.dao.EscolaridadeDAO;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,31 +31,32 @@ public class EscolaridadeDAOImpl implements EscolaridadeDAO {
 	@Transactional
 	public void saveUpdateEscolaridade(Escolaridade nivel) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		sessao.saveOrUpdate(nivel);
 		//sessionFactory.getCurrentSession().saveOrUpdate(nivel);
-		 tx.commit();
+		 //tx.commit();
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public List<Escolaridade> getAllNiveis() {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 
 		Criteria c = sessao.createCriteria(Escolaridade.class);
 		c.addOrder(Order.asc("designacao"));
 
 		List<Escolaridade> escolaridades = c.list();
-		 tx.commit();
+		// tx.commit();
 		return escolaridades;
 	}
 
 	
 	public Escolaridade getByID(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Escolaridade nivel = (Escolaridade) sessao.get(Escolaridade.class, id);
-		tx.commit();
+		//tx.commit();
 		return nivel;
 	}
 
@@ -85,9 +85,9 @@ public class EscolaridadeDAOImpl implements EscolaridadeDAO {
 	
 	public void delete(Escolaridade nivel) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		sessao.delete(nivel);
-		tx.commit();
+		//tx.commit();
 
 	}
 

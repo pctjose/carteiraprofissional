@@ -4,7 +4,6 @@
 package org.apm.carteiraprofissional;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

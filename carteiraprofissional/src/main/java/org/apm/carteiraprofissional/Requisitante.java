@@ -87,9 +87,9 @@ public class Requisitante extends BaseModel implements Serializable {
 	// Ainda por discutir esta ideia de implementação:
 
 	// private List<RequisicaoSubCategoria> requisicaoSubcategorias;
-	@OneToMany(mappedBy = "requisitante",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
 	private List<Experiencia> experiencias;
-	@OneToMany(mappedBy = "requisitante",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
 	private List<Formacao> formacoes;
 
 	public Requisitante() {
@@ -114,7 +114,6 @@ public class Requisitante extends BaseModel implements Serializable {
 		this.numeroNuit = numeroNuit;
 	}
 
-	
 	public byte[] getFoto() {
 		return foto;
 	}
@@ -289,6 +288,10 @@ public class Requisitante extends BaseModel implements Serializable {
 
 	public void setTipoDoc(TipoDocumento tipoDoc) {
 		this.tipoDoc = tipoDoc;
+	}
+
+	public String getNomeCompleto() {
+		return this.nome + " " + this.apelido;
 	}
 
 }
