@@ -9,15 +9,15 @@
            http://www.springframework.org/schema/context/spring-context-3.0.xsd
            http://www.springframework.org/schema/tx
                    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+                   
+    <context:property-placeholder location="classpath:placeholder.properties"/>
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/apmcarteira" />
-		<property name="username" value="root" />
-		<property name="password" value="DM2007Misau1" />
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}"/>
 	</bean>
-
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -25,18 +25,17 @@
 		<property name="packagesToScan" value="org.apm.carteiraprofissional" />
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.use_sql_comments">true</prop>
-				<prop key="hibernate.zeroDateTimeBehavior">convertToNull</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
+				<prop key="hibernate.zeroDateTimeBehavior">${hibernate.zeroDateTimeBehavior}</prop>
 			</props>
 		</property>
 	</bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -44,29 +43,24 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<!-- This will ensure that hibernate or jpa exceptions are automatically 
-		translated into Spring's generic DataAccessException hierarchy for those 
-		classes annotated with Repository -->
+	<!-- This will ensure that hibernate or jpa exceptions are automatically translated into Spring's generic DataAccessException hierarchy for those 
+		 classes annotated with Repository -->
 
 	<!-- DAOS -->
-	<bean id="grupoUtilizadorDAO"
-		class="org.apm.carteiraprofissional.dao.impl.GrupoUtilizadorDAOImpl">
+	<bean id="grupoUtilizadorDAO" class="org.apm.carteiraprofissional.dao.impl.GrupoUtilizadorDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="paisDAO"
-		class="org.apm.carteiraprofissional.dao.impl.PaisDAOImpl">
+	<bean id="paisDAO" class="org.apm.carteiraprofissional.dao.impl.PaisDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
 	
-	<bean id="provinciaDAO"
-		class="org.apm.carteiraprofissional.dao.impl.ProvinciaDAOImpl">
+	<bean id="provinciaDAO" class="org.apm.carteiraprofissional.dao.impl.ProvinciaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="utilizadorDAO"
-		class="org.apm.carteiraprofissional.dao.impl.UtilizadorDAOImpl">
+	<bean id="utilizadorDAO" class="org.apm.carteiraprofissional.dao.impl.UtilizadorDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
@@ -75,102 +69,80 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="escolaridadeDAO"
-		class="org.apm.carteiraprofissional.dao.impl.EscolaridadeDAOImpl">
+	<bean id="escolaridadeDAO" class="org.apm.carteiraprofissional.dao.impl.EscolaridadeDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="tipoDocumentoDAO"
-		class="org.apm.carteiraprofissional.dao.impl.TipoDocumentoDAOImpl">
+	<bean id="tipoDocumentoDAO" class="org.apm.carteiraprofissional.dao.impl.TipoDocumentoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="categoriaDAO"
-		class="org.apm.carteiraprofissional.dao.impl.CategoriaDAOImpl">
+	<bean id="categoriaDAO" class="org.apm.carteiraprofissional.dao.impl.CategoriaDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="requisicaoDAO"
-		class="org.apm.carteiraprofissional.dao.impl.RequisicaoDAOImpl">
+	<bean id="requisicaoDAO" class="org.apm.carteiraprofissional.dao.impl.RequisicaoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="numeroRequisicaoDAO"
-		class="org.apm.carteiraprofissional.dao.impl.NumeroRequisicaoDAOImpl">
+	<bean id="numeroRequisicaoDAO" class="org.apm.carteiraprofissional.dao.impl.NumeroRequisicaoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="formaPagamentoDAO"
-		class="org.apm.carteiraprofissional.dao.impl.FormaPagamentoDAOImpl">
+	<bean id="formaPagamentoDAO" class="org.apm.carteiraprofissional.dao.impl.FormaPagamentoDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
-	<bean id="carteiraDAO"
-		class="org.apm.carteiraprofissional.dao.impl.CarteiraDAOImpl">
+	<bean id="carteiraDAO" class="org.apm.carteiraprofissional.dao.impl.CarteiraDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 
 	<!-- SERVICOS -->
-
 	<bean id="grupoUtilizadorService" class="org.apm.carteiraprofissional.service.impl.GrupoUtilizadorServiceImpl"/>
 
-	<bean id="paisService"
-		class="org.apm.carteiraprofissional.service.impl.PaisServiceImpl">
+	<bean id="paisService" class="org.apm.carteiraprofissional.service.impl.PaisServiceImpl">
 		<property name="paisDAO" ref="paisDAO" />
 	</bean>
 	
-	<bean id="provinciaService"
-		class="org.apm.carteiraprofissional.service.impl.ProvinciaServiceImpl">
+	<bean id="provinciaService" class="org.apm.carteiraprofissional.service.impl.ProvinciaServiceImpl">
 		<property name="provinciaDAO" ref="provinciaDAO" />
 	</bean>
 	
-	<bean id="utilizadorService"
-		class="org.apm.carteiraprofissional.service.impl.UtilizadorServiceImpl">
+	<bean id="utilizadorService" class="org.apm.carteiraprofissional.service.impl.UtilizadorServiceImpl">
 		<property name="utilizadorDAO" ref="utilizadorDAO" />
 	</bean>
 	
-	<bean id="requisitanteService"
-		class="org.apm.carteiraprofissional.service.impl.RequisitanteServiceImpl">
+	<bean id="requisitanteService" class="org.apm.carteiraprofissional.service.impl.RequisitanteServiceImpl">
 		<property name="requisitanteDAO" ref="requisitanteDAO" />
 	</bean>
 	
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-	<bean
-		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-
-	<bean id="escolaridadeService"
-		class="org.apm.carteiraprofissional.service.impl.EscolaridadeServiceImpl">
+	<bean id="escolaridadeService" class="org.apm.carteiraprofissional.service.impl.EscolaridadeServiceImpl">
 		<property name="escolaridadeDAO" ref="escolaridadeDAO"/>
 	</bean>
 	
-	<bean id="tipoDocumentoService"
-		class="org.apm.carteiraprofissional.service.impl.TipoDocumentoServiceImpl">
+	<bean id="tipoDocumentoService" class="org.apm.carteiraprofissional.service.impl.TipoDocumentoServiceImpl">
 		<property name="tipoDocumentoDAO" ref="tipoDocumentoDAO"/>
 	</bean>
 	
-	<bean id="categoriaService"
-		class="org.apm.carteiraprofissional.service.impl.CategoriaServiceImpl">
+	<bean id="categoriaService" class="org.apm.carteiraprofissional.service.impl.CategoriaServiceImpl">
 		<property name="categoriaDAO" ref="categoriaDAO"/>
 	</bean>
 	
-	<bean id="requisicaoService"
-		class="org.apm.carteiraprofissional.service.impl.RequisicaoServiceImpl">
+	<bean id="requisicaoService" class="org.apm.carteiraprofissional.service.impl.RequisicaoServiceImpl">
 		<property name="requisicaoDAO" ref="requisicaoDAO"/>
 	</bean>
 	
-	<bean id="numeroRequisicaoService"
-		class="org.apm.carteiraprofissional.service.impl.NumeroRequisicaoServiceImpl">
+	<bean id="numeroRequisicaoService" class="org.apm.carteiraprofissional.service.impl.NumeroRequisicaoServiceImpl">
 		<property name="numeroRequisicaoDAO" ref="numeroRequisicaoDAO"/>
 	</bean>
 	
-	<bean id="formaPagamentoService"
-		class="org.apm.carteiraprofissional.service.impl.FormaPagamentoServiceImpl">
+	<bean id="formaPagamentoService" class="org.apm.carteiraprofissional.service.impl.FormaPagamentoServiceImpl">
 		<property name="formaPagamentoDAO" ref="formaPagamentoDAO"/>
 	</bean>
 	
-	<bean id="carteiraService"
-		class="org.apm.carteiraprofissional.service.impl.CarteiraServiceImpl">
+	<bean id="carteiraService" class="org.apm.carteiraprofissional.service.impl.CarteiraServiceImpl">
 		<property name="carteiraDAO" ref="carteiraDAO"/>
 	</bean>
-
 </beans>

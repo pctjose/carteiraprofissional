@@ -7,13 +7,9 @@
 	<description><![CDATA[Sistema de Emissao de Carteira Profissional - APM]]></description>
 	<display-name>carteiraprofissional</display-name>
 
-
-
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-                        /WEB-INF/applicationContext.xml
-                </param-value>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
 	<!-- Loads the Spring web application context -->
 	<listener>
@@ -29,9 +25,6 @@
       <filter-name>OpenSessionInViewFilter</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
-
-
-
 
 
 	<!-- //// -->
