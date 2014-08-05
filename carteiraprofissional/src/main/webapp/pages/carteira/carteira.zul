@@ -10,7 +10,7 @@
 			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
 
 
-			<panel width="605px" sclass="sectionPanel">
+			<panel width="300px" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -49,11 +49,14 @@
 											value="@load(vm.selectedRecord.requisicao.requisitante.nomeCompleto)"
 											sclass="flabel" />
 									</vlayout>
+									<separator/>
+									<separator/>
+									<separator/>
 									<vlayout>
 										<label value="Data Requisição"
 											sclass="flabel" />
 										<label
-											value="@load(vm.selectedRecord.requisicao.dataRequisiao)"
+											value="@load(vm.selectedRecord.requisicao.dataRequisiao) @converter('formatedDate',format='dd-MM-yyyy')"
 											sclass="flabel" />
 									</vlayout>
 								</hlayout>
@@ -75,31 +78,31 @@
 						<rows>
 							<row>
 								<vlayout>
-									<label value="Número:"
+									<label value="Número"
 										sclass="flabel" />
 									<textbox id="numeroCarteira"
 										width="200px" readonly="true" mold="rounded"
-										value="@bind(fx.numeroCarteira)" />
+										value="@bind(fx.numeroCarteira)" placeholder="Número de carteira gerado pelo sistema" />
 								</vlayout>
 							</row>
 							<row>
 								<vlayout>
-									<label value="Data de Emissão:"
+									<label value="Data de Emissão"
 										sclass="flabel" />
 									<datebox id="dataEmissao"
 										readonly="@load(fx.emitida)" mold="rounded" width="100px"
 										value="@bind(fx.dataEmissao)" constraint="no future"
-										format="dd-MM-yyyy" />
+										format="dd-MM-yyyy" onChange="@command('calcDataValidade')"/>
 								</vlayout>
 							</row>
 							<row>
 								<vlayout>
-									<label value="Data de Validade:"
+									<label value="Data de Validade"
 										sclass="flabel" />
 									<datebox id="dataValidade"
-										readonly="@load(fx.emitida)" mold="rounded" width="100px"
+										mold="rounded" width="100px"
 										value="@bind(fx.dataValidade)" constraint="no past"
-										format="dd-MM-yyyy" />
+										format="dd-MM-yyyy" disabled="true" />
 								</vlayout>
 							</row>
 						</rows>
@@ -118,7 +121,7 @@
 						<rows>
 							<row>
 								<vlayout>
-									<label value="Valor Cobrado:"
+									<label value="Valor Cobrado"
 										sclass="flabel" />
 									<decimalbox id="valorCobrado"
 										width="200px" readonly="@load(fx.emitida)"
@@ -145,7 +148,7 @@
 
 							<row>
 								<vlayout>
-									<label value="Numero Doc Pagamento:"
+									<label value="Numero Doc Pagamento"
 										sclass="flabel" />										
 									<textbox id="numDoc"
 										width="200px" readonly="@load(fx.emitida)" mold="rounded"
@@ -154,7 +157,7 @@
 							</row>
 							<row>
 								<vlayout>
-									<label value="Data Pagamento:"
+									<label value="Data Pagamento"
 										sclass="flabel" />
 									<datebox id="dataPagamento"
 										readonly="@load(fx.emitida)" mold="rounded" width="100px"
@@ -167,7 +170,7 @@
 				</panelchildren>
 			</panel>
 
-			<panel width="605px" sclass="sectionPanel">
+			<panel width="300px" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>

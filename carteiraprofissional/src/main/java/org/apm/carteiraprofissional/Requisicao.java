@@ -47,7 +47,7 @@ public class Requisicao {
 	@Column(name = "lock_edit")
 	private Boolean lockEdit;
 	@Column(name = "completa")
-	private Boolean completa;
+	private boolean completa;
 	@ManyToOne
 	@JoinColumn(name = "aceite_por")
 	private Utilizador aceitePor;
@@ -142,11 +142,13 @@ public class Requisicao {
 		this.lockEdit = lockEdit;
 	}
 
-	public Boolean getCompleta() {
+	
+
+	public boolean isCompleta() {
 		return completa;
 	}
 
-	public void setCompleta(Boolean completa) {
+	public void setCompleta(boolean completa) {
 		this.completa = completa;
 	}
 
@@ -201,6 +203,23 @@ public class Requisicao {
 		} else if (!uuid.equals(other.uuid))
 			return false;
 		return true;
+	}
+
+	public String getAceiteString() {
+		if (getAceite())
+			return "SIM";
+		return "NÃO";
+	}
+	
+	public boolean getCompleta(){
+		return isCompleta();
+	}
+
+	public String getCompletaString() {
+		if (getCompleta())
+			return "SIM";
+		return "NÃO";
+
 	}
 
 }

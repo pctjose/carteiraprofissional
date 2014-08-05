@@ -171,8 +171,9 @@
 	</mime-mapping>
 
 	<welcome-file-list>
-		<!-- <welcome-file>/pages/pagebased/index.zul</welcome-file>-->
-		<welcome-file>/pages/pagebased/index-startsearch.zul</welcome-file>
+		<!-- <welcome-file>/pages/pagebased/index.zul</welcome-file>
+		<welcome-file>/pages/pagebased/index-startsearch.zul</welcome-file>-->
+		<welcome-file>/pages/requisicao/ListaRequisicao.zul</welcome-file>
 		<welcome-file>index.zhtml</welcome-file>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>

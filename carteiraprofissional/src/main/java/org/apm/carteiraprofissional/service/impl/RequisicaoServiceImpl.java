@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apm.carteiraprofissional.Requisicao;
@@ -56,6 +57,14 @@ public class RequisicaoServiceImpl implements RequisicaoService {
 	public Requisicao getRequisicaoByRequisitante(Requisitante requisitante) {
 
 		return requisicaoDAO.getRequisicaoByRequisitante(requisitante);
+	}
+
+	public List<Requisicao> getRequisicaoByAttributes(String numeroRequisicao,
+			String nome, String apelido, Date dataInicial, Date dataFinal,
+			Boolean aceite, Boolean completa) {
+
+		return requisicaoDAO.getRequisicaoByAttributes(numeroRequisicao, nome,
+				apelido, dataInicial, dataFinal, aceite, completa);
 	}
 
 }

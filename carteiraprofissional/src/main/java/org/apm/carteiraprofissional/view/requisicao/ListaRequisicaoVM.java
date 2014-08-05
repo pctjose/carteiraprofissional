@@ -5,24 +5,25 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apm.carteiraprofissional.Requisicao;
-import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.Utilizador;
-import org.apm.carteiraprofissional.service.RequisitanteService;
+import org.apm.carteiraprofissional.service.RequisicaoService;
+import org.apm.carteiraprofissional.utils.BarcodeUtil;
 import org.zkoss.bind.annotation.AfterCompose;
+import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zkplus.spring.SpringUtil;
 
 public class ListaRequisicaoVM {
 
-	private Requisitante selectedItem;
-	private List<Requisicao> RequisicoesOfUser;
+	private Requisicao selectedItem;
+	private List<Requisicao> listaRequisicoes;
 	private Utilizador requisitante;
 	
 	private String numeroRequisicao;
@@ -30,6 +31,9 @@ public class ListaRequisicaoVM {
 	private String apelidoRequisitante;
 	private Date dataRequisicao1;
 	private Date dataRequisicao2;
+	
+	@WireVariable
+	private RequisicaoService requisicaoService;
 	
 	
 
@@ -72,31 +76,27 @@ public class ListaRequisicaoVM {
 	public void setDataRequisicao2(Date dataRequisicao2) {
 		this.dataRequisicao2 = dataRequisicao2;
 	}
-	@WireVariable
-	private RequisitanteService requisicaoService;
+	
+	
 
-	public Requisitante getSelectedItem() {
+	
+
+	public Requisicao getSelectedItem() {
 		return selectedItem;
 	}
 
-	public void setSelectedItem(Requisitante selectedItem) {
+	public void setSelectedItem(Requisicao selectedItem) {
 		this.selectedItem = selectedItem;
 	}
 
 	@AfterCompose
-	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
+	public void initSetup(@ContextParam(ContextType.VIEW) Component view) throws Exception {
 		Selectors.wireComponents(view, this, false);
-		requisicaoService = (RequisitanteService) SpringUtil
-				.getBean("requisicaoService");
-
-		requisitante = (Utilizador) Sessions.getCurrent().getAttribute(
-				"requisitante");
-		//RequisicoesOfUser = requisicaoService
-		//		.getAllRequisicoesOfUser(requisitante);
+		BarcodeUtil.encodePDF417("20141000V");
 	}
 
 	public List<Requisicao> getDataSet() {
-		return RequisicoesOfUser;
+		return listaRequisicoes;
 	}
 	@Command
 	public void onAddNew() {
@@ -105,6 +105,38 @@ public class ListaRequisicaoVM {
 		map.put("recordMode", "NEW");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
 		Executions.sendRedirect("/pages/pagebased/index-requisicao-nova.zul");
+	}
+	
+	@Command
+	@NotifyChange({"listaRequisicoes","dataSet"})
+	public void pesquisar(){
+		System.out.println("Requisicao: "+this.numeroRequisicao+" - Nome:"+this.nomeRequisitante+" - Apelido:"+this.apelidoRequisitante+" - Data1: "+this.dataRequisicao1+" - Data2: "+dataRequisicao2);
+		
+		listaRequisicoes = requisicaoService.getRequisicaoByAttributes(numeroRequisicao, nomeRequisitante, apelidoRequisitante, dataRequisicao1, dataRequisicao2, null, null);
+	}
+	
+	@Command
+	public void completar(@BindingParam("requisicaoRecord") Requisicao requisicao){
+		Sessions.getCurrent().setAttribute("requisicao", requisicao);
+		Executions.sendRedirect("/pages/requisicao/CompletarRequisicao.zul");
+	}
+	
+	@Command
+	public void analisar(@BindingParam("requisicaoRecord") Requisicao requisicao){
+		Sessions.getCurrent().setAttribute("requisicao", requisicao);
+		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
+		
+		
+		Executions.sendRedirect("/pages/requisicao/AnalisarRequisicao.zul");
+	}
+	
+	@Command
+	public void registarCartao(@BindingParam("requisicaoRecord") Requisicao requisicao){
+		Sessions.getCurrent().setAttribute("requisicao", requisicao);
+		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
+		
+		
+		Executions.sendRedirect("/pages/carteira/carteira.zul");
 	}
 
 }
