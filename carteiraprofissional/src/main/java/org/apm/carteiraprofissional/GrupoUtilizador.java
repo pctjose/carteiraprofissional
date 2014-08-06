@@ -2,16 +2,21 @@ package org.apm.carteiraprofissional;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
-@Table(name="grupo_utilizador")
-public class GrupoUtilizador implements Serializable {
+@Table(name="grupo")
+public class GrupoUtilizador implements Serializable, GrantedAuthority {
 
 	/**
 	 * 
@@ -26,6 +31,17 @@ public class GrupoUtilizador implements Serializable {
 	private String designacao;
 	@Column(name="uuid")
 	private String uuid;
+	@OneToOne(mappedBy = "grupo",cascade = CascadeType.ALL,fetch = FetchType.LAZY) 
+	private Utilizador utilizador;
+	
+
+	public Utilizador getUtilizador() {
+		return utilizador;
+	}
+
+	public void setUtilizador(Utilizador utilizador) {
+		this.utilizador = utilizador;
+	}
 
 	public Integer getId() {
 		return id;
@@ -85,6 +101,11 @@ public class GrupoUtilizador implements Serializable {
 	@Override
 	public String toString() {
 		return designacao;
+	}
+
+	public String getAuthority() {
+		// TODO Auto-generated method stub
+		return getDesignacao();
 	}
 
 }

@@ -60,7 +60,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	private Utilizador logedInUser;
 	
 
-	public UtilizadorService getUtilizadorService() {
+	/*public UtilizadorService getUtilizadorService() {
 		return utilizadorService;
 	}
 
@@ -92,7 +92,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 			GrupoUtilizadorService grupoUtilizadorService) {
 		this.grupoUtilizadorService = grupoUtilizadorService;
 	}
-
+*/
 	public Utilizador getSelectedRecord() {
 		return selectedRecord;
 	}
@@ -137,7 +137,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 		
 		
 
-		utilizadorService = (UtilizadorService) SpringUtil
+		/*utilizadorService = (UtilizadorService) SpringUtil
 				.getBean("utilizadorService");
 
 		provinciaService = (ProvinciaService) SpringUtil
@@ -147,14 +147,11 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 
 		grupoUtilizadorService = (GrupoUtilizadorService) SpringUtil
 				.getBean("grupoUtilizadorService");
-
+*/
 		inPaises = paisService.getAllPaises();
 		inProvincias = provinciaService.getAllProvincia();
 
-		Boolean logedIn = (Boolean) Sessions.getCurrent().getAttribute(
-				"logedIn");
-		logedInUser = (Utilizador) Sessions.getCurrent().getAttribute(
-				"logedInUser");
+		logedInUser = (Utilizador) Sessions.getCurrent().getAttribute("utilizador");
 
 		List<GrupoUtilizador> defGrupoAsList = grupoUtilizadorService
 				.getDefaultGrupo();
@@ -168,9 +165,11 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 			this.recordMode = "EDIT";
 			userProfile = logedInUser;
 		}
-
+		
+		inUserGrupos = grupoUtilizadorService.getAllGrupos();
+		/*
 		if (logedIn != null) {
-			if (logedIn) {
+			if (logedIn != null) {
 				if (logedInUser != null) {
 					if (logedInUser.getGrupo().equals(defGrupoAsList.get(0))) {
 						inUserGrupos = defGrupoAsList;
@@ -186,7 +185,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				inUserGrupos = defGrupoAsList;
 			}
 		}
-
+*/
 		if (recordMode.equals("NEW")) {
 			this.selectedRecord = new Utilizador();
 		}
@@ -223,6 +222,10 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 		return inUserGrupos;
 	}
 
+	public void setUserGrupos(List<GrupoUtilizador> inUserGrupos) {
+		this.inUserGrupos = inUserGrupos;
+	}
+
 	@Command
 	public void changePais() {
 
@@ -240,25 +243,25 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
-		Utilizador logedInUser = (Utilizador) Sessions.getCurrent()
-				.getAttribute("logedInUser");
+		Utilizador logedInUser = (Utilizador) Sessions.getCurrent().getAttribute("utilizador");
 
 		if (this.selectedRecord.getId() == null) {
 			this.selectedRecord.setDataCriacao(new Date());
 			this.selectedRecord.setAnulado(false);
-			this.selectedRecord.setUuid(UUID.randomUUID().toString());
-			if (logedInUser != null) {
-				this.selectedRecord.setCriadoPor(logedInUser);
-			} else {
-				this.selectedRecord.setCriadoPor(selectedRecord);
-			}
+			this.selectedRecord.setUuid(UUID.randomUUID().toString());		
 		} else {
 			this.selectedRecord.setDataAlteracao(new Date());
-			if (logedInUser != null) {
+		if (logedInUser != null) {
 				this.selectedRecord.setAlteradoPor(logedInUser);
 			} else {
 				this.selectedRecord.setAlteradoPor(selectedRecord);
 			}
+		}
+		
+		if (logedInUser != null) {
+			this.selectedRecord.setCriadoPor(logedInUser);
+		} else {
+			this.selectedRecord.setCriadoPor(selectedRecord);
 		}
 		
 		if(this.selectedRecord.isAnulado()){
@@ -269,7 +272,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				this.selectedRecord.setAnuladoPor(selectedRecord);
 			}
 		}
-		
+		/*
 		if(logedInUser!=null){
 			if(!logedInUser.getGrupo().getUuid().equalsIgnoreCase("6b9a194d-e73d-11e3-8e8f-a4db30f2439a")){
 				//home
@@ -281,8 +284,9 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 		}else{
 			Executions.sendRedirect("/pages/pagebased/index-login.zul");
 		}
-		
+		*/
 		utilizadorService.saveUtilizador(this.selectedRecord);
+		Executions.sendRedirect("/pages/admin/index-utilizador-lista.zul");
 		
 	}
 
@@ -292,8 +296,8 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				"logedIn");
 		if (logedIn != null) {
 			if (logedIn) {
-				if (!logedInUser
-						.getGrupo()
+				if (!((GrupoUtilizador) logedInUser
+						.getGrupo())
 						.getUuid()
 						.equalsIgnoreCase(
 								"6b9a194d-e73d-11e3-8e8f-a4db30f2439a")) {

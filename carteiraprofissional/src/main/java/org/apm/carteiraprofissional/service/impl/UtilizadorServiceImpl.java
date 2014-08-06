@@ -8,16 +8,20 @@ import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.dao.UtilizadorDAO;
 import org.apm.carteiraprofissional.service.UtilizadorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UtilizadorServiceImpl implements UtilizadorService {
+public class UtilizadorServiceImpl implements UtilizadorService, UserDetailsService {
 
 	@Autowired
 	private UtilizadorDAO utilizadorDAO;
+
 	
-	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(UtilizadorServiceImpl.class);
 
 	
@@ -86,21 +90,27 @@ public class UtilizadorServiceImpl implements UtilizadorService {
 	}
 	
 	
-	/*public UserDetails loadUserByUsername(String login)
+	public UserDetails loadUserByUsername(String login)
 			throws UsernameNotFoundException {
+
+		User user = null;
+		Utilizador utilizador = null;
+		
 		try {
-			utilizador = utilizadorDAO.getUtilizador(login);
-			if(utilizador == null){
-				throw new UsernameNotFoundException("Nome do Utilizador/senha invalido");
+			utilizador =  (Utilizador) utilizadorDAO.getUtilizador(login);
+
+			if(utilizador != null){
+				//throw new UsernameNotFoundException("Nome do Utilizador/senha invalido");
+				user = new User(utilizador.getUsername(), utilizador.getPassword(), true, true, true, true, utilizador.getAuthorities());
+
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info(e);
 		}
-		
-		UserDetails user = new User(utilizador.getUsername(), utilizador.getPassword(), true, true, true, true, utilizador.getAuthorities());
+
         return user;
-	}*/
+	}
 	
 }
