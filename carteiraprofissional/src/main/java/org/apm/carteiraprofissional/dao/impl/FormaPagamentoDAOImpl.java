@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class FormaPagamentoDAOImpl implements FormaPagamentoDAO {
@@ -25,23 +26,27 @@ public class FormaPagamentoDAOImpl implements FormaPagamentoDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@Transactional
 	public void saveFormaPagamento(FormaPagamento forma) {
 		sessionFactory.getCurrentSession().saveOrUpdate(forma);
 
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<FormaPagamento> getAllFormas() {
 		return sessionFactory.getCurrentSession()
 				.createCriteria(FormaPagamento.class).list();
 	}
 
+	@Transactional(readOnly=true)
 	public FormaPagamento getFormaById(Integer id) {
 
 		return (FormaPagamento) sessionFactory.getCurrentSession().get(
 				FormaPagamento.class, id);
 	}
 
+	@Transactional(readOnly=true)
 	public FormaPagamento getFormaByUUID(String uuid) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(FormaPagamento.class);
@@ -50,6 +55,7 @@ public class FormaPagamentoDAOImpl implements FormaPagamentoDAO {
 		return pagamento;
 	}
 
+	@Transactional(readOnly=true)
 	public FormaPagamento getFormaByName(String name) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(FormaPagamento.class);
@@ -58,6 +64,7 @@ public class FormaPagamentoDAOImpl implements FormaPagamentoDAO {
 		return pagamento;
 	}
 
+	@Transactional
 	public void deleteForma(FormaPagamento forma) {
 		sessionFactory.getCurrentSession().delete(forma);
 

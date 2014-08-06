@@ -5,6 +5,7 @@ import org.apm.carteiraprofissional.dao.NumeroRequisicaoDAO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class NumeroRequisicaoDAOImpl implements NumeroRequisicaoDAO {
@@ -20,11 +21,13 @@ public class NumeroRequisicaoDAOImpl implements NumeroRequisicaoDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@Transactional
 	public void saveNumeroRequisicao(NumeroRequisicao numero) {
 		sessionFactory.getCurrentSession().saveOrUpdate(numero);
 
 	}
 
+	@Transactional(readOnly=true)
 	public NumeroRequisicao getNumeroRequisicao(Integer id) {
 
 		return (NumeroRequisicao) sessionFactory.getCurrentSession().get(

@@ -11,50 +11,83 @@
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
-							<column label="PARÂMETROS DE PESQUISA DA REQUISIÇÃO" />
+							<column
+								label="PARÂMETROS DE PESQUISA DA CARTEIRA" />
 						</columns>
 						<rows>
 							<row>
 								<hlayout>
-									<label value="Número:"
+									<label value="Número"
 										sclass="flabel" />
-									<textbox id="numeroRequisicao"
-										mold="rounded" value="@bind(vm.numeroRequisicao)"
-										width="150px" />
+									<textbox id="numeroCarteira"
+										mold="rounded" value="@bind(vm.numeroCarteira)" width="150px" />
 								</hlayout>
 							</row>
 							<row>
 								<hlayout>
-									<label value="Nome:"
+									<label value="Nome (Titular):"
 										sclass="flabel" />
-									<textbox id="nomeRequisitante"
-										mold="rounded" value="@bind(vm.nomeRequisitante)"
-										width="150px" />
-									<label value="Apelido:"
+									<textbox id="nomeTitular"
+										mold="rounded" value="@bind(vm.nomeTitular)" width="150px" />
+									<label value="Apelido (Titular):"
 										sclass="flabel" />
-									<textbox id="apelidoRequisitante"
-										mold="rounded" value="@bind(vm.apelidoRequisitante)"
-										width="150px" />
+									<textbox id="apelidoTitular"
+										mold="rounded" value="@bind(vm.apelidoTitular)" width="150px" />
 								</hlayout>
-							</row>						
+							</row>
 
 							<row spans="2">
 								<hlayout>
-									<label value="Periodo de Requisição"
+									<label value="Periodo de Emissão"
 										sclass="flabel" />
 									<separator />
 									<separator />
 									<label value="De: " sclass="flabel" />
-									<datebox id="dataRequisicao1"
-										mold="rounded" width="100px" value="@bind(vm.dataRequisicao1)"
-										constraint="no future" format="dd-MM-yyyy" />
+									<datebox id="startDataEmissao"
+										mold="rounded" width="100px"
+										value="@bind(vm.startDataEmissao)" constraint="no future"
+										format="dd-MM-yyyy" />
 									<label value="Até: "
 										sclass="flabel" />
-									<datebox id="dataRequisicao2"
-										mold="rounded" width="100px" value="@bind(vm.dataRequisicao2)"
+									<datebox id="endDateEmissao"
+										mold="rounded" width="100px" value="@bind(vm.endDateEmissao)"
 										constraint="no future" format="dd-MM-yyyy" />
 								</hlayout>
 							</row>
+
+							<row spans="2">
+								<hlayout>
+									<label value="Periodo de Validade"
+										sclass="flabel" />
+									<separator />
+									<separator />
+									<label value="De: " sclass="flabel" />
+									<datebox id="startDateValidade"
+										mold="rounded" width="100px"
+										value="@bind(vm.startDateValidade)" format="dd-MM-yyyy" />
+									<label value="Até: "
+										sclass="flabel" />
+									<datebox id="endDateValidade"
+										mold="rounded" width="100px" value="@bind(vm.endDateValidade)"
+										format="dd-MM-yyyy" />
+								</hlayout>
+							</row>
+
+							<row>
+								<vlayout>
+									<label value="Situação Emissão"
+										sclass="flabel" />
+									<radiogroup
+										selectedItem="@bind(vm.emitidaString)" id="emitidaString">
+										<radio label="Emitida"
+											value="E" />
+										<radio label="Não Emitida"
+											value="N" />
+										<radio label="Todas" value="T" />
+									</radiogroup>
+								</vlayout>
+							</row>
+
 							<row>
 								<div style="float:right">
 									<button label="Pesquisar"
@@ -71,45 +104,44 @@
 		</div>
 		<separator />
 		<separator />
-		<listbox id="listaRequisicoes" mold="paging" pageSize="11" pagingPosition="top"
-			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
-			model="@load(vm.dataSet)">
+		<listbox id="listaCarteiras" mold="paging" pageSize="11"
+			pagingPosition="top" sclass="mylist"
+			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)">
 			<listhead sizable="true">
-				<listheader label="Número Requisição"
-					sortDirection="ascending" sort="auto(numeroRequisicao)" width="130px" />
-			<listheader label="Requisitante"
-					sortDirection="ascending" sort="auto(requisitante.NomeCompleto)" width="250px" />
-				<listheader label="Data Requisição"
-					sort="auto(dataRequisiao)" width="100px"/>
-				<listheader label="Completa"
-					sort="auto(completa)" width="70px"/>
-				<listheader label="Aceite" sort="auto(aceite)" width="70px"/>
+				<listheader label="Número Carteira"
+					sortDirection="ascending" sort="auto(numeroCarteira)"
+					width="130px" />
+				<listheader label="Titular" sortDirection="ascending"
+					sort="auto(requisicao.requisitante.NomeCompleto)" width="200px" />
+				<listheader label="Data Emissão"
+					sort="auto(dataEmissao)" width="100px" />
+				<listheader label="Data Validade"
+					sort="auto(dataValidade)" width="100px" />
+				<listheader label="Enviada a Produção"
+					sort="auto(enviarEmissao)" width="140px" />
+				<listheader label="Produzida" sort="auto(emitida)"
+					width="80px" />
 				<listheader label="Acções" />
 			</listhead>
 			<template name="model" var="p1">
 				<listitem>
-				<listcell
-						label="@load(p1.numeroRequisicao)" />
+					<listcell label="@load(p1.numeroCarteira)" />
 					<listcell
-						label="@load(p1.requisitante.nomeCompleto)" />
-					<listcell label="@load(p1.dataRequisiao) @converter('formatedDate',format='dd-MM-yyyy')" />
-					<listcell label="@load(p1.completa ? 'SIM':'NÃO')" />
-					<listcell label="@load(p1.aceite ? 'SIM':'NÃO')" />
+						label="@load(p1.requisicao.requisitante.nomeCompleto)" />
+					<listcell
+						label="@load(p1.dataEmissao) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.dataValidade) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.enviarEmissao ? 'SIM':'NÃO')" />
+					<listcell label="@load(p1.emitida ? 'SIM':'NÃO')" />
 					<listcell>
 						<hbox spacing="20px">
 							<button label="Editar"
-								disabled="@load(p1.lockEdit)"
-								onClick="@command('onEdit',requisicaoRecord=p1)" />
-							<button label="Completar"
-								disabled="@load(p1.lockEdit)"
-								onClick="@command('completar',requisicaoRecord=p1)" />
-							<button label="Analisar"
-								disabled="@load(not p1.completa)"
-								onClick="@command('analisar',requisicaoRecord=p1)" />
-							<button label="Registar Cartão"
-								disabled="@load(not p1.aceite)"
-								onClick="@command('registarCartao',requisicaoRecord=p1)" />
-
+								disabled="@load(p1.emitida)"
+								onClick="@command('onEdit',carteiraRecord=p1)" />
+							<button label="Visualizar"
+								onClick="@command('visualizar',carteiraRecord=p1)" />
 						</hbox>
 					</listcell>
 				</listitem>

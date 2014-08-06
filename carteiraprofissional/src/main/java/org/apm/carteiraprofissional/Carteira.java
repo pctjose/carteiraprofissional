@@ -36,8 +36,8 @@ public class Carteira extends BaseModel {
 	private FormaPagamento formaPagamento;
 	@Column(name = "data_pagamento")
 	private Date dataPagamento;
-	@Column(name="enviar_emissao")
-	private Boolean enviarEmissao;
+	@Column(name = "enviar_emissao")
+	private boolean enviarEmissao;
 
 	public Requisicao getRequisicao() {
 		return requisicao;
@@ -132,14 +132,16 @@ public class Carteira extends BaseModel {
 		return requisicao.getRequisitante().toString();
 	}
 
-	public Boolean getEnviarEmissao() {
+	public boolean isEnviarEmissao() {
 		return enviarEmissao;
 	}
 
-	public void setEnviarEmissao(Boolean enviarEmissao) {
+	public void setEnviarEmissao(boolean enviarEmissao) {
 		this.enviarEmissao = enviarEmissao;
 	}
-	
-	
+
+	public boolean getEnviarEmissao() {
+		return isEnviarEmissao();
+	}
 
 }

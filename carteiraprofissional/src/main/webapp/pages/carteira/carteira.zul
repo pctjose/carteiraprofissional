@@ -10,7 +10,7 @@
 			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
 
 
-			<panel width="300px" sclass="sectionPanel">
+			<panel width="500px" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -28,11 +28,7 @@
 					</grid>
 				</panelchildren>
 			</panel>
-
-
-
-
-			<panel width="300px" sclass="sectionPanel">
+			<panel width="500px" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -49,9 +45,9 @@
 											value="@load(vm.selectedRecord.requisicao.requisitante.nomeCompleto)"
 											sclass="flabel" />
 									</vlayout>
-									<separator/>
-									<separator/>
-									<separator/>
+									<separator />
+									<separator />
+									<separator />
 									<vlayout>
 										<label value="Data Requisição"
 											sclass="flabel" />
@@ -67,110 +63,123 @@
 			</panel>
 			<separator />
 			<separator />
+			<hlayout>
+				<panel width="245px" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="CARTEIRA" />
+							</columns>
+							<rows>
+								<row>
+									<vlayout>
+										<label value="Número"
+											sclass="flabel" />
+										<textbox id="numeroCarteira"
+											width="200px" readonly="true" mold="rounded"
+											value="@bind(fx.numeroCarteira)"
+											placeholder="Número de carteira gerado pelo sistema" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Data de Emissão"
+											sclass="flabel" />
+										<datebox id="dataEmissao"
+											disabled="@load(vm.makeAsReadOnly)"
+											readonly="@load(fx.emitida)" mold="rounded" width="100px"
+											value="@bind(fx.dataEmissao)" constraint="no future"
+											format="dd-MM-yyyy" onChange="@command('calcDataValidade')" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Data de Validade"
+											sclass="flabel" />
+										<datebox id="dataValidade"
+											mold="rounded" width="100px" value="@bind(fx.dataValidade)"
+											constraint="no past" format="dd-MM-yyyy" disabled="true" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<checkbox id="enviarEmissao" disabled="@load(vm.makeAsReadOnly)"
+											value="@bind(fx.enviarEmissao)" label="Enviar para Produção" checked="@load(fx.enviarEmissao)"/>
+									</vlayout>
+								</row>
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>
+
+				<separator />
+
+				<panel width="245px" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="DESPESAS DE EMISSÃO" />
+							</columns>
+							<rows>
+								<row>
+									<vlayout>
+										<label value="Valor Cobrado"
+											sclass="flabel" />
+										<decimalbox id="valorCobrado"
+											disabled="@load(vm.makeAsReadOnly)" width="200px"
+											readonly="@load(fx.emitida)" value="@bind(fx.valorCobrado)" />
+									</vlayout>
+								</row>
+								<row>
+
+									<vlayout>
+										<label value="Forma Pagamento"
+											sclass="flabel" />
+										<listbox
+											model="@bind(vm.formasPagamento)"
+											selectedItem="@bind(fx.formaPagamento)" mold="select"
+											id="formasPagamento" width="200px"
+											disabled="@load(vm.makeAsReadOnly)">
+											<template name="model">
+												<listitem
+													label="@load(each)" width="200px" />
+											</template>
+
+										</listbox>
+									</vlayout>
 
 
-			<panel width="300px" sclass="sectionPanel">
-				<panelchildren>
-					<grid sclass="vgrid">
-						<columns>
-							<column label="CARTEIRA" />
-						</columns>
-						<rows>
-							<row>
-								<vlayout>
-									<label value="Número"
-										sclass="flabel" />
-									<textbox id="numeroCarteira"
-										width="200px" readonly="true" mold="rounded"
-										value="@bind(fx.numeroCarteira)" placeholder="Número de carteira gerado pelo sistema" />
-								</vlayout>
-							</row>
-							<row>
-								<vlayout>
-									<label value="Data de Emissão"
-										sclass="flabel" />
-									<datebox id="dataEmissao"
-										readonly="@load(fx.emitida)" mold="rounded" width="100px"
-										value="@bind(fx.dataEmissao)" constraint="no future"
-										format="dd-MM-yyyy" onChange="@command('calcDataValidade')"/>
-								</vlayout>
-							</row>
-							<row>
-								<vlayout>
-									<label value="Data de Validade"
-										sclass="flabel" />
-									<datebox id="dataValidade"
-										mold="rounded" width="100px"
-										value="@bind(fx.dataValidade)" constraint="no past"
-										format="dd-MM-yyyy" disabled="true" />
-								</vlayout>
-							</row>
-						</rows>
-					</grid>
-				</panelchildren>
-			</panel>
+								</row>
+
+								<row>
+									<vlayout>
+										<label
+											value="Numero Doc Pagamento" sclass="flabel" />
+										<textbox id="numDoc"
+											width="200px" readonly="@load(fx.emitida)" mold="rounded"
+											value="@bind(fx.numeroDocPagamento)"
+											disabled="@load(vm.makeAsReadOnly)" />
+									</vlayout>
+								</row>
+								<row>
+									<vlayout>
+										<label value="Data Pagamento"
+											sclass="flabel" />
+										<datebox id="dataPagamento"
+											disabled="@load(vm.makeAsReadOnly)"
+											readonly="@load(fx.emitida)" mold="rounded" width="100px"
+											value="@bind(fx.dataPagamento)" constraint="no future"
+											format="dd-MM-yyyy" />
+									</vlayout>
+								</row>
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>
+			</hlayout>
 			<separator />
 			<separator />
-
-			<panel width="300px" sclass="sectionPanel">
-				<panelchildren>
-					<grid sclass="vgrid">
-						<columns>
-							<column label="DESPESAS DE EMISSÃO" />
-						</columns>
-						<rows>
-							<row>
-								<vlayout>
-									<label value="Valor Cobrado"
-										sclass="flabel" />
-									<decimalbox id="valorCobrado"
-										width="200px" readonly="@load(fx.emitida)"
-										value="@bind(fx.valorCobrado)" />
-								</vlayout>
-							</row>
-							<row>
-
-								<vlayout>
-									<label value="Forma Pagamento"
-										sclass="flabel" />
-									<listbox
-										model="@bind(vm.formasPagamento)" selectedItem="@bind(fx.formaPagamento)"
-										mold="select" id="formasPagamento" width="200px">
-										<template name="model">
-											<listitem
-												label="@load(each)" width="200px" />
-										</template>
-									</listbox>
-								</vlayout>
-
-
-							</row>
-
-							<row>
-								<vlayout>
-									<label value="Numero Doc Pagamento"
-										sclass="flabel" />										
-									<textbox id="numDoc"
-										width="200px" readonly="@load(fx.emitida)" mold="rounded"
-										value="@bind(fx.numeroDocPagamento)" />									
-								</vlayout>
-							</row>
-							<row>
-								<vlayout>
-									<label value="Data Pagamento"
-										sclass="flabel" />
-									<datebox id="dataPagamento"
-										readonly="@load(fx.emitida)" mold="rounded" width="100px"
-										value="@bind(fx.dataPagamento)" constraint="no future"
-										format="dd-MM-yyyy" />
-								</vlayout>
-							</row>
-						</rows>
-					</grid>
-				</panelchildren>
-			</panel>
-
-			<panel width="300px" sclass="sectionPanel">
+			<panel width="500px" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -180,7 +189,7 @@
 							<row align="center">
 								<hlayout>
 									<button label="Gravar" mold="trendy"
-										visible="@load(not fx.emitida)"
+										visible="@load(not vm.makeAsReadOnly)"
 										onClick="@command('saveThis')"
 										sclass="mybutton button blue small">
 									</button>

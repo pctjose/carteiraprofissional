@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.utils.BarcodeUtil;
+import org.apm.carteiraprofissional.utils.PathUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -92,7 +94,8 @@ public class ListaRequisicaoVM {
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) throws Exception {
 		Selectors.wireComponents(view, this, false);
-		BarcodeUtil.encodePDF417("20141000V");
+		BarcodeUtil.encodePDF417("20141000V-Eurico Jose Abibo-EMI21.12.2014-VAL25.09.2016-PROF.Eng Perfuracao");
+		System.out.println("CurPath: "+PathUtils.getWebInfPath());
 	}
 
 	public List<Requisicao> getDataSet() {
@@ -110,7 +113,7 @@ public class ListaRequisicaoVM {
 	@Command
 	@NotifyChange({"listaRequisicoes","dataSet"})
 	public void pesquisar(){
-		System.out.println("Requisicao: "+this.numeroRequisicao+" - Nome:"+this.nomeRequisitante+" - Apelido:"+this.apelidoRequisitante+" - Data1: "+this.dataRequisicao1+" - Data2: "+dataRequisicao2);
+		//System.out.println("Requisicao: "+this.numeroRequisicao+" - Nome:"+this.nomeRequisitante+" - Apelido:"+this.apelidoRequisitante+" - Data1: "+this.dataRequisicao1+" - Data2: "+dataRequisicao2);
 		
 		listaRequisicoes = requisicaoService.getRequisicaoByAttributes(numeroRequisicao, nomeRequisitante, apelidoRequisitante, dataRequisicao1, dataRequisicao2, null, null);
 	}
@@ -132,11 +135,17 @@ public class ListaRequisicaoVM {
 	
 	@Command
 	public void registarCartao(@BindingParam("requisicaoRecord") Requisicao requisicao){
-		Sessions.getCurrent().setAttribute("requisicao", requisicao);
+		//Sessions.getCurrent().setAttribute("requisicao", requisicao);
 		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
-		
+		final HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("recordMode", "NEW");
+		map.put("requisicao", requisicao);
+
+		Sessions.getCurrent().setAttribute("carteiraValues", map);
 		
 		Executions.sendRedirect("/pages/carteira/carteira.zul");
 	}
+	
+	
 
 }
