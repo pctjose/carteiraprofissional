@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class PaisDAOImpl implements PaisDAO {
@@ -26,7 +27,7 @@ public class PaisDAOImpl implements PaisDAO {
 	}
 
 	
-	@
+	@Transactional
 	public void savePais(Pais pais) {
 		sessionFactory.getCurrentSession().saveOrUpdate(pais);
 
