@@ -15,6 +15,7 @@
     <intercept-url pattern="/zkau/**" filters="none" />
 	<intercept-url pattern="/pages/login/login.zul" filters="none"/>
 	<intercept-url pattern="/**" access="permitAll"/>
+	<intercept-url pattern="/pages/requisicao/**" access="none"/>
 	<intercept-url pattern="/pages/admin/**" access="ROLE_ADMIN"/>
     <intercept-url pattern="/pages/supervisor/**" access="ROLE_SUPERVISOR"/>
 	
