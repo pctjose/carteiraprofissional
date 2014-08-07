@@ -118,7 +118,7 @@ public class ListaUtilizadorVM {
 		map.put("selectedRecord", null);
 		map.put("recordMode", "NEW");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/pagebased/index-utilizador-novo.zul");
+		Executions.sendRedirect("/pages/admin/index-utilizador-novo.zul");
 	}
 
 	@Command

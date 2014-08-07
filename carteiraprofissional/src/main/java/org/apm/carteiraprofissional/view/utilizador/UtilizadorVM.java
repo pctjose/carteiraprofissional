@@ -6,14 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apm.carteiraprofissional.GrupoUtilizador;
-import org.apm.carteiraprofissional.Pais;
-import org.apm.carteiraprofissional.Provincia;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.GrupoUtilizadorService;
-import org.apm.carteiraprofissional.service.PaisService;
-import org.apm.carteiraprofissional.service.ProvinciaService;
 import org.apm.carteiraprofissional.service.UtilizadorService;
-import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -25,9 +20,8 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Textbox;
 
 public class UtilizadorVM extends SelectorComposer<Component> {
 
@@ -36,63 +30,42 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	 */
 	private static final long serialVersionUID = 1L;
 	@WireVariable
-	private UtilizadorService utilizadorService;
+	protected UtilizadorService utilizadorService;
 	@WireVariable
-	private ProvinciaService provinciaService;
-	@WireVariable
-	private PaisService paisService;
-	@WireVariable
-	private GrupoUtilizadorService grupoUtilizadorService;
-
+	protected GrupoUtilizadorService grupoUtilizadorService;
+	
 	@Wire
-	Listbox paises;
+	Textbox nome;
+	
+	@Wire
+	Textbox apelido;
+	
+	@Wire
+	Textbox contacto;
+	
+	@Wire
+	Textbox email;
+	
+	@Wire
+	Textbox userName;
+	
+	@Wire
+	Textbox senha;
+	
+	@Wire
+	Listbox userGrupos;
+
+	
+	
 
 	private Utilizador selectedRecord;
 	private String recordMode;
 	private boolean makeAsReadOnly;
 
-	private String repetirSenha;
-
-	private List<Pais> inPaises;
-	private List<Provincia> inProvincias;
+	private String repetirSenha;	
 	private List<GrupoUtilizador> inUserGrupos;
-
 	private Utilizador logedInUser;
-	
 
-	/*public UtilizadorService getUtilizadorService() {
-		return utilizadorService;
-	}
-
-	public void setUtilizadorService(UtilizadorService utilizadorService) {
-		this.utilizadorService = utilizadorService;
-	}
-
-	public ProvinciaService getProvinciaService() {
-		return provinciaService;
-	}
-
-	public void setProvinciaService(ProvinciaService provinciaService) {
-		this.provinciaService = provinciaService;
-	}
-
-	public PaisService getPaisService() {
-		return paisService;
-	}
-
-	public void setPaisService(PaisService paisService) {
-		this.paisService = paisService;
-	}
-
-	public GrupoUtilizadorService getGrupoUtilizadorService() {
-		return grupoUtilizadorService;
-	}
-
-	public void setGrupoUtilizadorService(
-			GrupoUtilizadorService grupoUtilizadorService) {
-		this.grupoUtilizadorService = grupoUtilizadorService;
-	}
-*/
 	public Utilizador getSelectedRecord() {
 		return selectedRecord;
 	}
@@ -124,6 +97,75 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	public void setRepetirSenha(String repetirSenha) {
 		this.repetirSenha = repetirSenha;
 	}
+	
+	
+	
+	
+	
+	
+	
+
+	public Textbox getNome() {
+		return nome;
+	}
+
+	public void setNome(Textbox nome) {
+		this.nome = nome;
+	}
+
+	public Textbox getApelido() {
+		return apelido;
+	}
+
+	public void setApelido(Textbox apelido) {
+		this.apelido = apelido;
+	}
+
+	public Textbox getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(Textbox contacto) {
+		this.contacto = contacto;
+	}
+
+	public Textbox getEmail() {
+		return email;
+	}
+
+	public void setEmail(Textbox email) {
+		this.email = email;
+	}
+
+	public Textbox getUserName() {
+		return userName;
+	}
+
+	public void setUserName(Textbox userName) {
+		this.userName = userName;
+	}
+
+	public Textbox getSenha() {
+		return senha;
+	}
+
+	public void setSenha(Textbox senha) {
+		this.senha = senha;
+	}
+
+	public void setUserGrupos(Listbox userGrupos) {
+		this.userGrupos = userGrupos;
+	}
+	
+	private void setDados(Utilizador user){
+		user.setNome(nome.getValue());
+		user.setApelido(apelido.getValue());
+		user.setContacto(contacto.getValue());
+		user.setEmail(email.getValue());
+		user.setUserName(userName.getValue());
+		user.setSenha(senha.getValue());
+		user.setGrupo((GrupoUtilizador)userGrupos.getSelectedItem().getValue());
+	}
 
 	@SuppressWarnings("unchecked")
 	@AfterCompose
@@ -136,87 +178,37 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				.getCurrent().getAttribute("allmyvalues");
 		
 		
-
-		/*utilizadorService = (UtilizadorService) SpringUtil
-				.getBean("utilizadorService");
-
-		provinciaService = (ProvinciaService) SpringUtil
-				.getBean("provinciaService");
-
-		paisService = (PaisService) SpringUtil.getBean("paisService");
-
-		grupoUtilizadorService = (GrupoUtilizadorService) SpringUtil
-				.getBean("grupoUtilizadorService");
-*/
-		inPaises = paisService.getAllPaises();
-		inProvincias = provinciaService.getAllProvincia();
-
-		logedInUser = (Utilizador) Sessions.getCurrent().getAttribute("utilizador");
-
-		List<GrupoUtilizador> defGrupoAsList = grupoUtilizadorService
-				.getDefaultGrupo();
 		
-		
-		if(map!=null){
+
+		logedInUser = (Utilizador) Sessions.getCurrent().getAttribute(
+				"utilizador");
+
+		//List<GrupoUtilizador> defGrupoAsList = grupoUtilizadorService
+		//		.getDefaultGrupo();
+
+		if (map != null) {
 			this.recordMode = (String) map.get("recordMode");
 			userProfile = (Utilizador) map.get("selectedRecord");
-			// CRUDService = (CRUDService) SpringUtil.getBean("CRUDService");
-		}else{
+		} else {
 			this.recordMode = "EDIT";
 			userProfile = logedInUser;
 		}
-		
+
 		inUserGrupos = grupoUtilizadorService.getAllGrupos();
-		/*
-		if (logedIn != null) {
-			if (logedIn != null) {
-				if (logedInUser != null) {
-					if (logedInUser.getGrupo().equals(defGrupoAsList.get(0))) {
-						inUserGrupos = defGrupoAsList;
-					} else {
-						inUserGrupos = grupoUtilizadorService.getAllGrupos();
-					}
-
-				} else {
-					inUserGrupos = defGrupoAsList;
-				}
-
-			} else {
-				inUserGrupos = defGrupoAsList;
-			}
-		}
-*/
+		
 		if (recordMode.equals("NEW")) {
 			this.selectedRecord = new Utilizador();
 		}
 
 		if (recordMode.equals("EDIT")) {
-			this.selectedRecord = userProfile;
-			/*
-			 * Listitem li = new Listitem();
-			 * li.setValue(userProfile.getProvincia().getPais());
-			 * paises.setSelectedItem(li);
-			 */
+			this.selectedRecord = userProfile;			
 		}
 
 		if (recordMode.equals("READ")) {
 			setMakeAsReadOnly(true);
-			this.selectedRecord = userProfile;
-			/*
-			 * Listitem li = new Listitem();
-			 * li.setValue(userProfile.getProvincia().getPais());
-			 * paises.setSelectedItem(li);
-			 */
+			this.selectedRecord = userProfile;			
 		}
-	}
-
-	public List<Pais> getPaises() {
-		return inPaises;
-	}
-
-	public List<Provincia> getProvincias() {
-		return inProvincias;
-	}
+	}	
 
 	public List<GrupoUtilizador> getUserGrupos() {
 		return inUserGrupos;
@@ -227,44 +219,31 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	}
 
 	@Command
-	public void changePais() {
-
-		Listitem li = paises.getSelectedItem();
-		if (li != null) {
-			Pais selectedPais = (Pais) li.getValue();
-			inProvincias = provinciaService.getAllProvincia(selectedPais);
-
-			BindUtils.postNotifyChange(null, null, UtilizadorVM.this,
-					"provincias");
-		}
-
-	}
-
-	@Command
 	public void saveThis() {
 
-		Utilizador logedInUser = (Utilizador) Sessions.getCurrent().getAttribute("utilizador");
-
+		Utilizador logedInUser = (Utilizador) Sessions.getCurrent()
+				.getAttribute("utilizador");
+		setDados(this.selectedRecord);
 		if (this.selectedRecord.getId() == null) {
 			this.selectedRecord.setDataCriacao(new Date());
 			this.selectedRecord.setAnulado(false);
-			this.selectedRecord.setUuid(UUID.randomUUID().toString());		
+			this.selectedRecord.setUuid(UUID.randomUUID().toString());
 		} else {
 			this.selectedRecord.setDataAlteracao(new Date());
-		if (logedInUser != null) {
+			if (logedInUser != null) {
 				this.selectedRecord.setAlteradoPor(logedInUser);
 			} else {
 				this.selectedRecord.setAlteradoPor(selectedRecord);
 			}
 		}
-		
+
 		if (logedInUser != null) {
 			this.selectedRecord.setCriadoPor(logedInUser);
 		} else {
 			this.selectedRecord.setCriadoPor(selectedRecord);
 		}
-		
-		if(this.selectedRecord.isAnulado()){
+
+		if (this.selectedRecord.isAnulado()) {
 			this.selectedRecord.setDataAnulado(new Date());
 			if (logedInUser != null) {
 				this.selectedRecord.setAnuladoPor(logedInUser);
@@ -273,21 +252,18 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 			}
 		}
 		/*
-		if(logedInUser!=null){
-			if(!logedInUser.getGrupo().getUuid().equalsIgnoreCase("6b9a194d-e73d-11e3-8e8f-a4db30f2439a")){
-				//home
-				Executions.sendRedirect("/pages/pagebased/index.zul");
-			}else{
-				Executions.sendRedirect("/pages/pagebased/index-utilizador-lista.zul");
-			}
-			
-		}else{
-			Executions.sendRedirect("/pages/pagebased/index-login.zul");
-		}
-		*/
+		 * if(logedInUser!=null){
+		 * if(!logedInUser.getGrupo().getUuid().equalsIgnoreCase
+		 * ("6b9a194d-e73d-11e3-8e8f-a4db30f2439a")){ //home
+		 * Executions.sendRedirect("/pages/pagebased/index.zul"); }else{
+		 * Executions
+		 * .sendRedirect("/pages/pagebased/index-utilizador-lista.zul"); }
+		 * 
+		 * }else{ Executions.sendRedirect("/pages/pagebased/index-login.zul"); }
+		 */
 		utilizadorService.saveUtilizador(this.selectedRecord);
 		Executions.sendRedirect("/pages/admin/index-utilizador-lista.zul");
-		
+
 	}
 
 	@Command
@@ -296,9 +272,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				"logedIn");
 		if (logedIn != null) {
 			if (logedIn) {
-				if (!((GrupoUtilizador) logedInUser
-						.getGrupo())
-						.getUuid()
+				if (!((GrupoUtilizador) logedInUser.getGrupo()).getUuid()
 						.equalsIgnoreCase(
 								"6b9a194d-e73d-11e3-8e8f-a4db30f2439a")) {
 					Executions.sendRedirect("/pages/pagebased/index.zul");

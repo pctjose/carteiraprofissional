@@ -1,5 +1,6 @@
-<?page title="" contentType="text/html;charset=UTF-8"?>
+<?page title="Registo de Utilizador" contentType="text/html;charset=UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
 	<window id="criarUtilizador" border="none"
 		apply="org.zkoss.bind.BindComposer"
@@ -81,7 +82,7 @@
 								<vlayout>
 									<label value="Contacto*"
 										sclass="flabel" />
-									<textbox id="contacto1"
+									<textbox id="contacto"
 										width="100px" readonly="@load(vm.makeAsReadOnly)"
 										mold="rounded" value="@bind(fx.contacto)" />
 								</vlayout>
