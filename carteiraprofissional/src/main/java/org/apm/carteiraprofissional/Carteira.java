@@ -24,7 +24,7 @@ public class Carteira extends BaseModel {
 	@Column(name = "pdf417")
 	private byte[] pdf417;
 	@Column(name = "emitida")
-	private Boolean emitida;
+	private boolean emitida;
 	@Column(name = "tamplate")
 	private byte[] tamplate;
 	@Column(name = "valor_cobrado")
@@ -77,14 +77,18 @@ public class Carteira extends BaseModel {
 
 	public void setPdf417(byte[] pdf417) {
 		this.pdf417 = pdf417;
-	}
+	}	
 
-	public Boolean getEmitida() {
+	public boolean isEmitida() {
 		return emitida;
 	}
 
-	public void setEmitida(Boolean emitida) {
+	public void setEmitida(boolean emitida) {
 		this.emitida = emitida;
+	}
+	
+	public boolean getEmitida(){
+		return isEmitida();
 	}
 
 	public byte[] getTamplate() {

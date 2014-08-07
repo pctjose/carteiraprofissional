@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apm.carteiraprofissional.Carteira;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Utilizador;
+import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.utils.BarcodeUtil;
 import org.apm.carteiraprofissional.utils.PathUtils;
@@ -21,6 +23,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 
 public class ListaRequisicaoVM {
 
@@ -36,6 +39,9 @@ public class ListaRequisicaoVM {
 	
 	@WireVariable
 	private RequisicaoService requisicaoService;
+	
+	@WireVariable
+	private CarteiraService carteiraService;
 	
 	
 
@@ -94,8 +100,8 @@ public class ListaRequisicaoVM {
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) throws Exception {
 		Selectors.wireComponents(view, this, false);
-		BarcodeUtil.encodePDF417("20141000V-Eurico Jose Abibo-EMI21.12.2014-VAL25.09.2016-PROF.Eng Perfuracao");
-		System.out.println("CurPath: "+PathUtils.getWebInfPath());
+		//BarcodeUtil.encodePDF417("20141000V-Eurico Jose Abibo-EMI21.12.2014-VAL25.09.2016-PROF.Eng Perfuracao");
+		//System.out.println("CurPath: "+PathUtils.getWebInfPath());
 	}
 
 	public List<Requisicao> getDataSet() {
@@ -137,13 +143,21 @@ public class ListaRequisicaoVM {
 	public void registarCartao(@BindingParam("requisicaoRecord") Requisicao requisicao){
 		//Sessions.getCurrent().setAttribute("requisicao", requisicao);
 		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
-		final HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("recordMode", "NEW");
-		map.put("requisicao", requisicao);
-
-		Sessions.getCurrent().setAttribute("carteiraValues", map);
+		Carteira carteira=carteiraService.getCarteiraByRequisicao(requisicao);
 		
-		Executions.sendRedirect("/pages/carteira/carteira.zul");
+		if(carteira!=null){
+			Clients.showNotification("Já existe uma carteira registada para esta requisição.");
+		}else{
+			final HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("recordMode", "NEW");
+			map.put("requisicao", requisicao);
+
+			Sessions.getCurrent().setAttribute("carteiraValues", map);
+			
+			Executions.sendRedirect("/pages/carteira/carteira.zul");
+		}
+		
+		
 	}
 	
 	

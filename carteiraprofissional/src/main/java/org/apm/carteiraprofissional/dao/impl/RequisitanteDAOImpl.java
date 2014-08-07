@@ -31,9 +31,9 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 	@Transactional
 	public void saveRequisitante(Requisitante requisitante) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		sessao.saveOrUpdate(requisitante);
-		//tx.commit();
+		
 
 	}
 

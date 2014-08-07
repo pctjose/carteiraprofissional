@@ -33,35 +33,38 @@ public class PaisDAOImpl implements PaisDAO {
 
 	}
 
+	@Transactional(readOnly=true)
 	public Pais getByID(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		Pais pais = (Pais) sessao.get(
 				Pais.class, id);
-		//tx.commit();
+		
 		return pais;
 	}
 
+	@Transactional(readOnly=true)
 	public Pais getByDesignacao(String designacao) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		Criteria cr = sessao.createCriteria(Pais.class);
 		cr.add(Restrictions.eq("designacao", designacao));
 		Pais pais = (Pais) cr.uniqueResult();
-		//tx.commit();
+		
 		return pais;
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Pais> getAllPaises() {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 
 		Criteria c = sessao.createCriteria(Pais.class);
 
 		
 		List<Pais> paises = c.list();
-		//tx.commit();
+		
 		return paises;
 	}
 

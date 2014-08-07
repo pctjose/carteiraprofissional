@@ -13,6 +13,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class RequisicaoDAOImpl implements RequisicaoDAO {
@@ -28,24 +29,27 @@ public class RequisicaoDAOImpl implements RequisicaoDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public void saveRequisicao(Requisicao requisicao) {
-		
+	@Transactional
+	public void saveRequisicao(Requisicao requisicao) {		
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(requisicao);
 
 	}
 
+	@Transactional
 	public void deleteRequisicao(Requisicao requisicao) {
 		sessionFactory.getCurrentSession().delete(requisicao);
 
 	}
 
+	@Transactional(readOnly=true)
 	public Requisicao getRequisicaoByID(Integer id) {
-		// TODO Auto-generated method stub
+		
 		return (Requisicao) sessionFactory.getCurrentSession().get(
 				Requisicao.class, id);
 	}
 
+	@Transactional(readOnly=true)
 	public Requisicao getRequisicaoByUUID(String uuid) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Requisicao.class);
@@ -53,6 +57,7 @@ public class RequisicaoDAOImpl implements RequisicaoDAO {
 		return (Requisicao) cr.uniqueResult();
 	}
 
+	@Transactional(readOnly=true)
 	public Requisicao getRequisicaoByNumero(String numeroRequisicao) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Requisicao.class);
@@ -61,12 +66,14 @@ public class RequisicaoDAOImpl implements RequisicaoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Requisicao> getAllRequisicoes() {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Requisicao.class);
 		return (List<Requisicao>) cr.list();
 	}
 
+	@Transactional(readOnly=true)
 	public Requisicao getRequisicaoByRequisitante(Requisitante requisitante) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Requisicao.class);
@@ -75,6 +82,7 @@ public class RequisicaoDAOImpl implements RequisicaoDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Requisicao> getRequisicaoByAttributes(String numeroRequisicao,
 			String nome, String apelido, Date dataInicial, Date dataFinal,
 			Boolean aceite, Boolean completa) {

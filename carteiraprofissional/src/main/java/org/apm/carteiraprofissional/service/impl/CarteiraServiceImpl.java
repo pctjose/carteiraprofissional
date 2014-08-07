@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apm.carteiraprofissional.Carteira;
+import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.dao.CarteiraDAO;
 import org.apm.carteiraprofissional.service.CarteiraService;
@@ -85,6 +86,11 @@ public class CarteiraServiceImpl implements CarteiraService {
 		return carteiraDAO.getAllByAttributes(numeroCarteira, nomeTitular,
 				apelidoTitular, startDateEmissao, endDateEmissao,
 				startDateValidade, endDateValidade, emitida);
+	}
+
+	public Carteira getCarteiraByRequisicao(Requisicao requisicao) {
+		
+		return carteiraDAO.getCarteiraByRequisicao(requisicao);
 	}
 
 }

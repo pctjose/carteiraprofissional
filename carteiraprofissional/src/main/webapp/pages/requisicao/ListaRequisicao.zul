@@ -106,7 +106,7 @@
 							<button label="Analisar"
 								disabled="@load(not p1.completa)"
 								onClick="@command('analisar',requisicaoRecord=p1)" />
-							<button label="Registar Cartão"
+							<button label="Registar Cartão" visible="@load( not p1.temCarteira )"
 								disabled="@load(not p1.aceite)"
 								onClick="@command('registarCartao',requisicaoRecord=p1)" />
 

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apm.carteiraprofissional.Carteira;
+import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.dao.CarteiraDAO;
 import org.hibernate.Criteria;
@@ -35,14 +36,14 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Carteira getCarteiraByID(Integer id) {
 		return (Carteira) sessionFactory.getCurrentSession().get(
 				Carteira.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Carteira> getAllCarteira(Requisitante requisitante,
 			Boolean emitida) {
 
@@ -60,7 +61,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Carteira> getAllCarteiraByDataEmissao(Date startDate,
 			Date endDate) {
 		Session sessao = sessionFactory.getCurrentSession();
@@ -70,7 +71,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Carteira> getAllCarteiraByDataValidade(Date startDate,
 			Date endDate) {
 		Session sessao = sessionFactory.getCurrentSession();
@@ -79,7 +80,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 		return cr.list();
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Carteira getCarteiraByUUID(String uuid) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Carteira.class);
@@ -87,7 +88,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 		return (Carteira) cr.uniqueResult();
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public Carteira getCarteiraByRequisitante(Requisitante requisitante) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Carteira.class);
@@ -96,7 +97,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Carteira> getAllByAttributes(String numeroCarteira,
 			String nomeTitular, String apelidoTitular, Date startDateEmissao,
 			Date endDateEmissao, Date startDateValidade, Date endDateValidade,
@@ -134,6 +135,14 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 			cr.add(Restrictions.eq("emitida", emitida));
 		}
 		return cr.list();
+	}
+
+	@Transactional(readOnly=true)
+	public Carteira getCarteiraByRequisicao(Requisicao requisicao) {
+		Session sessao = sessionFactory.getCurrentSession();
+		Criteria cr = sessao.createCriteria(Carteira.class);
+		cr.add(Restrictions.eq("requisicao", requisicao));
+		return (Carteira) cr.uniqueResult();
 	}
 
 }

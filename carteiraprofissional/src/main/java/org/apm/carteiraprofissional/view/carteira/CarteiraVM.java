@@ -16,6 +16,7 @@ import org.apm.carteiraprofissional.FormaPagamento;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.FormaPagamentoService;
+import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.utils.BarcodeUtil;
 import org.apm.carteiraprofissional.utils.PathUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -44,6 +45,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	private List<FormaPagamento> formasPagamento;
 	private boolean makeAsReadOnly;
 	private String recordMode;
+	private Requisicao requisicao;
 
 	@Wire
 	private Datebox dataValidade;
@@ -59,6 +61,9 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected CarteiraService carteiraService;
+
+	@WireVariable
+	private RequisicaoService requisicaoService;
 
 	public Carteira getSelectedRecord() {
 		return selectedRecord;
@@ -131,12 +136,13 @@ public class CarteiraVM extends SelectorComposer<Component> {
 		if (map != null) {
 			this.recordMode = (String) map.get("recordMode");
 			if (this.recordMode.equalsIgnoreCase("NEW")) {
-				Requisicao requisicao = (Requisicao) map.get("requisicao");
+				requisicao = (Requisicao) map.get("requisicao");
 				selectedRecord = new Carteira();
 				selectedRecord.setRequisicao(requisicao);
 			}
 			if (this.recordMode.equalsIgnoreCase("EDIT")) {
 				selectedRecord = (Carteira) map.get("selectedRecord");
+				requisicao = selectedRecord.getRequisicao();
 			}
 			if (this.recordMode.equalsIgnoreCase("VIEW")) {
 				selectedRecord = (Carteira) map.get("selectedRecord");
@@ -186,11 +192,13 @@ public class CarteiraVM extends SelectorComposer<Component> {
 			String valorPDF417 = numeroCarteira + "-NOM:";
 			valorPDF417 += selectedRecord.getRequisicao().getRequisitante()
 					.getNomeCompleto();
-			valorPDF417 += "-EMI:" + selectedRecord.getDataEmissao() + "-VAL:"
+			valorPDF417 += "-EMI:"
+					+ selectedRecord.getDataEmissao()
+					+ "-VAL:"
 					+ selectedRecord.getDataValidade();
-			// + "-CATG:"
-			// + selectedRecord.getRequisicao().getRequisitante()
-			// .getCategoria().getDesignacao();
+					//+ "-CATG:"
+					//+ selectedRecord.getRequisicao().getRequisitante()
+					//		.getCategoria().getDesignacao();
 
 			BufferedImage pdf417 = BarcodeUtil.encodePDF417(valorPDF417);
 
@@ -199,29 +207,46 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 			this.selectedRecord.setUuid(UUID.randomUUID().toString());
 			this.selectedRecord.setEmitida(false);
-			// this.selectedRecord.setEnviarEmissao(true);
 			this.selectedRecord.setDataValidade(dataValidade.getValue());
 			this.selectedRecord.setDataCriacao(new Date());
 			// this.selectedRecord.setCriadoPor(criadoPor);
 
-			if (enviarEmissao.isChecked())
+			if (enviarEmissao.isChecked()) {
 				this.selectedRecord.setEnviarEmissao(true);
+				this.requisicao.setLockEdit(Boolean.TRUE);
+			} else {
+				this.selectedRecord.setEnviarEmissao(false);
+				this.requisicao.setLockEdit(Boolean.FALSE);
+			}
 
 			ImageIO.write(pdf417, "PNG", new File(PathUtils.getWebInfPath()
 					+ "/pdf417/" + this.selectedRecord.getNumeroCarteira()
 					+ ".png"));
+
+			requisicao.setTemCarteira(true);
+
+			carteiraService.saveCarteira(selectedRecord);
+
+			requisicaoService.saveRequisicao(requisicao);
 
 		} else {
 			if (this.recordMode.equalsIgnoreCase("EDIT")) {
 				this.selectedRecord.setDataAlteracao(new Date());
 				// this.selectedRecord.setAlteradoPor(alteradoPor);
 
-				if (enviarEmissao.isChecked())
+				if (enviarEmissao.isChecked()) {
 					this.selectedRecord.setEnviarEmissao(true);
+					this.requisicao.setLockEdit(Boolean.TRUE);
+				} else {
+					this.selectedRecord.setEnviarEmissao(false);
+					this.requisicao.setLockEdit(Boolean.FALSE);
+				}
 				this.selectedRecord.setDataValidade(dataValidade.getValue());
+
+				carteiraService.saveCarteira(selectedRecord);
+				requisicaoService.saveRequisicao(requisicao);
 			}
 		}
-		carteiraService.saveCarteira(selectedRecord);
 
 	}
 
