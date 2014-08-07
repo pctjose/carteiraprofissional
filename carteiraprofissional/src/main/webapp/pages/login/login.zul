@@ -1,77 +1,42 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
-<zk>
-	<window id="login" border="normal"
-		apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.LoginVM')"
-		width="40%" title="Entrar" position="center" mode="overlapped">
-		<div form="@id('fx')">
-			<separator />
-			<panel width="95%" sclass="sectionPanel">
-				<panelchildren>
-					<separator />
-					<grid sclass="vgrid">
-						<columns>
-							<column></column>
-							<column></column>
-						</columns>
-						<rows>
-							<row align="center">
 
-								<label value="Nome Utilizador"
-									sclass="flabel" />
-								<textbox id="userName" mold="rounded"
-									value="@bind(vm.userName)"
-									constraint="no empty: Nome de Utilizador deve ser preechido"
-									width="100px" />
+ 
+<window id="win" title="LOGIN" border="normal" width="300px"
+    position="center" mode="overlapped">
 
-							</row>
-							<row align="center">
-
-								<label value="Senha" sclass="flabel" />
-								<textbox id="password" type="password"
-									mold="rounded" value="@bind(vm.password)"
-									constraint="no empty: Senha deve ser preenchida" width="100px" />
-
-							</row>
-						</rows>
-					</grid>
-				</panelchildren>
-			</panel>
-
-
-			<panel width="95%" sclass="sectionPanel">
-				<panelchildren>
-					<separator />
-					<grid sclass="vgrid">
-						<columns>
-							<column></column>
-						</columns>
-						<rows>
-							<row align="center">
-							<vbox>
-							
-
-								<button label="Entrar" mold="trendy"
-									onClick="@command('login')"
-									sclass="mybutton button blue small">
-								</button>
-								
-								<label id="errorSMS" ></label>
-								
-							</vbox>
-
-							</row>
-							<row align="center">
-								<hbox>									
-									<a label="Esqueci senha"
-										onClick="@command('esqueciSenha')" />
-								</hbox>
-
-							</row>
-						</rows>
-					</grid>
-				</panelchildren>
-			</panel>
-		</div>
-	</window>
-</zk>
+    <html style="color:red" if="${not empty param.login_error}">
+       
+        <![CDATA[ Nome de Utilizador ou Senha errado, por favor tente de novo!]]>
+         
+    </html>
+ 	
+   <groupbox>
+        <caption>Login</caption>
+        <h:form id="f" name="f" action="/carteiraprofissional/j_spring_security_check"
+         method="POST" xmlns:h="http://www.w3.org/1999/xhtml">
+            <grid>
+                <columns sizable="false">
+                 <column width="50%" />
+                    <column width="50%" />
+                </columns>
+                <rows>
+                    <row>
+                     <label value="Nome Utilizador:" />
+                       <textbox id="u" name="j_username" />
+                  </row>
+                    <row>
+                     <label value="Senha:" />
+                       <textbox id="p" type="password"
+                          name="j_password" />
+                 </row>
+                    <row spans="2">
+                       <div align="center">
+                          <h:input type="submit" value="Entrar" />
+                           <h:input type="reset" value="Limpar" />
+                        </div>
+                    </row>
+                </rows>
+           </grid>
+       </h:form>
+ </groupbox>
+</window>

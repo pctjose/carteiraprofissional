@@ -7,7 +7,9 @@
             <label value="Sistema de Emissão de Carteira Profissional - APM" sclass="banner-head" />
         </div>
         <hbox hflex="1" vflex="1" pack="end" align="end">
-            <label value="${sessionScope.logedInUser.nomeCompleto}"/>
+            <label value="${sessionScope.logedIn}"/>
+            <a href="/j_spring_security_logout">Sair</a>
         </hbox>
     </hbox>
+    
 </div>
