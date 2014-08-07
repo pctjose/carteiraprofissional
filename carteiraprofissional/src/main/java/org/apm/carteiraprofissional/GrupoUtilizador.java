@@ -1,6 +1,7 @@
 package org.apm.carteiraprofissional;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -29,17 +30,20 @@ public class GrupoUtilizador implements Serializable, GrantedAuthority {
 	private Integer id;
 	@Column(name="designacao")
 	private String designacao;
+	@Column(name="nome")
+	private String nome;
 	@Column(name="uuid")
 	private String uuid;
-	@OneToOne(mappedBy = "grupo",cascade = CascadeType.ALL,fetch = FetchType.LAZY) 
-	private Utilizador utilizador;
+	//@OneToOne(mappedBy = "grupo",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "grupo",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Utilizador> utilizador;
 	
 
-	public Utilizador getUtilizador() {
+	public List<Utilizador> getUtilizador() {
 		return utilizador;
 	}
 
-	public void setUtilizador(Utilizador utilizador) {
+	public void setUtilizador(List<Utilizador> utilizador) {
 		this.utilizador = utilizador;
 	}
 
@@ -57,6 +61,14 @@ public class GrupoUtilizador implements Serializable, GrantedAuthority {
 
 	public void setDesignacao(String designacao) {
 		this.designacao = designacao;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getUuid() {
@@ -104,7 +116,6 @@ public class GrupoUtilizador implements Serializable, GrantedAuthority {
 	}
 
 	public String getAuthority() {
-		// TODO Auto-generated method stub
 		return getDesignacao();
 	}
 

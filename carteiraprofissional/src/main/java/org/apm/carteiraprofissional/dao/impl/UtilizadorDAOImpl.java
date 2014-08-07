@@ -7,7 +7,6 @@ import org.apm.carteiraprofissional.GrupoUtilizador;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.dao.UtilizadorDAO;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,8 +15,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UtilizadorDAOImpl implements UtilizadorDAO {

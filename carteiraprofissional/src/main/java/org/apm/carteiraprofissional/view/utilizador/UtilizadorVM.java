@@ -9,6 +9,8 @@ import org.apm.carteiraprofissional.GrupoUtilizador;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.GrupoUtilizadorService;
 import org.apm.carteiraprofissional.service.UtilizadorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -33,7 +35,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	protected UtilizadorService utilizadorService;
 	@WireVariable
 	protected GrupoUtilizadorService grupoUtilizadorService;
-	
+		
 	@Wire
 	Textbox nome;
 	
@@ -97,13 +99,6 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	public void setRepetirSenha(String repetirSenha) {
 		this.repetirSenha = repetirSenha;
 	}
-	
-	
-	
-	
-	
-	
-	
 
 	public Textbox getNome() {
 		return nome;
