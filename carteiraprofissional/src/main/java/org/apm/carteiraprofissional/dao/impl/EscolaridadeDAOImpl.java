@@ -31,63 +31,63 @@ public class EscolaridadeDAOImpl implements EscolaridadeDAO {
 	@Transactional
 	public void saveUpdateEscolaridade(Escolaridade nivel) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		sessao.saveOrUpdate(nivel);
-		//sessionFactory.getCurrentSession().saveOrUpdate(nivel);
-		 //tx.commit();
+		
 	}
 
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Escolaridade> getAllNiveis() {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 
 		Criteria c = sessao.createCriteria(Escolaridade.class);
 		c.addOrder(Order.asc("designacao"));
 
 		List<Escolaridade> escolaridades = c.list();
-		// tx.commit();
+		
 		return escolaridades;
 	}
 
-	
+	@Transactional(readOnly=true)
 	public Escolaridade getByID(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		Escolaridade nivel = (Escolaridade) sessao.get(Escolaridade.class, id);
-		//tx.commit();
+		
 		return nivel;
 	}
 
-	
+	@Transactional(readOnly=true)
 	public Escolaridade getByUUID(String uuid) {
 		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
+		
 		Criteria cr = sessao.createCriteria(Escolaridade.class);
 		cr.add(Restrictions.eq("uuid", uuid));
 		Escolaridade nivel = (Escolaridade) cr.uniqueResult();
-		// tx.commit();
+		
 		return nivel;
 	}
 
-	
+	@Transactional(readOnly=true)
 	public Escolaridade getByDesignacao(String designacao) {
 		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
+		
 		Criteria cr = sessao.createCriteria(Escolaridade.class);
 		cr.add(Restrictions.eq("designacao", designacao));
 		Escolaridade nivel = (Escolaridade) cr.uniqueResult();
-		// tx.commit();
+		
 		return nivel;
 	}
 
-	
+	@Transactional
 	public void delete(Escolaridade nivel) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		sessao.delete(nivel);
-		//tx.commit();
+		
 
 	}
 

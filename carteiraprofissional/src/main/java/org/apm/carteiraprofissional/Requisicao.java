@@ -24,16 +24,16 @@ public class Requisicao {
 	@Column(name = "requisicao_id")
 	private Integer requisicaoId;
 	@Column(name = "assinou_compromisso")
-	private Boolean assinouCompromisso;
+	private Boolean assinouCompromisso=Boolean.FALSE;
 	@Column(name = "concorda_termos")
-	private Boolean concordaTermos;
+	private Boolean concordaTermos=Boolean.FALSE;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_requisicao")
 	private Date dataRequisiao;
 	@Column(name = "local_requisicao")
 	private String localRequisicao;
 	@Column(name = "aceite")
-	private Boolean aceite;
+	private Boolean aceite = Boolean.FALSE;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_aceite")
 	private Date dataAceite;
@@ -45,14 +45,18 @@ public class Requisicao {
 	@Column(name = "numero_requisicao")
 	private String numeroRequisicao;
 	@Column(name = "lock_edit")
-	private Boolean lockEdit;
+	private Boolean lockEdit=Boolean.FALSE;
 	@Column(name = "completa")
-	private Boolean completa;
+	private boolean completa;
 	@ManyToOne
 	@JoinColumn(name = "aceite_por")
 	private Utilizador aceitePor;
 	@Column(name = "uuid")
 	private String uuid;
+	@Column(name="tem_carteira")
+	private boolean temCarteira;
+	
+	
 
 	public Integer getRequisicaoId() {
 		return requisicaoId;
@@ -142,11 +146,26 @@ public class Requisicao {
 		this.lockEdit = lockEdit;
 	}
 
-	public Boolean getCompleta() {
+	
+	
+
+	public boolean isTemCarteira() {
+		return temCarteira;
+	}
+
+	public void setTemCarteira(boolean temCarteira) {
+		this.temCarteira = temCarteira;
+	}
+	
+	public boolean getTemCarteira(){
+		return isTemCarteira();
+	}
+
+	public boolean isCompleta() {
 		return completa;
 	}
 
-	public void setCompleta(Boolean completa) {
+	public void setCompleta(boolean completa) {
 		this.completa = completa;
 	}
 
@@ -201,6 +220,23 @@ public class Requisicao {
 		} else if (!uuid.equals(other.uuid))
 			return false;
 		return true;
+	}
+
+	public String getAceiteString() {
+		if (getAceite())
+			return "SIM";
+		return "NÃO";
+	}
+	
+	public boolean getCompleta(){
+		return isCompleta();
+	}
+
+	public String getCompletaString() {
+		if (getCompleta())
+			return "SIM";
+		return "NÃO";
+
 	}
 
 }

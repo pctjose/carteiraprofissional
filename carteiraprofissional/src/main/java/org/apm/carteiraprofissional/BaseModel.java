@@ -40,7 +40,7 @@ public class BaseModel {
     private Utilizador alteradoPor;
 	
 	@Column(name="anulado")
-    private Boolean anulado;
+    private Boolean anulado=Boolean.FALSE;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_anulado")

@@ -9,10 +9,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public class EmpregadorDAOImpl implements EmpregadorDAO {
 	
-	
+	@Autowired
 	 private SessionFactory sessionFactory;
 
 	    public SessionFactory getSessionFactory() {
@@ -23,67 +27,68 @@ public class EmpregadorDAOImpl implements EmpregadorDAO {
 	        this.sessionFactory = sessionFactory;
 	    }
 
-	    
+	    @Transactional
 	    public void saveEmpregador(Empregador empregador) {
 
 	        Session sessao = sessionFactory.getCurrentSession();
-	       // Transaction tx = sessao.beginTransaction();
+	       
 	        sessao.saveOrUpdate(empregador);
 
-	        //tx.commit();
+	       
 
 	    }
 
-	   
+	    @Transactional(readOnly=true)
 	    public Empregador getByID(Integer id) {
 	        Session sessao = sessionFactory.getCurrentSession();
-	       // Transaction tx = sessao.beginTransaction();
+	       
 	        Empregador empregador = (Empregador) sessao.get(Empregador.class, id);
-	        //tx.commit();
+	       
 	        return empregador;
 	    }
 
-	    
+	    @Transactional(readOnly=true)
 	    public Empregador getByUUID(String uuid) {
 	        Session sessao = sessionFactory.getCurrentSession();
-	       // Transaction tx = sessao.beginTransaction();
+	       
 	        Criteria cr = sessao.createCriteria(Empregador.class);
 	        cr.add(Restrictions.eq("uuid", uuid));
 	        Empregador empregador = (Empregador) cr.uniqueResult();
-	        //tx.commit();
+	       
 	        return empregador;
 	    }
 
-	    
+	    @Transactional(readOnly=true)
 	    public Empregador getByDesignacao(String designacao) {
 	        Session sessao = sessionFactory.getCurrentSession();
-	        //Transaction tx = sessao.beginTransaction();
+	       
 	        Criteria cr = sessao.createCriteria(Empregador.class);
 	        cr.add(Restrictions.eq("designacao", designacao));
 	        Empregador empregador = (Empregador) cr.uniqueResult();
-	        //tx.commit();
+	       
 	        return empregador;
 	    }
 
 	    
 	    @SuppressWarnings("unchecked")
+	    @Transactional(readOnly=true)
 		public List<Empregador> getAllEmpregadores() {
 	        Session sessao = sessionFactory.getCurrentSession();
-	        //Transaction tx = sessao.beginTransaction();
+	        
 	        Criteria c = sessao.createCriteria(Empregador.class);
 	        c.addOrder(Order.asc("designacao"));
 	       
 			List<Empregador> empregadores = c.list();
-	       //tx.commit();
+	       
 	        return empregadores;
 	    }
 
-		
+		@Transactional
 		public void delete(Empregador empregador) {
 			Session sessao = sessionFactory.getCurrentSession();
-	       // Transaction tx = sessao.beginTransaction();
+	      
 	        sessao.delete(empregador);
-	       // tx.commit();
+	      
 	        
 			
 		}

@@ -1,0 +1,32 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Completar Requisição" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="frmCompletarRequisicao" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.CompletarRequisiaoVM')"
+		width="30%">
+
+
+
+		<vbox>
+
+			<image id="userImage" content="@bind(vm.userImage)"
+				height="150px" width="300px" />
+			<hbox>
+				
+					
+				<button id="btnUpload" mold="trendy" upload="true,maxsize=300" label="Upload Foto"
+         onUpload="@command('upload')" />
+				
+
+
+				<button label="WebCam" onClick="@command('getWebCam')" />
+				
+				<button label="Salvar" onClick="@command('salvar')" />
+			</hbox>
+
+		</vbox>
+
+	</window>
+</zk>

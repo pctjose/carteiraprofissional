@@ -24,7 +24,7 @@ public class Carteira extends BaseModel {
 	@Column(name = "pdf417")
 	private byte[] pdf417;
 	@Column(name = "emitida")
-	private Boolean emitida;
+	private boolean emitida;
 	@Column(name = "tamplate")
 	private byte[] tamplate;
 	@Column(name = "valor_cobrado")
@@ -36,8 +36,8 @@ public class Carteira extends BaseModel {
 	private FormaPagamento formaPagamento;
 	@Column(name = "data_pagamento")
 	private Date dataPagamento;
-	@Column(name="enviar_emissao")
-	private Boolean enviarEmissao;
+	@Column(name = "enviar_emissao")
+	private boolean enviarEmissao;
 
 	public Requisicao getRequisicao() {
 		return requisicao;
@@ -77,14 +77,18 @@ public class Carteira extends BaseModel {
 
 	public void setPdf417(byte[] pdf417) {
 		this.pdf417 = pdf417;
-	}
+	}	
 
-	public Boolean getEmitida() {
+	public boolean isEmitida() {
 		return emitida;
 	}
 
-	public void setEmitida(Boolean emitida) {
+	public void setEmitida(boolean emitida) {
 		this.emitida = emitida;
+	}
+	
+	public boolean getEmitida(){
+		return isEmitida();
 	}
 
 	public byte[] getTamplate() {
@@ -132,14 +136,16 @@ public class Carteira extends BaseModel {
 		return requisicao.getRequisitante().toString();
 	}
 
-	public Boolean getEnviarEmissao() {
+	public boolean isEnviarEmissao() {
 		return enviarEmissao;
 	}
 
-	public void setEnviarEmissao(Boolean enviarEmissao) {
+	public void setEnviarEmissao(boolean enviarEmissao) {
 		this.enviarEmissao = enviarEmissao;
 	}
-	
-	
+
+	public boolean getEnviarEmissao() {
+		return isEnviarEmissao();
+	}
 
 }

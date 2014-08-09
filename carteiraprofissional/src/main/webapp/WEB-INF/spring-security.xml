@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	       http://www.springframework.org/schema/aop   
+		   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd                        
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.0.xsd"> 
+           
+    <global-method-security secured-annotations="enabled" />
+    
+    <http auto-config="true" use-expressions="true">
+    <intercept-url pattern="/zkau/**" filters="none" />
+	<intercept-url pattern="/pages/login/login.zul" filters="none"/>
+	<intercept-url pattern="/**" access="permitAll"/>
+	<intercept-url pattern="/pages/requisicao/**" access="none"/>
+	<intercept-url pattern="/pages/admin/**" access="ROLE_ADMIN"/>
+    <intercept-url pattern="/pages/supervisor/**" access="ROLE_SUPERVISOR"/>
+	
+    
+    	<form-login login-page="/pages/login/login.zul"
+        authentication-failure-url="/pages/login/login.zul?login_error=1"
+        default-target-url="/j_spring_security_check"
+        authentication-success-handler-ref="loginSucesso"
+        always-use-default-target="true"/>
+
+    
+    	<logout logout-success-url="/pages/pagebased/index-startsearch.zul" invalidate-session="true" />
+    </http>
+
+   
+    <authentication-manager>
+		<authentication-provider user-service-ref="utilizadorService">
+		</authentication-provider>
+	</authentication-manager>
+	
+	<beans:bean id="loginSucesso" class="org.apm.carteiraprofissional.utils.LoginSucesso">
+    <beans:property name="roleUrlMap">
+        <beans:map>
+            <beans:entry key="ROLE_SUPERVISOR" value="/pages/supervisor/PaginaEmConstrucao.zul"/>
+            <beans:entry key="ROLE_ADMIN" value="/pages/admin/index-utilizador-lista.zul"/>
+        </beans:map>
+    </beans:property>
+</beans:bean>
+   <!--
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="user1" password="user1Pass" authorities="ROLE_USER" />
+                <user name="admin" password="admin" authorities="ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+    
+    <beans:bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
+		<beans:property name="dataSource">
+			<beans:ref bean="dataSource" />
+		</beans:property>
+		
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+				<beans:prop key="hibernate.current_session_context_class">thread</beans:prop>
+				<beans:prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</beans:prop>
+			</beans:props>
+		</beans:property>
+		
+	</beans:bean>
+	 -->
+
+	
+</beans:beans>

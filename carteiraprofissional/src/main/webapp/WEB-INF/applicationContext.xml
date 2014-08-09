@@ -41,7 +41,11 @@
 	
 	<context:component-scan base-package="org.apm.carteiraprofissional" />
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!--  <tx:annotation-driven transaction-manager="transactionManager" />-->
+	
+	<tx:annotation-driven/>
+	
+	<!--  <tx:annotation-driven proxy-target-class="true" />-->
 
 	<!-- This will ensure that hibernate or jpa exceptions are automatically translated into Spring's generic DataAccessException hierarchy for those 
 		 classes annotated with Repository -->

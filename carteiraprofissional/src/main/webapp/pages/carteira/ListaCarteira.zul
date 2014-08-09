@@ -1,0 +1,151 @@
+<?page title="Lista Carteiras" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="formlistaCarteira" border="normal"
+		title="REQUISIÇÕES DE CARTEIRA" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.carteira.ListaCarteiraVM')">
+
+		<div width="100%">
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column
+								label="PARÂMETROS DE PESQUISA DA CARTEIRA" />
+						</columns>
+						<rows>
+							<row>
+								<hlayout>
+									<label value="Número"
+										sclass="flabel" />
+									<textbox id="numeroCarteira"
+										mold="rounded" value="@bind(vm.numeroCarteira)" width="150px" />
+								</hlayout>
+							</row>
+							<row>
+								<hlayout>
+									<label value="Nome (Titular):"
+										sclass="flabel" />
+									<textbox id="nomeTitular"
+										mold="rounded" value="@bind(vm.nomeTitular)" width="150px" />
+									<label value="Apelido (Titular):"
+										sclass="flabel" />
+									<textbox id="apelidoTitular"
+										mold="rounded" value="@bind(vm.apelidoTitular)" width="150px" />
+								</hlayout>
+							</row>
+
+							<row spans="2">
+								<hlayout>
+									<label value="Periodo de Emissão"
+										sclass="flabel" />
+									<separator />
+									<separator />
+									<label value="De: " sclass="flabel" />
+									<datebox id="startDataEmissao"
+										mold="rounded" width="100px"
+										value="@bind(vm.startDataEmissao)" constraint="no future"
+										format="dd-MM-yyyy" />
+									<label value="Até: "
+										sclass="flabel" />
+									<datebox id="endDateEmissao"
+										mold="rounded" width="100px" value="@bind(vm.endDateEmissao)"
+										constraint="no future" format="dd-MM-yyyy" />
+								</hlayout>
+							</row>
+
+							<row spans="2">
+								<hlayout>
+									<label value="Periodo de Validade"
+										sclass="flabel" />
+									<separator />
+									<separator />
+									<label value="De: " sclass="flabel" />
+									<datebox id="startDateValidade"
+										mold="rounded" width="100px"
+										value="@bind(vm.startDateValidade)" format="dd-MM-yyyy" />
+									<label value="Até: "
+										sclass="flabel" />
+									<datebox id="endDateValidade"
+										mold="rounded" width="100px" value="@bind(vm.endDateValidade)"
+										format="dd-MM-yyyy" />
+								</hlayout>
+							</row>
+
+							<row>
+								<vlayout>
+									<label value="Situação Emissão"
+										sclass="flabel" />
+									<radiogroup
+										selectedItem="@bind(vm.emitidaString)" id="emitidaString">
+										<radio label="Emitida"
+											value="E" />
+										<radio label="Não Emitida"
+											value="N" />
+										<radio label="Todas" value="T" />
+									</radiogroup>
+								</vlayout>
+							</row>
+
+							<row>
+								<div style="float:right">
+									<button label="Pesquisar"
+										onClick="@command('pesquisar')" mold="trendy"
+										sclass="mybutton button blue small" />
+								</div>
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+		</div>
+		<separator />
+		<separator />
+		<listbox id="listaCarteiras" mold="paging" pageSize="11"
+			pagingPosition="top" sclass="mylist"
+			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)">
+			<listhead sizable="true">
+				<listheader label="Número Carteira"
+					sortDirection="ascending" sort="auto(numeroCarteira)"
+					width="130px" />
+				<listheader label="Titular" sortDirection="ascending"
+					sort="auto(requisicao.requisitante.NomeCompleto)" width="200px" />
+				<listheader label="Data Emissão"
+					sort="auto(dataEmissao)" width="100px" />
+				<listheader label="Data Validade"
+					sort="auto(dataValidade)" width="100px" />
+				<listheader label="Enviada a Produção"
+					sort="auto(enviarEmissao)" width="140px" />
+				<listheader label="Produzida" sort="auto(emitida)"
+					width="80px" />
+				<listheader label="Acções" />
+			</listhead>
+			<template name="model" var="p1">
+				<listitem>
+					<listcell label="@load(p1.numeroCarteira)" />
+					<listcell
+						label="@load(p1.requisicao.requisitante.nomeCompleto)" />
+					<listcell
+						label="@load(p1.dataEmissao) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.dataValidade) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.enviarEmissao ? 'SIM':'NÃO')" />
+					<listcell label="@load(p1.emitida ? 'SIM':'NÃO')" />
+					<listcell>
+						<hbox spacing="20px">
+							<button label="Editar"
+								disabled="@load(p1.emitida)"
+								onClick="@command('onEdit',carteiraRecord=p1)" />
+							<button label="Visualizar"
+								onClick="@command('visualizar',carteiraRecord=p1)" />
+						</hbox>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</window>
+</zk>

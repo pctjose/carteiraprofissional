@@ -1,0 +1,128 @@
+<?page title="Users List" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="listaUtilizador" border="none"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.ListaUtilizadorVM')">
+		<separator />
+		<separator />
+
+		<div width="100%">
+
+
+			<panel width="605px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="PARÂMETROS DE PESQUISA DE UTILIZADORES" />
+						</columns>
+						<rows>
+							<row>
+								<hlayout>
+									<label value="Apelido"
+										sclass="flabel" />
+									<textbox id="apelido" mold="rounded"
+										value="@bind(vm.apelido)" width="200px" />
+
+
+									<label value="Nome" sclass="flabel" />
+									<textbox id="nome" mold="rounded"
+										value="@bind(vm.nome)" width="200px" />
+
+								</hlayout>
+							</row>
+
+							<row>
+								<hlayout>
+									<label value="Sexo" sclass="flabel" />
+									<radiogroup
+										selectedItem="@bind(vm.sexo)" id="sexo">
+										<radio label="M" value="M"
+											checked="true" />
+										<radio label="F" value="F" />
+									</radiogroup>
+
+									<label value="Grupo"
+										sclass="flabel" />
+									<listbox
+										model="@bind(vm.userGrupos)" selectedItem="@bind(vm.grupo)"
+										mold="select" id="userGrupos" width="200px" >
+										<template name="model" >
+											<listitem 
+												label="@load(each)" width="200px" />
+										</template>
+									</listbox>
+
+									<checkbox
+										value="@bind(vm.incluirAnulado)" label="Incluir Anulado" />
+
+								</hlayout>
+							</row>
+
+							<row align="center">
+								<button label="Pesquisar"
+									onClick="@command('pesquisar')" mold="trendy"
+									sclass="mybutton button blue small" />
+							</row>
+
+
+
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+
+		</div>
+
+
+		<div width="100%">
+			<div sclass="sectionTitle">
+				<separator />
+				<label value="Utilizadores" sclass="sectionTitleLabel" />
+				<separator />
+			</div>
+			<div style="float:right">
+				<button label="Adicionar" onClick="@command('onAddNew')"
+					mold="trendy" sclass="mybutton button blue small" />
+			</div>
+			<div style="clear: both;"></div>
+			<div sclass="sectionSeperator"></div>
+		</div>
+		<separator />
+		<listbox id="" mold="paging" pageSize="11" pagingPosition="top"
+			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
+			model="@load(vm.dataSet)">
+			<listhead sizable="true">
+				<listheader label="NOME" sortDirection="ascending"
+					sort="auto(nome)" />
+				<listheader label="APELIDO" sort="auto(apelido)" />
+				<listheader label="CONTACTO" sort="auto(contacto)" />
+				<listheader label="EMAIL" sort="auto(email)" />
+
+				<listheader label="ACCAO" />
+			</listhead>
+			<template name="model" var="p1">
+				<listitem>
+					<listcell label="@load(p1.nome)" />
+					<listcell label="@load(p1.apelido)" />
+					<listcell label="@load(p1.contacto)" />
+					<listcell label="@load(p1.email)" />
+					<listcell>
+						<hbox spacing="20px">
+							<button label="Editar"
+								onClick="@command('onEdit',userRecord=p1)">
+							</button>
+							<button label="Visualizar"
+								onClick="@command('openAsReadOnly',userRecord=p1)">
+							</button>
+							<button label="Apagar"
+								onClick="@command('onDelete',userRecord=p1)">
+							</button>
+						</hbox>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</window>
+</zk>

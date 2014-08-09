@@ -1,6 +1,8 @@
-<?page title="Users List" contentType="text/html;charset=UTF-8"?>
+<?page title="Lista Requisições" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="listaRequisicaoSingleUser" border="normal"
+	<window id="formlistaRequisicao" border="normal"
 		title="REQUISIÇÕES DE CARTEIRA" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.ListaRequisicaoVM')">
 
@@ -9,12 +11,12 @@
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
-							<column label="PARÂMETROS DE PESQUISA" />
+							<column label="PARÂMETROS DE PESQUISA DA REQUISIÇÃO" />
 						</columns>
 						<rows>
 							<row>
 								<hlayout>
-									<label value="Número de Requisição"
+									<label value="Número:"
 										sclass="flabel" />
 									<textbox id="numeroRequisicao"
 										mold="rounded" value="@bind(vm.numeroRequisicao)"
@@ -23,25 +25,20 @@
 							</row>
 							<row>
 								<hlayout>
-									<label value="Nome Requisitante:"
+									<label value="Nome:"
 										sclass="flabel" />
 									<textbox id="nomeRequisitante"
 										mold="rounded" value="@bind(vm.nomeRequisitante)"
 										width="150px" />
-								</hlayout>
-							</row>
-
-							<row>
-								<hlayout>
-									<label value="Apelido Requisitante:"
+									<label value="Apelido:"
 										sclass="flabel" />
 									<textbox id="apelidoRequisitante"
 										mold="rounded" value="@bind(vm.apelidoRequisitante)"
 										width="150px" />
 								</hlayout>
-							</row>
+							</row>						
 
-							<row>
+							<row spans="2">
 								<hlayout>
 									<label value="Periodo de Requisição"
 										sclass="flabel" />
@@ -74,40 +71,44 @@
 		</div>
 		<separator />
 		<separator />
-		<listbox id="" mold="paging" pageSize="11" pagingPosition="top"
+		<listbox id="listaRequisicoes" mold="paging" pageSize="11" pagingPosition="top"
 			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
 			model="@load(vm.dataSet)">
 			<listhead sizable="true">
-				<listheader label="REQUISITANTE"
-					sortDirection="ascending" sort="auto(requisitante.nomeCompleto)" />
-				<listheader label="DATA REQUISICAO"
-					sort="auto(dataRequisiao)" />
-				<listheader label="ANALISADA"
-					sort="auto(analisadaString)" />
-				<listheader label="ACEITE" sort="auto(aceiteString)" />
-				<listheader label="ACCAO" />
+				<listheader label="Número Requisição"
+					sortDirection="ascending" sort="auto(numeroRequisicao)" width="130px" />
+			<listheader label="Requisitante"
+					sortDirection="ascending" sort="auto(requisitante.NomeCompleto)" width="250px" />
+				<listheader label="Data Requisição"
+					sort="auto(dataRequisiao)" width="100px"/>
+				<listheader label="Completa"
+					sort="auto(completa)" width="70px"/>
+				<listheader label="Aceite" sort="auto(aceite)" width="70px"/>
+				<listheader label="Acções" />
 			</listhead>
 			<template name="model" var="p1">
 				<listitem>
+				<listcell
+						label="@load(p1.numeroRequisicao)" />
 					<listcell
 						label="@load(p1.requisitante.nomeCompleto)" />
-					<listcell label="@load(p1.dataRequisiao)" />
-					<listcell label="@load(p1.analisadaString)" />
-					<listcell label="@load(p1.aceiteString)" />
+					<listcell label="@load(p1.dataRequisiao) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell label="@load(p1.completa ? 'SIM':'NÃO')" />
+					<listcell label="@load(p1.aceite ? 'SIM':'NÃO')" />
 					<listcell>
 						<hbox spacing="20px">
 							<button label="Editar"
-								disabled="@load(not p1.lockEdit)"
-								onClick="@command('onEdit',userRecord=p1)" />
+								disabled="@load(p1.lockEdit)"
+								onClick="@command('onEdit',requisicaoRecord=p1)" />
 							<button label="Completar"
-								disabled="@load(not p1.lockEdit)"
-								onClick="@command('completar',userRecord=p1)" />
+								disabled="@load(p1.lockEdit)"
+								onClick="@command('completar',requisicaoRecord=p1)" />
 							<button label="Analisar"
 								disabled="@load(not p1.completa)"
-								onClick="@command('analisar',userRecord=p1)" />
-							<button label="Registar Cartão"
+								onClick="@command('analisar',requisicaoRecord=p1)" />
+							<button label="Registar Cartão" visible="@load( not p1.temCarteira )"
 								disabled="@load(not p1.aceite)"
-								onClick="@command('registarCartao',userRecord=p1)" />
+								onClick="@command('registarCartao',requisicaoRecord=p1)" />
 
 						</hbox>
 					</listcell>

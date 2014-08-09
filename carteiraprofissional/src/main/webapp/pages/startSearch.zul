@@ -1,4 +1,5 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>
 	<window id="startSearch" border="normal"
 		apply="org.zkoss.bind.BindComposer"
@@ -17,10 +18,10 @@
 								<hlayout>
 
 									<label
-										value="Número de Requisição/Carteira" sclass="flabel" />
+										value="Número de Requisição" sclass="flabel" />
 									<textbox id="codigoPesquisa"
 										mold="rounded" value="@bind(vm.codigoPesquisa)"
-										constraint="no empty: Número de requisição ou carteira deve ser preenchido"
+										constraint="no empty: Número de requisição deve ser preenchido"
 										width="150px" tooltip="true"
 										tooltiptext="Preencher o número de requisição ou carteira para pesquisar" />
 								</hlayout>

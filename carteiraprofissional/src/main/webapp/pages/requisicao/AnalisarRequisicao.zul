@@ -1,0 +1,136 @@
+<?page title="Analisar Requisição" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="criarCarteira" border="none"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.AnalisarRequisicaoVM')"
+		width="70%">
+		
+		<div
+			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+
+
+			<panel width="300px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label id="lcaption"
+									sclass="sectionTitleLabel" value="ANÁLISE REQUISIÇÃO" />
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+			<panel width="300px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="REQUISIÇÃO" />
+
+						</columns>
+						<rows>
+							<row>
+								<hlayout>
+									<vlayout>
+										<label value="Requisitante"
+											sclass="flabel" />
+										<label
+											value="@load(fx.requisitante.nomeCompleto)" sclass="flabel" />
+									</vlayout>
+									<separator/>
+									<separator/>
+									<separator/>
+									<vlayout>
+										<label value="Data Requisição"
+											sclass="flabel" />
+										<label
+											value="@load(fx.dataRequisiao)  @converter('formatedDate',format='dd-MM-yyyy')" sclass="flabel" />
+									</vlayout>
+								</hlayout>
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+			<separator />
+			<separator />
+			<panel width="300px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="ACEITAÇÃO" />
+						</columns>
+						<rows>
+							<row>
+								<vlayout>
+									<label value="Aceite" sclass="flabel" />
+									<radiogroup
+										selectedItem="@bind(vm.aceiteString)" id="aceite">
+										<radio label="Sim" value="S" />
+										<radio label="Não" value="N" />
+									</radiogroup>
+								</vlayout>
+							</row>
+							<row>
+								<vlayout>
+									<label value="Data"
+										sclass="flabel" />
+									<datebox id="dataAceite"
+										mold="rounded" width="100px"
+										value="@bind(fx.dataAceite)" constraint="no future"
+										format="dd-MM-yyyy" />
+								</vlayout>
+							</row>
+							<row>
+								<vlayout>
+									<label value="Observação"
+										sclass="flabel" />
+										
+									<textbox id="obs" width="200px"
+										mold="rounded" rows="4"
+										value="@bind(fx.justificacaoAceitacao)" />										
+									
+								</vlayout>
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+			<separator />
+			<separator />
+			<panel width="300px" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+								<hlayout>
+									<button label="Gravar" mold="trendy"
+										onClick="@command('saveThis')"
+										sclass="mybutton button blue small">
+									</button>
+									<button
+										label="@load(vm.makeAsReadOnly ?'Fechar':'Cancelar')"
+										mold="trendy" onClick="@command('cancel')"
+										sclass="mybutton button blue small">
+									</button>
+								</hlayout>
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+		</div>
+	</window>
+</zk>

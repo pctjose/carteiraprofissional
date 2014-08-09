@@ -12,6 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class RequisitanteDAOImpl implements RequisitanteDAO {
@@ -27,14 +28,16 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@Transactional
 	public void saveRequisitante(Requisitante requisitante) {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		sessao.saveOrUpdate(requisitante);
-		//tx.commit();
+		
 
 	}
 
+	@Transactional(readOnly=true)
 	public Requisitante getRequisitanteById(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Transaction tx = sessao.beginTransaction();
@@ -44,6 +47,7 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 		return requisicao;
 	}
 
+	@Transactional(readOnly=true)
 	public Requisitante getRequisitanteByBI(String bi) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Transaction tx = sessao.beginTransaction();
@@ -55,6 +59,7 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Requisitante> getAllRequisitantes() {
 		Session sessao = sessionFactory.getCurrentSession();
 		Transaction tx = sessao.beginTransaction();
@@ -65,6 +70,7 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 		return requisicoes;
 	}
 
+	@Transactional
 	public void delete(Requisitante requisitante) {
 		sessionFactory.getCurrentSession().delete(requisitante);
 

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -292,6 +293,16 @@ public class Requisitante extends BaseModel implements Serializable {
 
 	public String getNomeCompleto() {
 		return this.nome + " " + this.apelido;
+	}
+
+	public Categoria getCategoria() {
+		if (experiencias == null || experiencias.isEmpty())
+			return new Categoria();
+		for (Experiencia e : experiencias) {
+			if (e.getActual())
+				return e.getCategoria();
+		}
+		return experiencias.get(0).getCategoria();
 	}
 
 }

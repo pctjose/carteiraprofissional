@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class CategoriaDAOImpl implements CategoriaDAO {
@@ -26,53 +27,52 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@Transactional
 	public void saveCategoria(Categoria profissao) {
-		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
-		sessao.saveOrUpdate(profissao);
-		// tx.commit();
+		Session sessao = sessionFactory.getCurrentSession();		
+		sessao.saveOrUpdate(profissao);		
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Categoria> getAllCategorias() {
-		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
+		Session sessao = sessionFactory.getCurrentSession();		
 		Criteria c = sessao.createCriteria(Categoria.class);
 		c.addOrder(Order.asc("designacao"));
-		List<Categoria> profissoes = c.list();
-		// tx.commit();
+		List<Categoria> profissoes = c.list();		
 		return profissoes;
 	}
 
+	@Transactional(readOnly=true)
 	public Categoria getByID(Integer id) {
-		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
-		Categoria prof = (Categoria) sessao.get(Categoria.class, id);
-		// tx.commit();
+		Session sessao = sessionFactory.getCurrentSession();		
+		Categoria prof = (Categoria) sessao.get(Categoria.class, id);		
 		return prof;
 	}
-
+	
+	@Transactional(readOnly=true)
 	public Categoria getByUUID(String uuid) {
 		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
+		
 		Criteria cr = sessao.createCriteria(Categoria.class);
 		cr.add(Restrictions.eq("uuid", uuid));
 		Categoria prof = (Categoria) cr.uniqueResult();
-		// tx.commit();
+		
 		return prof;
 	}
 
+	@Transactional(readOnly=true)
 	public Categoria getByDesignacao(String designacao) {
-		Session sessao = sessionFactory.getCurrentSession();
-		// Transaction tx = sessao.beginTransaction();
+		Session sessao = sessionFactory.getCurrentSession();		
 		Criteria cr = sessao.createCriteria(Categoria.class);
 		cr.add(Restrictions.eq("designacao", designacao));
 		Categoria prof = (Categoria) cr.uniqueResult();
-		// tx.commit();
+		
 		return prof;
 
 	}
 
+	@Transactional
 	public void deleCategoria(Categoria categoria) {
 		sessionFactory.getCurrentSession().delete(categoria);
 
