@@ -64,7 +64,7 @@
 													<label value="Sexo"
 														sclass="flabel" />
 													<radiogroup selectedItem="@bind(fx.sexo)" id="sexo">
-														<radio label="M" value="M" id="sexoM"/>
+														<radio label="M" value="M" id="sexoM" selected="true"/>
 														<radio label="F" value="F" id="sexoF"/>
 													</radiogroup>
 												</vlayout>
@@ -73,7 +73,7 @@
 												<separator />
 												<vlayout>
 													<label
-														value="Data Nascimento" sclass="flabel" />
+														value="Data de Nascimento" sclass="flabel" />
 													<datebox
 														id="dataNascimento" readonly="@load(vm.makeAsReadOnly)"
 														mold="rounded" width="100px"
@@ -86,14 +86,9 @@
 											<vlayout>
 												<label
 													value="Nivel Acadêmico" sclass="flabel" />
-												<listbox
-													model="@bind(vm.escolaridades)"
-													selectedItem="@bind(fx.escolaridade)" mold="select"
-													id="escolaridades" width="200px">
-													<template
-														name="model">
-														<listitem
-															label="@load(each)" width="200px" />
+												<listbox model="@bind(vm.escolaridades)" selectedItem="@bind(fx.escolaridade)" mold="select" id="escolaridades" width="200px">
+													<template name="model">
+														<listitem label="@load(each)" width="200px" />
 													</template>
 												</listbox>
 											</vlayout>

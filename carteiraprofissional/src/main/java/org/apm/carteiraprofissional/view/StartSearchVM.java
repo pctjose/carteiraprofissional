@@ -2,7 +2,6 @@ package org.apm.carteiraprofissional.view;
 
 import java.util.HashMap;
 
-import org.apm.carteiraprofissional.utils.EnviarEmail;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
