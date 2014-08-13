@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -20,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * 
  */
 @Entity
-@Table(name = "utilizador")
+@Table(name = "utilizador",uniqueConstraints={@UniqueConstraint(columnNames="username")})
 public class Utilizador extends BaseModel implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;

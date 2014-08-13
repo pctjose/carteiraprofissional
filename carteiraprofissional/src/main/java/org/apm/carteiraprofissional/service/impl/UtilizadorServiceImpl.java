@@ -112,5 +112,14 @@ public class UtilizadorServiceImpl implements UtilizadorService, UserDetailsServ
 
         return user;
 	}
+
+	@Transactional
+	public List<Utilizador> getAllUtilizador() {
+		return utilizadorDAO.getAllUtilizador();
+	}
+	
+	public void inserirUtilizador(){
+		utilizadorDAO.inserirUtilizador();
+	}
 	
 }

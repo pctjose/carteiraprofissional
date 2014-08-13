@@ -13,5 +13,7 @@ public interface GrupoUtilizadorDAO {
 	public GrupoUtilizador getByDesignacao(String designacao);
 
 	public List<GrupoUtilizador> getAllGrupos();
+	
+	public void inserirGrupo();
 
 }

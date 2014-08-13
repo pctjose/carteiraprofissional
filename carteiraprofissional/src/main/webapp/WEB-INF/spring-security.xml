@@ -33,8 +33,13 @@
    
     <authentication-manager>
 		<authentication-provider user-service-ref="utilizadorService">
+			<password-encoder ref="passwordEncoder"></password-encoder>
 		</authentication-provider>
 	</authentication-manager>
+	
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+    	<beans:constructor-arg value="256"/>
+	</beans:bean>
 	
 	<beans:bean id="loginSucesso" class="org.apm.carteiraprofissional.utils.LoginSucesso">
     <beans:property name="roleUrlMap">

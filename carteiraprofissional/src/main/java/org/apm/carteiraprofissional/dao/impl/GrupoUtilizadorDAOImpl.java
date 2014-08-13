@@ -1,6 +1,8 @@
 package org.apm.carteiraprofissional.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apm.carteiraprofissional.GrupoUtilizador;
 import org.apm.carteiraprofissional.dao.GrupoUtilizadorDAO;
@@ -62,8 +64,39 @@ public class GrupoUtilizadorDAOImpl implements GrupoUtilizadorDAO {
 		Criteria c = sessao.createCriteria(GrupoUtilizador.class);
 
 		List<GrupoUtilizador> grupos = c.list();
-
+		
 		return grupos;
+	}
+	
+	public void inserirGrupo(){
+		GrupoUtilizador admin = new GrupoUtilizador();
+		GrupoUtilizador supervisor = new GrupoUtilizador();
+		GrupoUtilizador grafico = new GrupoUtilizador();
+		
+		List<GrupoUtilizador> lista = new ArrayList<GrupoUtilizador>();
+		
+		//if(getAllGrupos().isEmpty()){
+			admin.setDesignacao("ROLE_ADMIN");
+			admin.setNome("Administrador");
+			admin.setUuid(UUID.randomUUID().toString());
+			
+			supervisor.setDesignacao("ROLE_SUPERVISOR");
+			supervisor.setNome("Supervisor");
+			supervisor.setUuid(UUID.randomUUID().toString());
+			
+			grafico.setDesignacao("ROLE_GRAFICO");
+			grafico.setNome("Grafico");
+			grafico.setUuid(UUID.randomUUID().toString());
+			
+			lista.add(admin);
+			lista.add(supervisor);
+			lista.add(grafico);
+			
+			for (GrupoUtilizador grupoUtilizador : lista) {
+				sessionFactory.getCurrentSession().save(grupoUtilizador);
+			}
+		//}
+		
 	}
 
 }
