@@ -1,13 +1,13 @@
 package org.apm.carteiraprofissional.dao.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.GrupoUtilizador;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.dao.UtilizadorDAO;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,14 +16,16 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UtilizadorDAOImpl implements UtilizadorDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	private static Logger log = Logger.getLogger(UtilizadorDAOImpl.class);
 
 	public SessionFactory getSessionFactory() {
@@ -33,8 +35,20 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	public void saveUtilizador(Utilizador utilizador) {
+	
+	public PasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
 
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+
+	public void saveUtilizador(Utilizador utilizador) {
+		String password = utilizador.getSenha();
+		String senhaEncriptado = passwordEncoder.encodePassword(password, null);
+		utilizador.setSenha(senhaEncriptado);
+		
 		Session sessao = sessionFactory.getCurrentSession();
 		//Transaction tx = sessao.beginTransaction();
 		sessao.saveOrUpdate(utilizador);
@@ -83,6 +97,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		return user;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Utilizador> getAllUtilizadores(Boolean includeVoided) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Transaction tx = sessao.beginTransaction();
@@ -96,6 +111,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		return users;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Utilizador> ValidateLogin(String username, String password) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Transaction tx = sessao.beginTransaction();
@@ -155,6 +171,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Utilizador> getUserByAttributes(String apelido, String nome,
 			String sexo, GrupoUtilizador grupo, Boolean incluirAnulado) {
 
@@ -180,13 +197,42 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 			}
 		}
 
-		
-
 		c.addOrder(Order.asc("apelido"));
 		List<Utilizador> users = c.list();
 		// tx.commit();
 		return users;
 
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Utilizador> getAllUtilizador() {
+		Session sessao = sessionFactory.getCurrentSession();
+		//Transaction tx = sessao.beginTransaction();
+		Criteria c = sessao.createCriteria(Utilizador.class);
+		List<Utilizador> users = c.list();
+		//tx.commit();
+		return users;
+	}
+	
+	public void inserirUtilizador(){
+		Utilizador utilizador = new Utilizador();
+		GrupoUtilizador grupo = new GrupoUtilizador();
+		
+		if(getAllUtilizador().isEmpty()){
+			utilizador.setActivo(true);
+			utilizador.setApelido("Administrador");
+			utilizador.setNome("Administrador");
+			utilizador.setContacto("+258");
+			utilizador.setEmail("email");
+			grupo.setId(1);
+			utilizador.setGrupo(grupo);
+			utilizador.setUserName("admin");
+			utilizador.setSenha("admin");
+			utilizador.setUuid(UUID.randomUUID().toString());
+			
+			saveUtilizador(utilizador);
+			//sessionFactory.getCurrentSession().save(utilizador);
+		}
 	}
 
 }

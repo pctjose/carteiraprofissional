@@ -24,6 +24,7 @@ import org.apm.carteiraprofissional.service.PaisService;
 import org.apm.carteiraprofissional.service.ProvinciaService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.service.TipoDocumentoService;
+import org.apm.carteiraprofissional.utils.Msg;
 import org.zkoss.bind.BindContext;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -32,6 +33,7 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.image.Image;
 import org.zkoss.image.Images;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -57,42 +59,45 @@ import com.github.sarxos.webcam.WebcamPanel;
 
 public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Requisitante selectedRecord;
+	
 	private boolean makeAsReadOnly;
+	
 	private String recordMode;
 	
-
 	private Experiencia experiencia;
+	
 	private Formacao formacao;
+	
+	//public List<Msg> listaMsgs;
 
 	@Wire
-	private org.zkoss.image.Image userImage;
+	private Image userImage;
 
 	@Wire
 	private List<Escolaridade> escolaridades;
+	
 	@Wire
 	private List<TipoDocumento> tipoDocs;
+	
 	@Wire
 	private List<Categoria> categorias;
 
 	@Wire
 	private List<Experiencia> experienciasAdicionadas;
+	
 	@Wire
 	private List<Formacao> formacoesAdicionadas;
 	
-		
 	private List<Provincia> inProvincias;	
+	
 	private List<Pais> inPaises;
 	
 	@Wire
 	Listbox paises;
 
-	
 	@WireVariable
 	protected RequisitanteService requisitanteService;
 
@@ -115,28 +120,38 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	// ================= Experiencia =========================//
 	@Wire
 	Textbox empregador;
+	
 	@Wire
 	Checkbox actual;
+	
 	@Wire
 	Textbox empregadorEndereco;
+	
 	@Wire
 	Textbox empregadorContacto;
+	
 	@Wire
 	Datebox dataInicial;
+	
 	@Wire
 	Datebox dataFinal;
+	
 	@Wire
 	Textbox funcaoExercida;
+	
 	@Wire
 	Textbox experienciaRelevante;
 
 	// ==================== Formacao ==================//
 	@Wire
 	Textbox instituicao;
+	
 	@Wire
 	Textbox localizacao;
+	
 	@Wire
 	Intbox ano;
+	
 	@Wire
 	Listbox grauObtido;
 	
@@ -155,7 +170,13 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	
 	@Wire
 	Radio sexoF;
+	
+	@Wire
+	Datebox dataNascimento;
 
+	@Wire
+	Listitem lstEscola;
+	
 	public Requisitante getSelectedRecord() {
 		return selectedRecord;
 	}
@@ -196,11 +217,11 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		this.recordMode = recordMode;
 	}
 
-	public org.zkoss.image.Image getUserImage() {
+	public Image getUserImage() {
 		return userImage;
 	}
 
-	public void setUserImage(org.zkoss.image.Image userImage) {
+	public void setUserImage(Image userImage) {
 		this.userImage = userImage;
 	}
 
@@ -262,29 +283,32 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		this.inPaises = paises;
 	}
 
-	@SuppressWarnings("unchecked")
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 
 		Requisitante requisicao;
 		Selectors.wireComponents(view, this, false);
 
-		final HashMap<String, Object> map = (HashMap<String, Object>) Sessions
-				.getCurrent().getAttribute("allmyvalues");	
+		final HashMap<String, Object> map = (HashMap<String, Object>) Sessions.getCurrent().getAttribute("allmyvalues");	
 		
-
 		escolaridades = escolaridadeService.getAllNiveis();
+		
 		tipoDocs = tipoDocumentoService.getAllTipoDocumento();
+		
 		categorias = categoriaService.getAllCategorias();
-		inPaises=paisService.getAllPaises();
+		
+		inPaises = paisService.getAllPaises();
+		
 		if (inPaises!=null && inPaises.size()>0){
-			inProvincias=provinciaService.getAllProvincia(inPaises.get(0));
+			inProvincias = provinciaService.getAllProvincia(inPaises.get(0));
 		}
 
 		experienciasAdicionadas = new ArrayList<Experiencia>();
+		
 		formacoesAdicionadas = new ArrayList<Formacao>();
 
 		experiencia = new Experiencia();
+		
 		formacao = new Formacao();
 
 		if (map != null) {
@@ -380,8 +404,6 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 		experienciasAdicionadas.add(experiencia);
 		this.selectedRecord.getExperiencias().add(experiencia);
-
-		
 	}
 
 	@Command
@@ -455,8 +477,10 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 		
-		//form validation
-		validate();
+		//listaMsgs.clear();
+		
+		//validacao do formulario
+		//validate();
 
 		/*System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
 		System.out.println("Experiencias:"+selectedRecord.getExperiencias().size());
@@ -472,16 +496,25 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	private boolean validate() {
 		
 		if (apelido.getValue().isEmpty()) {
-			throw new WrongValueException(apelido, "Apelido é um campo obrigatório.");
+			throw new WrongValueException(apelido, "Apelido é um campo obrigatório");
 		}
 		
 		if (nome.getValue().isEmpty()) {
-			throw new WrongValueException(nome, "Nome é um campo obrigatório.");
+			throw new WrongValueException(nome, "Nome é um campo obrigatório");
 		}
 		
-		if ((sexoM.isChecked() ? "M" : "S").isEmpty()) {
-			throw new WrongValueException(sexo, "Sexo é uma seleção obrigatória.");
-		} 
+		if (dataNascimento.getValue()==null) {
+			throw new WrongValueException(dataNascimento, "Data de Nascimento é um campo obrigatório");
+		}
+		
+		//System.out.println("Fuck..."+selectedRecord.getEscolaridade().getDesignacao());
+				
+		//if (selectedRecord.getEscolaridade()) {
+			//Msg message = new Msg();
+			//message.setTxt("O Nivel Acadêmico é um campo obrigatório");
+			//message.setHlp("Selecione um nível academico");
+			//listaMsgs.add(message);
+		//}
 		
 		return true;
 	}

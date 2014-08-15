@@ -6,10 +6,10 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * 
  */
 @Entity
-@Table(name = "utilizador")
+@Table(name = "utilizador",uniqueConstraints={@UniqueConstraint(columnNames="username")})
 public class Utilizador extends BaseModel implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -33,8 +33,9 @@ public class Utilizador extends BaseModel implements Serializable, UserDetails {
 	private String contacto;
 	@Column(name = "email")
 	private String email;
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	//@OneToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@ManyToOne
+	@JoinColumn(name="grupo_id")
 	private GrupoUtilizador grupo;
 	@Column(name = "activo")
 	private boolean activo = true;
@@ -128,32 +129,32 @@ public class Utilizador extends BaseModel implements Serializable, UserDetails {
 	}	
 
 	public String getPassword() {
-		// TODO Auto-generated method stub
+		
 		return getSenha();
 	}
 
 	public String getUsername() {
-		// TODO Auto-generated method stub
+		
 		return getUserName();
 	}
 
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+		
 		return isActivo();
 	}
 

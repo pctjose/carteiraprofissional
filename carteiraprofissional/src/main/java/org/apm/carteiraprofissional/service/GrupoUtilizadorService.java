@@ -14,4 +14,6 @@ public interface GrupoUtilizadorService {
 	public List<GrupoUtilizador> getAllGrupos();
 	
 	public List<GrupoUtilizador> getDefaultGrupo();
+	
+	public void inserirGrupo();
 }

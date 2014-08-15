@@ -33,7 +33,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	protected UtilizadorService utilizadorService;
 	@WireVariable
 	protected GrupoUtilizadorService grupoUtilizadorService;
-	
+		
 	@Wire
 	Textbox nome;
 	
@@ -97,13 +97,6 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	public void setRepetirSenha(String repetirSenha) {
 		this.repetirSenha = repetirSenha;
 	}
-	
-	
-	
-	
-	
-	
-	
 
 	public Textbox getNome() {
 		return nome;
@@ -275,14 +268,14 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				if (!((GrupoUtilizador) logedInUser.getGrupo()).getUuid()
 						.equalsIgnoreCase(
 								"6b9a194d-e73d-11e3-8e8f-a4db30f2439a")) {
-					Executions.sendRedirect("/pages/pagebased/index.zul");
+					Executions.sendRedirect("/pages/admin/index.zul");
 				} else {
 					Executions
-							.sendRedirect("/pages/pagebased/index-utilizador-lista.zul");
+							.sendRedirect("/pages/admin/index-utilizador-lista.zul");
 				}
 
 			} else {
-				Executions.sendRedirect("/pages/pagebased/index-login.zul");
+				Executions.sendRedirect("/pages/admin/index-login.zul");
 			}
 
 		}
