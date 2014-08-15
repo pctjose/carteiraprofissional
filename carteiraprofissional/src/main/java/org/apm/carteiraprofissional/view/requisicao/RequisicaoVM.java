@@ -1,10 +1,13 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
+import java.util.Random;
+
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.service.NumeroRequisicaoService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
+import org.apm.carteiraprofissional.utils.EnviarEmail;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -14,6 +17,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 
 public class RequisicaoVM extends SelectorComposer<Component> {
 
@@ -32,7 +36,7 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected RequisicaoService requisicaoService;
-	
+
 	@WireVariable
 	protected NumeroRequisicaoService numeroRequisicaoService;
 
@@ -95,18 +99,28 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 		}
 
 	}
-	
+
 	@Command
 	public void saveThis() {
 
-		
 		requisitanteService.saveRequisitante(requisitante);
-		
+
 		this.selectedRecord.setRequisitante(requisitante);
-		
+
+		Random r = new Random();
+
+		this.selectedRecord.setNumeroRequisicao("2014100" + r.nextInt(20));
+
 		requisicaoService.saveRequisicao(selectedRecord);
+
+		EnviarEmail
+				.sendEmail(
+						requisitante.getEmail(),
+						"Requisicao de Carteira Profissional - APM",
+						"Registamos a sua requisicao de carteira profissional no nosso sistema. \n\n Para todos efeitos o numero de requisição é: "
+								+ selectedRecord.getNumeroRequisicao());
 		
-		
+		Clients.showNotification("Requisição Registada e um email foi enviado.");
 
 	}
 

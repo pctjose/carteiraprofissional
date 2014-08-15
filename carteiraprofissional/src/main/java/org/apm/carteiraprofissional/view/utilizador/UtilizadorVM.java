@@ -9,8 +9,6 @@ import org.apm.carteiraprofissional.GrupoUtilizador;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.GrupoUtilizadorService;
 import org.apm.carteiraprofissional.service.UtilizadorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -270,14 +268,14 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				if (!((GrupoUtilizador) logedInUser.getGrupo()).getUuid()
 						.equalsIgnoreCase(
 								"6b9a194d-e73d-11e3-8e8f-a4db30f2439a")) {
-					Executions.sendRedirect("/pages/pagebased/index.zul");
+					Executions.sendRedirect("/pages/admin/index.zul");
 				} else {
 					Executions
-							.sendRedirect("/pages/pagebased/index-utilizador-lista.zul");
+							.sendRedirect("/pages/admin/index-utilizador-lista.zul");
 				}
 
 			} else {
-				Executions.sendRedirect("/pages/pagebased/index-login.zul");
+				Executions.sendRedirect("/pages/admin/index-login.zul");
 			}
 
 		}

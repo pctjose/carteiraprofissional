@@ -99,7 +99,7 @@
 				<listheader label="APELIDO" sort="auto(apelido)" />
 				<listheader label="CONTACTO" sort="auto(contacto)" />
 				<listheader label="EMAIL" sort="auto(email)" />
-
+				<listheader label="PERFIL" sort="auto(grupo)" />
 				<listheader label="ACCAO" />
 			</listhead>
 			<template name="model" var="p1">
@@ -108,6 +108,7 @@
 					<listcell label="@load(p1.apelido)" />
 					<listcell label="@load(p1.contacto)" />
 					<listcell label="@load(p1.email)" />
+					<listcell label="@load(p1.grupo)" />
 					<listcell>
 						<hbox spacing="20px">
 							<button label="Editar"

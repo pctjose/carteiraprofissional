@@ -117,7 +117,8 @@
 										<textbox id="senha"
 											width="200px" type="password"
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-											value="@bind(fx.senha)" />
+											value="@bind(fx.senha)" 
+											constraint="no empty: Senha de Utilizador deve ser preenchido" />
 									</vlayout>
 							</row>
 							<row>
@@ -127,7 +128,8 @@
 										<textbox id="repetirSenha"
 											width="200px" type="password"
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-											value="@bind(vm.repetirSenha)" />
+											value="@bind(vm.repetirSenha)" 
+											constraint="no empty: Repetir a Senha de Utilizador" />
 									</vlayout>
 
 							</row>

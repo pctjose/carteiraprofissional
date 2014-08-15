@@ -23,7 +23,8 @@ public interface UtilizadorDAO {
 	    
 	    public List<Utilizador> getUserByAttributes(String apelido,String nome,String sexo,GrupoUtilizador grupo,Boolean incluirAnulado);
 	    
+	   public List<Utilizador> getAllUtilizador();
 	   
-	    
+	   public void inserirUtilizador();
 
 }

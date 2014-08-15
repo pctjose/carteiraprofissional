@@ -1,8 +1,10 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,8 +16,10 @@ import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
+import org.apm.carteiraprofissional.utils.PathUtils;
 import org.imgscalr.Scalr;
 import org.zkoss.bind.BindContext;
+import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
@@ -28,10 +32,12 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -49,12 +55,15 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 
 	@Wire
 	private org.zkoss.image.Image userImage;
-	
+
 	@WireVariable
 	protected RequisicaoService requisicaoService;
-	
+
 	@WireVariable
 	protected RequisitanteService requisitanteService;
+
+	@Wire
+	private Window frmCompletarRequisicao;
 
 	public org.zkoss.image.Image getUserImage() {
 		return userImage;
@@ -64,33 +73,50 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		this.userImage = userImage;
 	}
 
+	public Window getFrmCompletarRequisicao() {
+		return frmCompletarRequisicao;
+	}
+
+	public void setFrmCompletarRequisicao(Window frmCompletarRequisicao) {
+		this.frmCompletarRequisicao = frmCompletarRequisicao;
+	}
+
+	@AfterCompose
+	@NotifyChange("userImage")
+	public void initSetup(@ContextParam(ContextType.VIEW) Component view)
+			throws IOException {
+		Selectors.wireComponents(view, this, false);
+
+		requisicao = (Requisicao) Sessions.getCurrent().getAttribute(
+				"requisicao");
+
+		if (requisicao != null) {
+			if (requisicao.isCompleta()) {
+				InputStream in = new ByteArrayInputStream(requisicao
+						.getRequisitante().getFoto());
+				BufferedImage oldImage = ImageIO.read(in);
+				userImage = Images.encode("foto.png", oldImage);
+			}
+		}
+	}
+
 	@Command
 	@NotifyChange("userImage")
 	public void getWebCam() throws IOException, InterruptedException {
 		Webcam webcam = Webcam.getDefault();
-
 		WebcamPanel panel = new WebcamPanel(webcam);
-
 		panel.setFillArea(true);
-
-		JFrame window = new JFrame("Test webcam panel");
+		JFrame window = new JFrame("FOTO");
 		window.add(panel);
 		window.setResizable(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
 		window.setVisible(true);
-
 		BufferedImage image = webcam.getImage();
-
-		// ImageIO.write(image, "PNG", new File("/resources/teste.png"));
-
 		userImage = Images.encode("Foto.png", image);
-		// userImage=new AImage("",image);
-
 		Thread.sleep(300);
 		webcam.close();
 		window.dispose();
-
 	}
 
 	@Command("upload")
@@ -101,25 +127,24 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		Object objUploadEvent = ctx.getTriggerEvent();
 		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
 			upEvent = (UploadEvent) objUploadEvent;
+			System.out.println("My Event: "+upEvent.getName());
 		}
 		if (upEvent != null) {
 			Media media = upEvent.getMedia();
 			int lengthofImage = media.getByteData().length;
 			if (media instanceof Image) {
 				if (lengthofImage > 500 * 1024) {
-					showInfo("Please Select a Image of size less than 500Kb.");
+					Clients.showNotification("Seleccione uma imagem menor de 500kb");					
 					return;
 				} else {
-					userImage = (AImage) media;// Initialize the bind object to
-												// show image in zul page and
-												// Notify it also
-
+					userImage = (AImage) media;
 				}
 			} else {
-				showInfo("The selected File is not an image.");
+				Clients.showNotification("O ficheiro seleccionado não é uma imagem válida");
 			}
 		} else {
-			log.debug("Upload Event Is not Coming");
+			Clients.showNotification("Dificuldades em accionar o evento de upload de imagem... Tente via webcan");
+			//log.debug("Upload Event Is not Coming");
 		}
 
 	}
@@ -136,34 +161,42 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 			showInfo("Seleccione uma imagem ou tire a foto através do WebCam");
 		} else {
 			BufferedImage foto = ImageIO.read(userImage.getStreamData());
-			
-			requisicao = (Requisicao)Sessions.getCurrent().getAttribute("requisicao");
 
-			foto = Scalr.resize(foto, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH,100, 100, Scalr.OP_ANTIALIAS);
-			
+			foto = Scalr.resize(foto, Scalr.Method.SPEED,
+					Scalr.Mode.FIT_EXACT, 118, 136, Scalr.OP_ANTIALIAS);
+
 			Requisitante requisitante = requisicao.getRequisitante();
-			
+
 			userImage = Images.encode("foto.png", foto);
-			
+
 			requisitante.setFoto(userImage.getByteData());
 			requisitante.setUuid(UUID.randomUUID().toString());
 			requisitanteService.saveRequisitante(requisitante);
-			
-			requisicao = requisicaoService.getRequisicaoByID(requisicao.getRequisicaoId());
-			
+
+			requisicao = requisicaoService.getRequisicaoByID(requisicao
+					.getRequisicaoId());
+
 			requisicao.setCompleta(true);
 			requisicao.setAceite(true);
 			requisicao.setJustificacaoAceitacao("É porque foi aceite");
 			requisicao.setDataAceite(new Date());
 			requisicaoService.saveRequisicao(requisicao);
-	
+
+			ImageIO.write(foto, "PNG", new File(PathUtils.getWebInfPath()
+					+ "/fotos/" + this.requisicao.getNumeroRequisicao()
+					+ ".png"));
+
+			frmCompletarRequisicao.detach();
 
 			Clients.showNotification("Foto do requisitante actualizada com sucesso");
 
-			ImageIO.write(foto, "png", new File("c://dev//teste1.png"));
-			System.out.println(foto.getHeight()+" Completa: "+requisicao.getCompleta());
 		}
 
+	}
+
+	@Command
+	public void cancelar() {
+		frmCompletarRequisicao.detach();
 	}
 
 }

@@ -1,17 +1,13 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
-import java.net.URL;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apm.carteiraprofissional.Carteira;
 import org.apm.carteiraprofissional.Requisicao;
-import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
-import org.apm.carteiraprofissional.utils.BarcodeUtil;
-import org.apm.carteiraprofissional.utils.PathUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -22,15 +18,15 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Window;
 
 public class ListaRequisicaoVM {
 
 	private Requisicao selectedItem;
-	private List<Requisicao> listaRequisicoes;
-	private Utilizador requisitante;
-	
+	private List<Requisicao> listaRequisicoes;	
 	private String numeroRequisicao;
 	private String nomeRequisitante;
 	private String apelidoRequisitante;
@@ -42,6 +38,9 @@ public class ListaRequisicaoVM {
 	
 	@WireVariable
 	private CarteiraService carteiraService;
+	
+	@Wire
+	Window formlistaRequisicao;
 	
 	
 
@@ -100,8 +99,7 @@ public class ListaRequisicaoVM {
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) throws Exception {
 		Selectors.wireComponents(view, this, false);
-		//BarcodeUtil.encodePDF417("20141000V-Eurico Jose Abibo-EMI21.12.2014-VAL25.09.2016-PROF.Eng Perfuracao");
-		//System.out.println("CurPath: "+PathUtils.getWebInfPath());
+		
 	}
 
 	public List<Requisicao> getDataSet() {
@@ -127,7 +125,11 @@ public class ListaRequisicaoVM {
 	@Command
 	public void completar(@BindingParam("requisicaoRecord") Requisicao requisicao){
 		Sessions.getCurrent().setAttribute("requisicao", requisicao);
-		Executions.sendRedirect("/pages/requisicao/CompletarRequisicao.zul");
+		//Executions.sendRedirect("/pages/requisicao/CompletarRequisicao.zul");
+		//Executions.sendRedirect("/pages/pagebased/index-requisicao-completar.zul");
+		Window cRequisicao=(Window)Executions.createComponents("/pages/requisicao/CompletarRequisicao.zul", null, null);
+		cRequisicao.setParent(formlistaRequisicao);
+		cRequisicao.doModal();
 	}
 	
 	@Command
@@ -136,16 +138,21 @@ public class ListaRequisicaoVM {
 		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
 		
 		
-		Executions.sendRedirect("/pages/requisicao/AnalisarRequisicao.zul");
+		//Executions.sendRedirect("/pages/requisicao/AnalisarRequisicao.zul");
+		//Executions.sendRedirect("/pages/pagebased/index-requisicao-analisar.zul");
+		
+		Window cRequisicao=(Window)Executions.createComponents("/pages/requisicao/AnalisarRequisicao.zul", null, null);
+		cRequisicao.setParent(formlistaRequisicao);
+		cRequisicao.doModal();
 	}
 	
 	@Command
 	public void registarCartao(@BindingParam("requisicaoRecord") Requisicao requisicao){
 		//Sessions.getCurrent().setAttribute("requisicao", requisicao);
 		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
-		Carteira carteira=carteiraService.getCarteiraByRequisicao(requisicao);
+		//Carteira carteira=carteiraService.getCarteiraByRequisicao(requisicao);
 		
-		if(carteira!=null){
+		if(requisicao.isTemCarteira()){
 			Clients.showNotification("Já existe uma carteira registada para esta requisição.");
 		}else{
 			final HashMap<String, Object> map = new HashMap<String, Object>();
@@ -154,10 +161,19 @@ public class ListaRequisicaoVM {
 
 			Sessions.getCurrent().setAttribute("carteiraValues", map);
 			
-			Executions.sendRedirect("/pages/carteira/carteira.zul");
+			Window cRequisicao=(Window)Executions.createComponents("/pages/carteira/carteira.zul", null, null);
+			cRequisicao.setParent(formlistaRequisicao);
+			cRequisicao.doModal();
+			
+			//Executions.sendRedirect("/pages/carteira/carteira.zul");
 		}
 		
 		
+	}
+	
+	@Command
+	public void onEdit(){
+		Clients.showNotification("Funcionalidade em implementação...");
 	}
 	
 	

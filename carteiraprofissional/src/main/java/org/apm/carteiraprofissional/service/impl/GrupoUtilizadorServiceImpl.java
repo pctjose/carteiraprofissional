@@ -56,4 +56,7 @@ public class GrupoUtilizadorServiceImpl implements GrupoUtilizadorService {
 		return defaults;
 	}
 
+	public void inserirGrupo(){
+		grupoUtilizadorDAO.inserirGrupo();
+	}
 }
