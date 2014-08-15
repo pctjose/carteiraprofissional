@@ -4,8 +4,7 @@
 <zk>
 	<window id="novaRequisicao" border="normal" apply="org.zkoss.bind.BindComposer" width="100%"
 		    viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM')">
-		<div
-			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+		<div form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
 			<separator />
 			<panel width="100%" sclass="sectionPanel">
 				<panelchildren>
@@ -458,7 +457,8 @@
 															mold="rounded" value="@bind(fexp.empregador)"
 															width="150px" />
 														<checkbox
-															id="actual" value="@bind(fexp.actual)" label="Actual" />
+															id="actual" value="@bind(fexp.actual)" label="Actual" 
+															onCheck="@command('disableDataFinal')"/>
 													</hlayout>
 												</vlayout>
 
