@@ -3,7 +3,9 @@ package org.apm.carteiraprofissional.view;
 import java.util.HashMap;
 
 import org.apm.carteiraprofissional.Requisicao;
+import org.apm.carteiraprofissional.service.GrupoUtilizadorService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
+import org.apm.carteiraprofissional.service.UtilizadorService;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -25,6 +27,10 @@ public class StartSearchVM extends SelectorComposer<Component>{
 	
 	@WireVariable
 	protected RequisicaoService requisicaoService;
+	@WireVariable
+	protected GrupoUtilizadorService grupoUtilizadorService;
+	@WireVariable
+	protected UtilizadorService utilizadorService;
 
 	public String getCodigoPesquisa() {
 		return codigoPesquisa;
@@ -36,6 +42,11 @@ public class StartSearchVM extends SelectorComposer<Component>{
 	
 	@Command
 	public void areaRestrita(){
+		if(grupoUtilizadorService.getAllGrupos().isEmpty() && utilizadorService.getAllUtilizador().isEmpty()){
+			grupoUtilizadorService.inserirGrupo();
+			utilizadorService.inserirUtilizador();
+			Executions.sendRedirect("/pages/pagebased/index-login.zul");
+		}else
 		Executions.sendRedirect("/pages/pagebased/index-login.zul");
 	}
 	
@@ -46,10 +57,7 @@ public class StartSearchVM extends SelectorComposer<Component>{
 		map.put("selectedRecord", null);
 		map.put("recordMode", "NEW");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		//Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
-		Executions.sendRedirect("/pages/requisicao/NovoRequisitante.zul");
-		
-		
+		Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
 	}
 	
 	@Command
@@ -66,9 +74,7 @@ public class StartSearchVM extends SelectorComposer<Component>{
 					map.put("selectedRecord", requisicao.getRequisitante());
 					map.put("recordMode", "EDIT");
 					Sessions.getCurrent().setAttribute("allmyvalues", map);
-					
-					Clients.showNotification("Já foi encontrado a requisicao. \n\n Funcionalidade está sendo terminada");
-					//Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
+					Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
 				}
 			}
 		}else{
