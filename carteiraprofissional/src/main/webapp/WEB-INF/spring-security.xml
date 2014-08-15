@@ -39,7 +39,7 @@
 	<beans:bean id="loginSucesso" class="org.apm.carteiraprofissional.utils.LoginSucesso">
     <beans:property name="roleUrlMap">
         <beans:map>
-            <beans:entry key="ROLE_SUPERVISOR" value="/pages/supervisor/PaginaEmConstrucao.zul"/>
+            <beans:entry key="ROLE_SUPERVISOR" value="/pages/supervisor/index.zul"/>
             <beans:entry key="ROLE_ADMIN" value="/pages/admin/index-utilizador-lista.zul"/>
         </beans:map>
     </beans:property>

@@ -21,8 +21,12 @@ public class SidebarPageConfigPagebasedImpl implements SidebarPageConfig {
 		pageMap.put("demo",new SidebarPage("demo","ZK Demo","/imgs/demo.png","http://www.zkoss.org/zkdemo"));
 		pageMap.put("devref",new SidebarPage("devref","ZK Developer Reference","/imgs/doc.png"
 				,"http://books.zkoss.org/wiki/ZK_Developer's_Reference"));
+		pageMap.put("fn1",new SidebarPage("fn1","Administrar Requisicoes","/imgs/fn.png"
+				,"/pages/pagebased/index-requisicao.zul"));
+		pageMap.put("fn2",new SidebarPage("fn1","Administrar Carteiras","/imgs/fn.png"
+				,"/pages/pagebased/index-carteira.zul"));
 		
-		if(logedInUser!=null){
+		/*if(logedInUser!=null){
 			if(logedInUser.getGrupo().getUuid().equalsIgnoreCase("6b9f55b5-e73d-11e3-8e8f-a4db30f2439a")){
 				//NORMAL
 				pageMap.put("fn1",new SidebarPage("fn1","Requisitar Carteira","/imgs/fn.png"
@@ -56,13 +60,7 @@ public class SidebarPageConfigPagebasedImpl implements SidebarPageConfig {
 							,"/pages/pagebased/index-profile-mvvm.zul"));
 					
 				}
-		}
-		
-		
-		
-		
-		
-
+		}*/
 		
 	}
 

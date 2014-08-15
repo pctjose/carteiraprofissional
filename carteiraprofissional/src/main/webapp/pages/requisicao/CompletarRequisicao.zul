@@ -5,28 +5,39 @@
 	<window id="frmCompletarRequisicao" border="normal"
 		apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.CompletarRequisiaoVM')"
-		width="30%">
+		width="23%" closable="true">
 
 
 
-		<vbox>
+		<hbox>
 
 			<image id="userImage" content="@bind(vm.userImage)"
-				height="150px" width="300px" />
-			<hbox>
-				
-					
-				<button id="btnUpload" mold="trendy" upload="true,maxsize=300" label="Upload Foto"
-         onUpload="@command('upload')" />
+				height="118px" width="136px" />
+			<separator/>
+			<separator/>
+			<vbox>
 				
 
 
-				<button label="WebCam" onClick="@command('getWebCam')" />
-				
-				<button label="Salvar" onClick="@command('salvar')" />
-			</hbox>
+					<button id="btnUpload" mold="trendy"
+						upload="true,maxsize=300" label="Upload Foto"
+						onUpload="@command('upload')" />
 
-		</vbox>
+
+
+					<button label="WebCam"
+						onClick="@command('getWebCam')" />
+				
+
+				
+
+					<button label="Salvar" onClick="@command('salvar')" />
+
+					<button label="Cancelar"
+						onClick="@command('cancelar')" />
+				
+			</vbox>
+		</hbox>
 
 	</window>
 </zk>

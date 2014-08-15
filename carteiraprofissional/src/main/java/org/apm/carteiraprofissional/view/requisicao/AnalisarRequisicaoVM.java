@@ -11,8 +11,10 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Window;
 
 public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 
@@ -27,6 +29,17 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected RequisicaoService requisicaoService;
+
+	@Wire
+	private Window frmAnalisarRequisicao;
+
+	public Window getFrmAnalisarRequisicao() {
+		return frmAnalisarRequisicao;
+	}
+
+	public void setFrmAnalisarRequisicao(Window frmAnalisarRequisicao) {
+		this.frmAnalisarRequisicao = frmAnalisarRequisicao;
+	}
 
 	public Requisicao getSelectedRecord() {
 		return selectedRecord;
@@ -67,6 +80,14 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 		selectedRecord = (Requisicao) Sessions.getCurrent().getAttribute(
 				"requisicao");
 
+		if (this.selectedRecord.getAceite() != null) {
+			if (this.selectedRecord.getAceite()) {
+				this.aceiteString = "S";
+			} else {
+				this.aceiteString = "N";
+			}
+		}
+
 	}
 
 	@Command
@@ -102,7 +123,15 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 		EnviarEmail.sendEmail(selectedRecord.getRequisitante().getEmail(),
 				title, mensagem);
 
-		Clients.showNotification("Requisição actualizada e um email foi enviado ao requisitante");
+		Clients.showNotification("Requisição actualizada e um email foi enviado ao requisitante: "
+				+ selectedRecord.getRequisitante().getNomeCompleto());
+
+		frmAnalisarRequisicao.detach();
+	}
+
+	@Command
+	public void cancel() {
+		frmAnalisarRequisicao.detach();
 	}
 
 }

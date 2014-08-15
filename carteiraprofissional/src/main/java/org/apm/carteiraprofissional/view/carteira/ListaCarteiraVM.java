@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apm.carteiraprofissional.Carteira;
-import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -14,7 +13,9 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Window;
 
 public class ListaCarteiraVM extends SelectorComposer<Component> {
 
@@ -38,6 +39,19 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected CarteiraService carteiraService;
+	
+	@Wire
+	private Window formListaCarteira;
+	
+	
+
+	public Window getFormListaCarteira() {
+		return formListaCarteira;
+	}
+
+	public void setFormListaCarteira(Window formListaCarteira) {
+		this.formListaCarteira = formListaCarteira;
+	}
 
 	public String getEmitidaString() {
 		return emitidaString;
@@ -159,7 +173,13 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 		Sessions.getCurrent().setAttribute("carteiraValues", map);
 
-		Executions.sendRedirect("/pages/carteira/carteira.zul");
+		//Executions.sendRedirect("/pages/carteira/carteira.zul");
+		
+		Window cRequisicao=(Window)Executions.createComponents("/pages/carteira/carteira.zul", null, null);
+		cRequisicao.setParent(formListaCarteira);
+		cRequisicao.doModal();
+		
+		
 	}
 	
 	@Command
@@ -170,8 +190,10 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 		map.put("selectedRecord", carteira);
 
 		Sessions.getCurrent().setAttribute("carteiraValues", map);
-
-		Executions.sendRedirect("/pages/carteira/carteira.zul");
+		
+		Window cRequisicao=(Window)Executions.createComponents("/pages/carteira/carteira.zul", null, null);
+		cRequisicao.setParent(formListaCarteira);
+		cRequisicao.doModal();
 	}
 
 }

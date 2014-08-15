@@ -2,7 +2,7 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="formlistaCarteira" border="normal"
+	<window id="formListaCarteira" border="normal"
 		title="REQUISIÇÕES DE CARTEIRA" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.carteira.ListaCarteiraVM')">
 

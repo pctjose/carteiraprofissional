@@ -2,15 +2,15 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="criarCarteira" border="none"
+	<window id="frmCriarCarteira" border="none"
 		apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.carteira.CarteiraVM')"
-		width="70%">
+		width="45%">
 		<div
 			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
 
 
-			<panel width="500px" sclass="sectionPanel">
+			<panel width="100%" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -28,7 +28,7 @@
 					</grid>
 				</panelchildren>
 			</panel>
-			<panel width="500px" sclass="sectionPanel">
+			<panel width="100%" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -64,7 +64,7 @@
 			<separator />
 			<separator />
 			<hlayout>
-				<panel width="245px" sclass="sectionPanel">
+				<panel width="250px" sclass="sectionPanel">
 					<panelchildren>
 						<grid sclass="vgrid">
 							<columns>
@@ -114,7 +114,7 @@
 
 				<separator />
 
-				<panel width="245px" sclass="sectionPanel">
+				<panel width="250px" sclass="sectionPanel">
 					<panelchildren>
 						<grid sclass="vgrid">
 							<columns>
@@ -179,7 +179,7 @@
 			</hlayout>
 			<separator />
 			<separator />
-			<panel width="500px" sclass="sectionPanel">
+			<panel width="100%" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>

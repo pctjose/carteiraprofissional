@@ -46,7 +46,10 @@ public class StartSearchVM extends SelectorComposer<Component>{
 		map.put("selectedRecord", null);
 		map.put("recordMode", "NEW");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
+		//Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
+		Executions.sendRedirect("/pages/requisicao/NovoRequisitante.zul");
+		
+		
 	}
 	
 	@Command
@@ -63,7 +66,9 @@ public class StartSearchVM extends SelectorComposer<Component>{
 					map.put("selectedRecord", requisicao.getRequisitante());
 					map.put("recordMode", "EDIT");
 					Sessions.getCurrent().setAttribute("allmyvalues", map);
-					Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
+					
+					Clients.showNotification("Já foi encontrado a requisicao. \n\n Funcionalidade está sendo terminada");
+					//Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
 				}
 			}
 		}else{

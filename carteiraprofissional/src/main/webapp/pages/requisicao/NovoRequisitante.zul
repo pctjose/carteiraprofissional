@@ -303,7 +303,7 @@
 		<separator />
 
 		<div
-			form="@id('fedu') @load(vm.formacao) @save(vm.formacao, before='onAddFormacao') @validator('org.apm.carteiraprofissional.view.validator.FormacaoValidator')" 
+			form="@id('fedu') @load(vm.formacao) @save(vm.formacao, before='onAddFormacao')" 
 			validationMessages="@id('fedusgs')">
 
 			<panel sclass="sectionPanel">

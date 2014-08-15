@@ -31,8 +31,10 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Window;
 
 public class CarteiraVM extends SelectorComposer<Component> {
 
@@ -46,6 +48,9 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	private boolean makeAsReadOnly;
 	private String recordMode;
 	private Requisicao requisicao;
+	
+	@Wire
+	private Window frmCriarCarteira;
 
 	@Wire
 	private Datebox dataValidade;
@@ -64,6 +69,17 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	private RequisicaoService requisicaoService;
+	
+	
+	
+
+	public Window getFrmCriarCarteira() {
+		return frmCriarCarteira;
+	}
+
+	public void setFrmCriarCarteira(Window frmCriarCarteira) {
+		this.frmCriarCarteira = frmCriarCarteira;
+	}
 
 	public Carteira getSelectedRecord() {
 		return selectedRecord;
@@ -228,6 +244,10 @@ public class CarteiraVM extends SelectorComposer<Component> {
 			carteiraService.saveCarteira(selectedRecord);
 
 			requisicaoService.saveRequisicao(requisicao);
+			
+			Clients.showNotification("Carteira registada com sucesso com o nr: "+this.selectedRecord.getNumeroCarteira());
+			
+			frmCriarCarteira.detach();
 
 		} else {
 			if (this.recordMode.equalsIgnoreCase("EDIT")) {
@@ -245,9 +265,18 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 				carteiraService.saveCarteira(selectedRecord);
 				requisicaoService.saveRequisicao(requisicao);
+				
+				Clients.showNotification("Carteira actualizada com sucesso.");
+				
+				frmCriarCarteira.detach();
 			}
 		}
 
+	}
+	
+	@Command
+	public void cancel(){
+		frmCriarCarteira.detach();
 	}
 
 }
