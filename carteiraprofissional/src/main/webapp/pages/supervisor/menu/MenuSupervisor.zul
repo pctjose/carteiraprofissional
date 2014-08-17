@@ -1,0 +1,33 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndMenu" border="normal" apply="org.apm.carteiraprofissional.MenuForm">
+	<tree id="treeMenu">
+		<treecols>
+			<treecol image="/imgs/house.gif"/>
+		</treecols>
+		<treechildren>
+			<treeitem label="Menu" open="false">
+					<treechildren>
+						<treeitem label="Pesquisar requisição"
+							value="/pages/anonimo/requisicao/startSearch.zul"
+							image="/imgs/world.gif" />
+						<treeitem label="Requisitar Carteira"
+							value="/pages/anonimo/requisicao/NovoRequisitante.zul"
+							image="/imgs/application_form_edit.gif" />
+					</treechildren>
+				</treeitem>
+			<treeitem label="Administração de Requisições" open="true">
+				<treechildren>
+					<treeitem label="Pesquisa Avançada" value="/pages/supervisor/requisicao/ListaRequisicao.zul" image="/imgs/note_new.gif"/>					
+				</treechildren>
+			</treeitem>
+			<treeitem label="Administração de Carteiras" open="false">
+				<treechildren>
+					<treeitem label="Pesquisa Avançada" value="/pages/supervisor/carteira/ListaCarteira.zul" image="/imgs/note_new.gif"/>					
+				</treechildren>
+			</treeitem>
+			
+		</treechildren>
+	</tree>
+</window>
+</zk>

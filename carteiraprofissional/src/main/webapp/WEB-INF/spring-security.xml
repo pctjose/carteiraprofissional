@@ -15,9 +15,11 @@
     <intercept-url pattern="/zkau/**" filters="none" />
 	<intercept-url pattern="/pages/login/login.zul" filters="none"/>
 	<intercept-url pattern="/**" access="permitAll"/>
-	<intercept-url pattern="/pages/requisicao/**" access="none"/>
+	<intercept-url pattern="/pages/anonimo/**" access="none"/>
+	<intercept-url pattern="/pages/tamplate/**" access="none"/>
 	<intercept-url pattern="/pages/admin/**" access="ROLE_ADMIN"/>
     <intercept-url pattern="/pages/supervisor/**" access="ROLE_SUPERVISOR"/>
+    <intercept-url pattern="/pages/grafica/**" access="ROLE_GRAFICA"/>
 	
     
     	<form-login login-page="/pages/login/login.zul"
@@ -27,7 +29,7 @@
         always-use-default-target="true"/>
 
     
-    	<logout logout-success-url="/pages/pagebased/index-startsearch.zul" invalidate-session="true" />
+    	<logout logout-success-url="/pages/anonimo/menu/MainAnonimo.zul" invalidate-session="true" />
     </http>
 
    
@@ -44,8 +46,9 @@
 	<beans:bean id="loginSucesso" class="org.apm.carteiraprofissional.utils.LoginSucesso">
     <beans:property name="roleUrlMap">
         <beans:map>
-            <beans:entry key="ROLE_SUPERVISOR" value="/pages/supervisor/PaginaEmConstrucao.zul"/>
-            <beans:entry key="ROLE_ADMIN" value="/pages/admin/index-utilizador-lista.zul"/>
+            <beans:entry key="ROLE_SUPERVISOR" value="/pages/supervisor/menu/MainSupervisor.zul"/>
+            <beans:entry key="ROLE_ADMIN" value="/pages/admin/menu/MainAdministrador.zul"/>
+            <beans:entry key="ROLE_GRAFICA" value="/pages/grafica/menu/MainGrafica.zul"/>
         </beans:map>
     </beans:property>
 </beans:bean>

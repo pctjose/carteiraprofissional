@@ -125,33 +125,23 @@ public class ListaRequisicaoVM {
 	@Command
 	public void completar(@BindingParam("requisicaoRecord") Requisicao requisicao){
 		Sessions.getCurrent().setAttribute("requisicao", requisicao);
-		//Executions.sendRedirect("/pages/requisicao/CompletarRequisicao.zul");
-		//Executions.sendRedirect("/pages/pagebased/index-requisicao-completar.zul");
-		Window cRequisicao=(Window)Executions.createComponents("/pages/requisicao/CompletarRequisicao.zul", null, null);
+		
+		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/requisicao/CompletarRequisicao.zul", null, null);
 		cRequisicao.setParent(formlistaRequisicao);
 		cRequisicao.doModal();
 	}
 	
 	@Command
 	public void analisar(@BindingParam("requisicaoRecord") Requisicao requisicao){
-		Sessions.getCurrent().setAttribute("requisicao", requisicao);
-		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
-		
-		
-		//Executions.sendRedirect("/pages/requisicao/AnalisarRequisicao.zul");
-		//Executions.sendRedirect("/pages/pagebased/index-requisicao-analisar.zul");
-		
-		Window cRequisicao=(Window)Executions.createComponents("/pages/requisicao/AnalisarRequisicao.zul", null, null);
+		Sessions.getCurrent().setAttribute("requisicao", requisicao);		
+		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/requisicao/AnalisarRequisicao.zul", null, null);
 		cRequisicao.setParent(formlistaRequisicao);
 		cRequisicao.doModal();
 	}
 	
 	@Command
 	public void registarCartao(@BindingParam("requisicaoRecord") Requisicao requisicao){
-		//Sessions.getCurrent().setAttribute("requisicao", requisicao);
-		//Sessions.getCurrent().setAttribute("selectedId", requisicao.getRequisicaoId());
-		//Carteira carteira=carteiraService.getCarteiraByRequisicao(requisicao);
-		
+				
 		if(requisicao.isTemCarteira()){
 			Clients.showNotification("Já existe uma carteira registada para esta requisição.");
 		}else{
@@ -161,11 +151,10 @@ public class ListaRequisicaoVM {
 
 			Sessions.getCurrent().setAttribute("carteiraValues", map);
 			
-			Window cRequisicao=(Window)Executions.createComponents("/pages/carteira/carteira.zul", null, null);
+			Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/carteira/carteira.zul", null, null);
 			cRequisicao.setParent(formlistaRequisicao);
-			cRequisicao.doModal();
+			cRequisicao.doModal();		
 			
-			//Executions.sendRedirect("/pages/carteira/carteira.zul");
 		}
 		
 		

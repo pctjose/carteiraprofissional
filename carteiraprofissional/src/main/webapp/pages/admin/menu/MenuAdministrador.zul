@@ -1,0 +1,49 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window id="wndMenu" border="normal"
+		apply="org.apm.carteiraprofissional.MenuForm">
+		<tree id="treeMenu">
+			<treecols>
+				<treecol image="/Img/house.gif" />
+			</treecols>
+			<treechildren>
+				<treeitem label="Menu" open="false">
+					<treechildren>
+						<treeitem label="Pesquisar requisição"
+							value="/pages/anonimo/requisicao/startSearch.zul"
+							image="/imgs/world.gif" />
+						<treeitem label="Requisitar Carteira"
+							value="/pages/anonimo/requisicao/NovoRequisitante.zul"
+							image="/imgs/application_form_edit.gif" />
+					</treechildren>
+				</treeitem>
+
+				<treeitem label="Utilizadores" open="true">
+					<treechildren>
+						<treeitem label="Registar Utilizador"
+							value="/pages/admin/utilizador/NovoUtilizador.zul"
+							image="/imgs/world.gif" />
+						<treeitem label="Pesquisa Avançada"
+							value="/pages/admin/utilizador/ListaUtilizador.zul"
+							image="/imgs/application_form_edit.gif" />
+					</treechildren>
+				</treeitem>
+
+				<treeitem label="Parametrização" open="false">
+					<treechildren>
+						<treeitem label="Categoria Profissional"
+							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+						<treeitem label="Forma Pagamento"
+							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+						<treeitem label="Nivel Escolaridade"
+							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+						<treeitem label="Paises e Provincias"
+							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+						<treeitem label="Tipo Documento"
+							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+					</treechildren>
+				</treeitem>
+			</treechildren>
+		</tree>
+	</window>
+</zk>

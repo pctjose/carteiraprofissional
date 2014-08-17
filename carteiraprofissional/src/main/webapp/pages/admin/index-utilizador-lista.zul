@@ -1,4 +1,0 @@
-<?init class="org.zkoss.zk.ui.util.Composition" arg0="/pages/pagebased/layout/template.zul"?>
-<zk>
-	<include self="@define(content)" src="/pages/admin/ListaUtilizador.zul"/>
-</zk>

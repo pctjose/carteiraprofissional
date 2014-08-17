@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page id="main" title="carteiraprofessional"?>
+<window id="wndMain" width="100%" height="100%" border="normal">
+
+	<style src="/Css/carteiraprofessional.css"/>
+	<borderlayout>
+		<west title="Carteira Professional" size="22%" flex="true" splittable="true" collapsible="true">
+			<borderlayout>
+				<north>
+					<include src="/pages/tamplate/banner.zul"/>
+				</north>
+				<center flex="true">
+					<include src="/pages/supervisor/menu/MenuSupervisor.zul" style="padding:5px;"/>
+				</center>
+				<south flex="true" collapsible="true">
+					<include src="/pages/tamplate/PainelWfp.zul" style="padding:5px;" />
+				</south>
+			</borderlayout>
+		</west>
+		<center flex="true" style="overflow-y:auto;">
+			<borderlayout>
+				<center>
+					<include id="contentSrc" src="/pages/tamplate/Welcome.zul" />
+				</center>	
+			</borderlayout>	
+		</center>
+	</borderlayout>
+	
+</window>

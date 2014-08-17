@@ -1,0 +1,264 @@
+/* Optional Form Field Form Field */
+.optional {
+	background-color: #EEF7FB;
+	border: 1px solid #0000CC;
+}
+
+.optional-focus {
+	background-color: lightyellow;
+	border: 1px solid #0000CC;
+}
+
+.optional-combo input {
+	background-color: #EEF7FB;
+	border: 1px solid #0000CC;
+}
+
+.optional-focus-combo input {
+	background-color: lightyellow;
+	border: 1px solid #0000CC;
+}
+
+/* Required Form Field */
+.required {
+	background-color: #FFFFCC;
+	border: 1px solid #FF9900;
+}
+
+.required-focus {
+	background-color: lightyellow;
+	border: 1px solid #FF9900;
+}
+
+.required-combo input {
+	background-color: #FFFFCC;
+	border: 1px solid #FF9900;
+}
+
+.required-focus-combo input {
+	background-color: lightyellow;
+	border: 1px solid #FF9900;
+}
+
+/* Read-Only Form Field */
+.read-only {
+	background-color: #EEEEEE;
+	border: 1px solid #999999;
+	color: #444444;
+}
+
+.read-only-focus {
+	background-color: lightyellow;
+	border: 1px solid #999999;
+	color: #444444;
+}
+
+.read-only-combo input {
+	background-color: #EEEEEE;
+	border: 1px solid #999999;
+	color: #444444;
+}
+
+.read-only-focus-combo input {
+	background-color: lightyellow;
+	border: 1px solid #999999;
+	color: #444444;
+}
+
+.simpleborda {
+	border: #7F9DB9 1px solid; /*Azul*/
+	font-size: 6px;
+	color: gray;
+}
+
+.footer {
+	font-family: Verdana, Tahoma, Arial, serif;
+	font-size: 9px;
+	color: graytext;
+}
+
+.bordafocus {
+	font-family: Verdana, Tahoma, Arial, serif;
+	font-size: small;
+	font-weight: normal;
+	border: #7F9DB9 1px solid; /*Azul*/
+	background-color: lightyellow; /*Amarela*/
+}
+
+.bordablur {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: small;
+	font-weight: normal;
+	border: #7F9DB9 1px solid; /*Azul*/
+	background-color: #f2f2f2; /*Cinzenta*/
+}
+
+.requiredbordablur {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: small;
+	font-weight: normal;
+	border: #7F9DB9 1px solid; /*Azul*/
+	background-color: white; /*Branca*/
+}
+
+.focus input {
+	font-family: Verdana, Tahoma, Arial, serif;
+	font-size: small;
+	font-weight: normal;
+	border: #7F9DB9 1px solid; /*Azul*/
+	background-color: lightyellow; /*Amarela*/
+}
+
+.blur input {
+	font-family: Verdana, Tahoma, Arial, serif;
+	font-size: small;
+	font-weight: normal;
+	border: #7F9DB9 1px solid; /*Azul*/
+	background-color: #f2f2f2; /*Cinzenta*/
+}
+
+.requiredblur input {
+	font-family: Verdana, Tahoma, Arial, serif;
+	font-size: small;
+	font-weight: normal;
+	border: #7F9DB9 1px solid; /*Azul*/
+	background-color: white; /*Branca*/
+}
+
+h4 {
+	color: #005BAB;
+}
+
+a.link {
+	color: #005BAB; /*Azul Carregado*/
+	text-decoration: none;
+}
+
+a.link:hover {
+	color: #FF0000; /*Vermelha*/
+}
+
+.painel3d {
+	background: threedface;
+	border-right: threedshadow 1px solid;
+	border-top: threedhighlight 1px solid;
+	border-left: threedhighlight 1px solid;
+	border-bottom: threedshadow 1px solid;
+}
+
+.error-title {
+	text-align: center;
+	color: #FFFFFF; /*Branca*/
+	background-color: #660000; /*Vermelha*/
+}
+
+.error-data {
+	color: #660000; /*Vermelha*/
+	background-color: #F6F6F6; /*Cinzenta*/
+}
+
+.success-title {
+	font-weight: bold;
+	font-size: 12pt;
+	text-align: center;
+	color: #FFFFFF; /*Branca*/
+	background-color: #006600; /*Verde*/
+}
+
+.success-data {
+	color: #006600; /*Verde*/
+	background-color: #F6F6F6; /*Cinzenta*/
+}
+
+.titulo-verde-branco {
+	color: #FFFFFF; /*Branca*/
+	font-size: large;
+	font-weight: bold;
+}
+
+.pnl-lbl-err{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #FF3300;
+}
+
+table.geral {
+	border-color: #006600; /*Verde*/
+	border-collapse: collapse;
+}
+
+table.geral td {
+	border: 1px solid;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.confirm-header {
+	padding-top: 10px;	
+}
+
+.confirm-header-title {
+	font-weight: bold;
+	color:white;
+	/*background-color: #669900;*/
+	background-color: #FF6600;
+}
+
+.confirm-detail-title {
+	font-weight: bold;
+	background-color: white;
+	color:black;
+}
+
+.confirm-detail-value {
+	font-weight: normal;
+	background-color: white;
+	color:#666666;
+}
+
+/* INI CSS de Borda Rounded */ /* Show only to IE PC \*/
+* html .boxhead3d h2 {
+	height: 1%;
+}
+
+/* For IE 5 PC */
+.sidebox3d {
+	margin: 0 auto; /* center for now */
+	width: 30em; /*ems so it will grow */
+	background: url(../Img/sbbody-r.gif) no-repeat bottom right;
+	font-size: 100%;
+}
+
+.boxhead3d {
+	background: url(../Img/sbhead-r.gif) no-repeat top right;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.boxhead3d h2 {
+	background: url(../Img/sbhead-l.gif) no-repeat top left;
+	margin: 0;
+	padding: 22px 30px 5px;
+	color: white;
+	font-weight: bold;
+	font-size: 1.2em;
+	line-height: 1em;
+	text-shadow: rgba(0, 0, 0, .4) 0px 2px 5px; /* Safari-only, but cool */
+}
+
+.boxbody3d {
+	background: url(../Img/sbbody-l.gif) no-repeat bottom left;
+	margin: 0;
+	padding: 5px 30px 31px;
+}
+
+.z-loading {
+top: 50% !important;
+left: 45% !important;
+align: center;
+vertical-align: middle;
+}
+
+/* END CSS de Borda Rounded */

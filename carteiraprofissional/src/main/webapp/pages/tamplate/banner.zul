@@ -1,0 +1,15 @@
+<div hflex="1" vflex="1" sclass="banner">
+    <hbox hflex="1" vflex="1" align="center">
+        <a href="http://apm-moz.org/">
+            <image src="/imgs/apm.PNG" width="90px" />
+        </a>
+        <div width="400px">
+            <label value="Sistema de Emissão de Carteira Profissional - APM" sclass="banner-head" />
+        </div>
+        <hbox hflex="1" vflex="1" pack="end" align="end">
+            <label value="${sessionScope.logedIn}"/>
+            <a href="/j_spring_security_logout">Sair</a>
+        </hbox>
+    </hbox>
+    
+</div>

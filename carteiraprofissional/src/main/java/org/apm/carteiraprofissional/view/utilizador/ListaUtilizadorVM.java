@@ -118,7 +118,7 @@ public class ListaUtilizadorVM {
 		map.put("selectedRecord", null);
 		map.put("recordMode", "NEW");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/admin/index-utilizador-novo.zul");
+		Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
 	}
 
 	@Command
@@ -128,7 +128,7 @@ public class ListaUtilizadorVM {
 		map.put("selectedRecord", userProfile);
 		map.put("recordMode", "EDIT");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/admin/index-utilizador-novo.zul");
+		Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
 	}
 
 	@Command
@@ -139,7 +139,7 @@ public class ListaUtilizadorVM {
 		map.put("selectedRecord", userProfile);
 		map.put("recordMode", "READ");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/admin/index-utilizador-novo.zul");
+		Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
 	}
 
 	@Command

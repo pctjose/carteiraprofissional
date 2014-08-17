@@ -185,8 +185,10 @@
 	</mime-mapping>
 
 	<welcome-file-list>
-		<!-- <welcome-file>/pages/pagebased/index.zul</welcome-file>-->
-	 	<welcome-file>/pages/pagebased/index-startsearch.zul</welcome-file>
+	
+	<welcome-file>/pages/anonimo/menu/MainAnonimo.zul</welcome-file>
+		<!-- <welcome-file>/pages/pagebased/index.zul</welcome-file>
+	 	<welcome-file>/pages/pagebased/index-startsearch.zul</welcome-file>-->
 	<!--   	<welcome-file>/pages/requisicao/ListaRequisicao.zul</welcome-file> 
 	  <welcome-file>/pages/carteira/ListaCarteira.zul</welcome-file>-->
 		<welcome-file>index.zhtml</welcome-file>

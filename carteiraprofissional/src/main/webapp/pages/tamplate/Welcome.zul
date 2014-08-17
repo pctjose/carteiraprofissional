@@ -1,0 +1,28 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndWelcome" width="100%" height="auto" border="none"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:zk="http://www.zkoss.org/2005/zul"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+
+	<h:table width="100%" border="0">
+
+		<h:tr>
+			<h:td align="center">
+				<h:span style="font-size:22px; color:#0066FF;">
+				<h:br/>
+				<h:br/>
+				<h:br/>
+				<h:br/>
+				<h:br/>
+				<h:br/>
+				<h:br/>				
+					Sistema de Emissão de Carteira Profissional - APM
+				</h:span>
+			</h:td>
+		</h:tr>
+
+	</h:table>
+</window>
+</zk>

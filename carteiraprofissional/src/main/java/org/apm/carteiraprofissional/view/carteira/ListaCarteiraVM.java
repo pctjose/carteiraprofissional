@@ -175,7 +175,7 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 		//Executions.sendRedirect("/pages/carteira/carteira.zul");
 		
-		Window cRequisicao=(Window)Executions.createComponents("/pages/carteira/carteira.zul", null, null);
+		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/carteira/carteira.zul", null, null);
 		cRequisicao.setParent(formListaCarteira);
 		cRequisicao.doModal();
 		
@@ -191,7 +191,7 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 		Sessions.getCurrent().setAttribute("carteiraValues", map);
 		
-		Window cRequisicao=(Window)Executions.createComponents("/pages/carteira/carteira.zul", null, null);
+		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/carteira/carteira.zul", null, null);
 		cRequisicao.setParent(formListaCarteira);
 		cRequisicao.doModal();
 	}

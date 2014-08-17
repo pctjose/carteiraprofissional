@@ -1,0 +1,19 @@
+<?page title="" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="wndMenu" border="normal" apply="org.apm.carteiraprofissional.MenuForm">
+	<tree id="treeMenu">
+		<treecols>
+			<treecol image="/Img/house.gif"/>
+		</treecols>
+		<treechildren>
+			<treeitem label="Menu" open="true">
+				<treechildren>
+					<treeitem label="Pesquisar requisição" value="/pages/anonimo/requisicao/startSearch.zul" image="/imgs/world.gif"/>
+					<treeitem label="Requisitar Carteira" value="/pages/anonimo/requisicao/NovoRequisitante.zul" image="/imgs/application_form_edit.gif"/>
+					<treeitem label="Área Restrita" value="/pages/login/login.zul" image="/imgs/login.png"/>
+				</treechildren>
+			</treeitem>			
+		</treechildren>
+	</tree>
+</window>
+</zk>
