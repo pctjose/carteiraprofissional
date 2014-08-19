@@ -15,6 +15,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
 public class ListaCarteiraVM extends SelectorComposer<Component> {
@@ -39,11 +40,9 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected CarteiraService carteiraService;
-	
+
 	@Wire
 	private Window formListaCarteira;
-	
-	
 
 	public Window getFormListaCarteira() {
 		return formListaCarteira;
@@ -159,9 +158,49 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 				}
 			}
 		}
-		listaCarteiras = carteiraService.getAllByAttributes(numeroCarteira,
-				nomeTitular, apelidoTitular, startDataEmissao, endDateEmissao,
-				startDateValidade, endDateValidade, emitiBool);
+
+		if (validateSearch()) {
+			listaCarteiras = carteiraService.getAllByAttributes(numeroCarteira,
+					nomeTitular, apelidoTitular, startDataEmissao,
+					endDateEmissao, startDateValidade, endDateValidade,
+					emitiBool);
+			if (listaCarteiras == null || listaCarteiras.size() <= 0) {
+				Clients.showNotification("Não existe nenhuma carteira com os parametros introduzidos");
+			}
+		} else {
+			Clients.showNotification("Deve introduzir pelo menos um parâmetro de pesquisa");
+		}
+
+	}
+
+	private boolean validateSearch() {
+		boolean retorno = false;
+		if (numeroCarteira != null && numeroCarteira.trim().length() > 0) {
+			retorno = true;
+		}
+
+		if (nomeTitular != null && nomeTitular.trim().length() > 0) {
+			retorno = true;
+		}
+
+		if (apelidoTitular != null && apelidoTitular.trim().length() > 0) {
+			retorno = true;
+		}
+
+		if (startDataEmissao != null && endDateEmissao != null) {
+			retorno = true;
+		}
+
+		if (startDateValidade != null && endDateValidade != null) {
+			retorno = true;
+		}
+
+		if (emitidaString != null && emitidaString.trim().length() > 0) {
+			retorno = true;
+		}
+
+		return retorno;
+
 	}
 
 	@Command
@@ -173,15 +212,15 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 		Sessions.getCurrent().setAttribute("carteiraValues", map);
 
-		//Executions.sendRedirect("/pages/carteira/carteira.zul");
-		
-		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/carteira/carteira.zul", null, null);
+		// Executions.sendRedirect("/pages/carteira/carteira.zul");
+
+		Window cRequisicao = (Window) Executions.createComponents(
+				"/pages/supervisor/carteira/carteira.zul", null, null);
 		cRequisicao.setParent(formListaCarteira);
 		cRequisicao.doModal();
-		
-		
+
 	}
-	
+
 	@Command
 	public void visualizar(@BindingParam("carteiraRecord") Carteira carteira) {
 
@@ -190,8 +229,9 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 		map.put("selectedRecord", carteira);
 
 		Sessions.getCurrent().setAttribute("carteiraValues", map);
-		
-		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/carteira/carteira.zul", null, null);
+
+		Window cRequisicao = (Window) Executions.createComponents(
+				"/pages/supervisor/carteira/carteira.zul", null, null);
 		cRequisicao.setParent(formListaCarteira);
 		cRequisicao.doModal();
 	}

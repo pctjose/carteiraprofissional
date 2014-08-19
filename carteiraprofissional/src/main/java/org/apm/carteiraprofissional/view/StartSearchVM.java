@@ -15,16 +15,16 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 
-public class StartSearchVM extends SelectorComposer<Component>{
+public class StartSearchVM extends SelectorComposer<Component> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Wire
 	private String codigoPesquisa;
-	
+
 	@WireVariable
 	protected RequisicaoService requisicaoService;
 	@WireVariable
@@ -39,50 +39,59 @@ public class StartSearchVM extends SelectorComposer<Component>{
 	public void setCodigoPesquisa(String codigoPesquisa) {
 		this.codigoPesquisa = codigoPesquisa;
 	}
-	
+
 	@Command
-	public void areaRestrita(){
-		if(grupoUtilizadorService.getAllGrupos().isEmpty() && utilizadorService.getAllUtilizador().isEmpty()){
+	public void areaRestrita() {
+		if (grupoUtilizadorService.getAllGrupos().isEmpty()
+				&& utilizadorService.getAllUtilizador().isEmpty()) {
 			grupoUtilizadorService.inserirGrupo();
 			utilizadorService.inserirUtilizador();
+
 			Executions.sendRedirect("/pages/pagebased/index-login.zul");
-		}else
-		Executions.sendRedirect("/pages/pagebased/index-login.zul");
+		} else {
+
+			Executions.sendRedirect("/pages/pagebased/index-login.zul");
+		}
+
 	}
-	
+
 	@Command
-	public void requisitarCarteira(){
-		//EnviarEmail.sendEmail("pctjose@gmail.com", "jorge3", "eurico.jose@fgh.org.mz", "Teste Envio de Email", "Enviando email atraves do Gmail via Java");
+	public void requisitarCarteira() {
+		// EnviarEmail.sendEmail("pctjose@gmail.com", "jorge3",
+		// "eurico.jose@fgh.org.mz", "Teste Envio de Email",
+		// "Enviando email atraves do Gmail via Java");
 		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("selectedRecord", null);
 		map.put("recordMode", "NEW");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
+
 		Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
 	}
-	
+
 	@Command
-	public void pesquisar(){
-		if(this.codigoPesquisa!=null){
-			if(this.codigoPesquisa.trim().isEmpty()){
+	public void pesquisar() {
+		if (this.codigoPesquisa != null) {
+			if (this.codigoPesquisa.trim().isEmpty()) {
 				Clients.showNotification("Deve introduzir o codigo de pesquisa");
-			}else{
-				Requisicao requisicao=requisicaoService.getRequisicaoByNumero(codigoPesquisa);
-				if(requisicao==null){
+			} else {
+				Requisicao requisicao = requisicaoService
+						.getRequisicaoByNumero(codigoPesquisa);
+				if (requisicao == null) {
 					Clients.showNotification("Não foi encontrada nenhuma requisição com o número introduzido");
-				}else{
+				} else {
 					final HashMap<String, Object> map = new HashMap<String, Object>();
 					map.put("selectedRecord", requisicao.getRequisitante());
 					map.put("recordMode", "EDIT");
 					Sessions.getCurrent().setAttribute("allmyvalues", map);
-					Executions.sendRedirect("/pages/pagebased/index-requisitante-novo.zul");
+
+					Executions
+							.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul");
 				}
 			}
-		}else{
+		} else {
 			Clients.showNotification("Deve introduzir o codigo de pesquisa");
 		}
-		
+
 	}
-	
-	
 
 }

@@ -3,8 +3,8 @@
         <a href="http://apm-moz.org/">
             <image src="/imgs/apm.PNG" width="90px" />
         </a>
-        <div width="400px">
-            <label value="Sistema de Emissão de Carteira Profissional - APM" sclass="banner-head" />
+        <div width="100%">
+            <label value="SCP - APM" sclass="banner-head" />
         </div>
         <hbox hflex="1" vflex="1" pack="end" align="end">
             <label value="${sessionScope.logedIn}"/>

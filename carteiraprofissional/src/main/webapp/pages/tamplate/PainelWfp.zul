@@ -10,7 +10,7 @@
 	<n:table width="100%">
 		<n:tr>
 			<n:td>
-				<zk:image src="/imags/apm.png" />
+				<zk:image src="/imgs/apm.PNG" />
 			</n:td>
 			<n:td colspan="2" align="center" class="footer">
 				APM

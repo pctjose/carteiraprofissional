@@ -114,12 +114,42 @@ public class ListaRequisicaoVM {
 		Executions.sendRedirect("/pages/pagebased/index-requisicao-nova.zul");
 	}
 	
+	private boolean validateSearch(){
+		boolean retorno=false;
+		if(numeroRequisicao !=null && numeroRequisicao.trim().length()>0){
+			retorno=true;
+		}
+		
+		if(nomeRequisitante !=null && nomeRequisitante.trim().length()>0){
+			retorno=true;
+		}
+		
+		if(apelidoRequisitante !=null && apelidoRequisitante.trim().length()>0){
+			retorno=true;
+		}
+		
+		if(dataRequisicao1!=null && dataRequisicao2!=null){
+			retorno=true;
+		}
+		
+		
+		
+		return retorno;
+	}
+	
 	@Command
 	@NotifyChange({"listaRequisicoes","dataSet"})
 	public void pesquisar(){
-		//System.out.println("Requisicao: "+this.numeroRequisicao+" - Nome:"+this.nomeRequisitante+" - Apelido:"+this.apelidoRequisitante+" - Data1: "+this.dataRequisicao1+" - Data2: "+dataRequisicao2);
 		
-		listaRequisicoes = requisicaoService.getRequisicaoByAttributes(numeroRequisicao, nomeRequisitante, apelidoRequisitante, dataRequisicao1, dataRequisicao2, null, null);
+		if(validateSearch()){
+			listaRequisicoes = requisicaoService.getRequisicaoByAttributes(numeroRequisicao, nomeRequisitante, apelidoRequisitante, dataRequisicao1, dataRequisicao2, null, null);
+			if(listaRequisicoes==null || listaRequisicoes.size()<=0){
+				Clients.showNotification("Não foi encontrado nenhuma requisição com os parâmetros introduzidos.");
+			}
+		}else{
+			Clients.showNotification("Deve introduzir pelo menos um parâmetro de pesquisa.");
+		}
+		
 	}
 	
 	@Command

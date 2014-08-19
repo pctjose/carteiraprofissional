@@ -33,7 +33,7 @@
 								</button>
 							</row>
 
-							<row align="center">
+						<!--  	<row align="center">
 								<hbox>
 									<a label="Requisitar Carteira"
 										onClick="@command('requisitarCarteira')" />
@@ -42,7 +42,7 @@
 									<a label="Área Restrita"
 										onClick="@command('areaRestrita')" />
 								</hbox>
-							</row>
+							</row>-->
 						</rows>
 					</grid>
 				</panelchildren>
