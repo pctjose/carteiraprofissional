@@ -20,8 +20,10 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 public class UtilizadorVM extends SelectorComposer<Component> {
 
@@ -33,6 +35,8 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	protected UtilizadorService utilizadorService;
 	@WireVariable
 	protected GrupoUtilizadorService grupoUtilizadorService;
+	
+	Window criarUtilizador;
 		
 	@Wire
 	Textbox nome;
@@ -150,6 +154,17 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 		this.userGrupos = userGrupos;
 	}
 	
+	
+	
+	
+	public Window getCriarUtilizador() {
+		return criarUtilizador;
+	}
+
+	public void setCriarUtilizador(Window criarUtilizador) {
+		this.criarUtilizador = criarUtilizador;
+	}
+
 	private void setDados(Utilizador user){
 		user.setNome(nome.getValue());
 		user.setApelido(apelido.getValue());
@@ -255,13 +270,18 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 		 * }else{ Executions.sendRedirect("/pages/pagebased/index-login.zul"); }
 		 */
 		utilizadorService.saveUtilizador(this.selectedRecord);
-		Executions.sendRedirect("/pages/admin/index-utilizador-lista.zul");
+		
+		criarUtilizador.detach();
+		
+		Clients.showNotification("Utilizador Registado/Actualizado");
+		
+		//Executions.sendRedirect("/pages/admin/index-utilizador-lista.zul");
 
 	}
 
 	@Command
 	public void cancel() {
-		Boolean logedIn = (Boolean) Sessions.getCurrent().getAttribute(
+		/*Boolean logedIn = (Boolean) Sessions.getCurrent().getAttribute(
 				"logedIn");
 		if (logedIn != null) {
 			if (logedIn) {
@@ -278,7 +298,9 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				Executions.sendRedirect("/pages/admin/index-login.zul");
 			}
 
-		}
+		}*/
+		
+		criarUtilizador.detach();
 
 	}
 

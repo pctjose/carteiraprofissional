@@ -1,6 +1,7 @@
-<?page title="Users List" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Lista Utilizadores" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window id="listaUtilizador" border="none"
+	<window id="frmListaUtilizador" border="none"
 		apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.ListaUtilizadorVM')">
 		<separator />
@@ -53,7 +54,7 @@
 									</listbox>
 
 									<checkbox
-										value="@bind(vm.incluirAnulado)" label="Incluir Anulado" />
+										value="@bind(vm.incluirAnulado)" label="Incluir Anulado" id="incluirAnulado"/>
 
 								</hlayout>
 							</row>
@@ -63,10 +64,6 @@
 									onClick="@command('pesquisar')" mold="trendy"
 									sclass="mybutton button blue small" />
 							</row>
-
-
-
-
 						</rows>
 					</grid>
 				</panelchildren>
@@ -79,7 +76,7 @@
 		<div width="100%">
 			<div sclass="sectionTitle">
 				<separator />
-				<label value="Utilizadores" sclass="sectionTitleLabel" />
+				<label value="UTILIZADORES" sclass="sectionTitleLabel" />
 				<separator />
 			</div>
 			<div style="float:right">
@@ -90,7 +87,7 @@
 			<div sclass="sectionSeperator"></div>
 		</div>
 		<separator />
-		<listbox id="" mold="paging" pageSize="11" pagingPosition="top"
+		<listbox id="dataSet" mold="paging" pageSize="11" pagingPosition="top"
 			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
 			model="@load(vm.dataSet)">
 			<listhead sizable="true">

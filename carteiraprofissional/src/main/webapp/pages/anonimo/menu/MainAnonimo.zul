@@ -4,8 +4,8 @@
 
 	<style src="/css/carteiraprofessional.css" />
 	<borderlayout>
-		<west title="Carteira Professional" size="22%" flex="true"
-			splittable="true" collapsible="true">
+		<west title="Carteira Professional" size="20%" flex="true"
+			splittable="true" collapsible="true" autoscroll="true">
 			<borderlayout>
 				<north>
 					<include src="/pages/tamplate/banner.zul" />
@@ -14,10 +14,10 @@
 					<include src="/pages/anonimo/menu/MenuAnonimo.zul"
 						style="padding:5px;" />
 				</center>
-				<south flex="true" collapsible="true">
+				<!--  <south flex="true" collapsible="true">
 					<include src="/pages/tamplate/PainelWfp.zul"
 						style="padding:5px;" />
-				</south>
+				</south>-->
 			</borderlayout>
 		</west>
 		<center flex="true" style="overflow-y:auto;">

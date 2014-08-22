@@ -1,3 +1,5 @@
+<zk>
+<window id="wndPainel" width="100%" border="normal">
 <div hflex="1" vflex="1" sclass="banner">
     <hbox hflex="1" vflex="1" align="center">
         <a href="http://apm-moz.org/">
@@ -13,3 +15,5 @@
     </hbox>
     
 </div>
+</window>
+</zk>

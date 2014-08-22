@@ -100,7 +100,7 @@
 							<button label="Editar"
 								disabled="@load(p1.lockEdit)"
 								onClick="@command('onEdit',requisicaoRecord=p1)" />
-							<button label="Completar"
+							<button label="Foto"
 								disabled="@load(p1.lockEdit)"
 								onClick="@command('completar',requisicaoRecord=p1)" />
 							<button label="Analisar"

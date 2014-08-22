@@ -1,9 +1,9 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window id="wndMenu" border="normal" apply="org.apm.carteiraprofissional.MenuForm">
+<window id="wndMenu" border="normal" apply="org.apm.carteiraprofissional.MenuForm" width="100%">
 	<tree id="treeMenu">
 		<treecols>
-			<treecol image="/Img/house.gif"/>
+			<treecol image="/imgs/house.gif"/>
 		</treecols>
 		<treechildren>
 			<treeitem label="Menu" open="true">
