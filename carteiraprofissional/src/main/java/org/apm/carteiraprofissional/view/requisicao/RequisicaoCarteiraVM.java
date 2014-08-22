@@ -426,8 +426,8 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			"experienciasAdicionadas" })
 	public void onAddExperiencia() {
 
-		if (!funcaoExercida.getText().isEmpty() || !experienciaRelevante.getText().isEmpty()
-				|| !empregadorEndereco.getText().isEmpty() || !empregadorContacto.getText().isEmpty()) {
+		if (!funcaoExercida.getText().isEmpty() && !experienciaRelevante.getText().isEmpty()
+				&& !empregadorEndereco.getText().isEmpty() && !empregadorContacto.getText().isEmpty()) {
 			experiencia = new Experiencia();
 			experiencia.setEmpregador(empregador.getText());
 			experiencia.setActual((Boolean) actual.getValue());
@@ -452,8 +452,8 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@NotifyChange({ "formacao", "formacoesAdicionadas" })
 	public void onAddFormacao() {
 		
-		if (!instituicao.getValue().isEmpty() || !localizacao.getValue().isEmpty() 
-				|| !ano.getValue().toString().isEmpty() || (Escolaridade) grauObtido.getSelectedItem().getValue()==null) {
+		if (!instituicao.getValue().isEmpty() && !localizacao.getValue().isEmpty() 
+				&& !ano.getValue().toString().isEmpty() && (Escolaridade) grauObtido.getSelectedItem().getValue()==null) {
 			formacao = new Formacao();
 			formacao.setAno(ano.getValue());
 			formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
