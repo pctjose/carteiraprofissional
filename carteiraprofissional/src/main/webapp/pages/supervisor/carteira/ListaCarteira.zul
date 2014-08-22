@@ -3,7 +3,7 @@
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
 	<window id="formListaCarteira" border="normal"
-		title="REQUISIÇÕES DE CARTEIRA" apply="org.zkoss.bind.BindComposer"
+		title="CARTEIRAS" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.carteira.ListaCarteiraVM')">
 
 		<div width="100%">

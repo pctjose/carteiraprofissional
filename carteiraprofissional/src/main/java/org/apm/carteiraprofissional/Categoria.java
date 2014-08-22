@@ -29,6 +29,8 @@ public class Categoria implements Serializable {
 	private String designacao;
 	@Column(name = "uuid")
 	private String uuid;
+	@Column(name="descricao")
+	private String descricao;
 
 	// private List<SubCategoria> subCategorias;
 
@@ -61,12 +63,22 @@ public class Categoria implements Serializable {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}	
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override
 	public String toString() {
 		return designacao;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

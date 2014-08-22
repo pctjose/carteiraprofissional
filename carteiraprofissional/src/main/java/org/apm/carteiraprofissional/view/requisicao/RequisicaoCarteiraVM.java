@@ -106,8 +106,8 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Wire
 	Listbox provincias;
 
-	@WireVariable
-	protected RequisitanteService requisitanteService;
+	//@WireVariable
+	//protected RequisitanteService requisitanteService;
 
 	@WireVariable
 	protected EscolaridadeService escolaridadeService;

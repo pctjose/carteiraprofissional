@@ -1,6 +1,53 @@
-<?page title="Lista de Carteiras Por Produzir" contentType="text/html;charset=UTF-8"?>
+<?page title="Lista Carteiras" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-<window title="Lista de Carteiras Por Produzir" border="normal">
-Code will be here
-</window>
+	<window id="formListaCarteira" border="normal"
+		title="CARTEIRAS POR PRODUZIR" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.carteira.ListaCarteiraGraficaVM')">
+		<listbox id="listaCarteiras" mold="paging" pageSize="11"
+			pagingPosition="top" sclass="mylist"
+			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)">
+			<listhead sizable="true">
+				<listheader label="Número Carteira"
+					sortDirection="ascending" sort="auto(numeroCarteira)"
+					width="130px" />
+				<listheader label="Titular" sortDirection="ascending"
+					sort="auto(requisicao.requisitante.NomeCompleto)" width="200px" />
+				<listheader label="Data Emissão"
+					sort="auto(dataEmissao)" width="100px" />
+				<listheader label="Data Validade"
+					sort="auto(dataValidade)" width="100px" />
+				<listheader label="Enviada a Produção"
+					sort="auto(enviarEmissao)" width="140px" />
+				<listheader label="Produzida" sort="auto(emitida)"
+					width="80px" />
+				<listheader label="Acções" />
+			</listhead>
+			<template name="model" var="p1">
+				<listitem>
+					<listcell label="@load(p1.numeroCarteira)" />
+					<listcell
+						label="@load(p1.requisicao.requisitante.nomeCompleto)" />
+					<listcell
+						label="@load(p1.dataEmissao) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.dataValidade) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.enviarEmissao ? 'SIM':'NÃO')" />
+					<listcell label="@load(p1.emitida ? 'SIM':'NÃO')" />
+					<listcell>
+						<hbox spacing="20px">
+							<button label="Baixar Dados"
+								disabled="@load(p1.emitida)"
+								onClick="@command('onBaixarDados',carteiraRecord=p1)" />
+							<button label="Actualizar Produzida"
+								disabled="@load(p1.emitida)"
+								onClick="@command('onActualizarEmitida',carteiraRecord=p1)" />
+						</hbox>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</window>
 </zk>

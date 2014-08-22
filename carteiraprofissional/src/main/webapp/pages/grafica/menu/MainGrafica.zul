@@ -24,7 +24,7 @@
 			<borderlayout>
 				<center>
 					<include id="contentSrc"
-						src="/pages/tamplate/Welcome.zul" />
+						src="/pages/grafica/carteira/ListaCarteiraProduzir.zul"/>
 				</center>
 			</borderlayout>
 		</center>

@@ -7,7 +7,6 @@ import org.apm.carteiraprofissional.dao.RequisitanteDAO;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +39,21 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 	@Transactional(readOnly=true)
 	public Requisitante getRequisitanteById(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Requisitante requisicao = (Requisitante) sessao.get(Requisitante.class,
 				id);
-		tx.commit();
+		//tx.commit();
 		return requisicao;
 	}
 
 	@Transactional(readOnly=true)
 	public Requisitante getRequisitanteByBI(String bi) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(Requisitante.class);
 		cr.add(Restrictions.eq("numeroBi", bi));
 		Requisitante requisicao = (Requisitante) cr.uniqueResult();
-		tx.commit();
+		//tx.commit();
 		return requisicao;
 	}
 
@@ -62,11 +61,11 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 	@Transactional(readOnly=true)
 	public List<Requisitante> getAllRequisitantes() {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria c = sessao.createCriteria(Requisitante.class);
 		c.addOrder(Order.asc("apelido"));
 		List<Requisitante> requisicoes = c.list();
-		tx.commit();
+		//tx.commit();
 		return requisicoes;
 	}
 

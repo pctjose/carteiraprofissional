@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -87,7 +88,7 @@ public class Requisitante extends BaseModel implements Serializable {
 	// Ainda por discutir esta ideia de implementação:
 
 	// private List<RequisicaoSubCategoria> requisicaoSubcategorias;
-	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Experiencia> experiencias;
 	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
 	private List<Formacao> formacoes;
@@ -296,10 +297,11 @@ public class Requisitante extends BaseModel implements Serializable {
 
 	public Categoria getCategoria() {
 		if (experiencias == null || experiencias.isEmpty())
-			return new Categoria();
+			return null;
 		for (Experiencia e : experiencias) {
-			if (e.getActual())
-				return e.getCategoria();
+			if (e.getActual() != null)
+				if (e.getActual())
+					return e.getCategoria();
 		}
 		return experiencias.get(0).getCategoria();
 	}

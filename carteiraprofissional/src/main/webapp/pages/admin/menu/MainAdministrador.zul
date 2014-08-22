@@ -14,10 +14,10 @@
 					<include src="/pages/admin/menu/MenuAdministrador.zul"
 						style="padding:5px;" />
 				</center>
-				<south flex="true" collapsible="true">
+			<!--  	<south flex="true" collapsible="true">
 					<include src="/pages/tamplate/PainelWfp.zul"
 						style="padding:5px;" />
-				</south>
+				</south>-->
 			</borderlayout>
 		</west>
 		<center flex="true" style="overflow-y:auto;">
