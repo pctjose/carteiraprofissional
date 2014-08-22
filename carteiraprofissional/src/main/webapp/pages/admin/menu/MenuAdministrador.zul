@@ -20,10 +20,10 @@
 
 				<treeitem label="Utilizadores" open="true">
 					<treechildren>
-						<treeitem label="Registar Utilizador"
+					<!--  	<treeitem label="Registar Utilizador"
 							value="/pages/admin/utilizador/NovoUtilizador.zul"
-							image="/imgs/world.gif" />
-						<treeitem label="Pesquisa Avançada"
+							image="/imgs/world.gif" />-->
+						<treeitem label="Pesquisa Utilizador"
 							value="/pages/admin/utilizador/ListaUtilizador.zul"
 							image="/imgs/application_form_edit.gif" />
 					</treechildren>
