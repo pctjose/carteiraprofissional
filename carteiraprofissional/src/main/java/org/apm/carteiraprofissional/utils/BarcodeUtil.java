@@ -2,8 +2,6 @@ package org.apm.carteiraprofissional.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -30,12 +28,12 @@ public class BarcodeUtil {
 
 		BufferedImage imagem = MatrixToImageWriter.toBufferedImage(bitmatrix);
 
-		System.out.println("Valor Lido:" + decodePDF417(imagem));
+		/*System.out.println("Valor Lido:" + decodePDF417(imagem));
 
 		File PDF417File = new File("C:\\barcode\\PDF_4171.png");
 
 		MatrixToImageWriter.writeToStream(bitmatrix, "png",
-				new FileOutputStream(PDF417File));
+				new FileOutputStream(PDF417File));*/
 
 		return imagem;
 

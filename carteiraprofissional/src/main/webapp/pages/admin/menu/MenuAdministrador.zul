@@ -32,9 +32,9 @@
 				<treeitem label="Parametrização" open="false">
 					<treechildren>
 						<treeitem label="Categoria Profissional"
-							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+							value="/pages/admin/parametrizacao/ListaCategoriaProfissional.zul" image="/imgs/fn.png" />
 						<treeitem label="Forma Pagamento"
-							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+							value="/pages/admin/parametrizacao/ListaFormaPagamento.zul" image="/imgs/fn.png" />
 						<treeitem label="Nivel Escolaridade"
 							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
 						<treeitem label="Paises e Provincias"

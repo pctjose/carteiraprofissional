@@ -18,6 +18,19 @@ public class FormaPagamento {
 	private String designacao;
 	@Column(name = "uuid")
 	private String uuid;
+	@Column(name="descricao")
+	private String descricao;
+	
+	
+	
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
 	public Integer getId() {
 		return id;

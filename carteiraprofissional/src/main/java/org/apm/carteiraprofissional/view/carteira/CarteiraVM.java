@@ -14,11 +14,18 @@ import javax.imageio.ImageIO;
 import org.apm.carteiraprofissional.Carteira;
 import org.apm.carteiraprofissional.FormaPagamento;
 import org.apm.carteiraprofissional.Requisicao;
+import org.apm.carteiraprofissional.Requisitante;
+import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.FormaPagamentoService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
+import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.utils.BarcodeUtil;
+import org.apm.carteiraprofissional.utils.DateUtil;
+import org.apm.carteiraprofissional.utils.EnviarEmail;
 import org.apm.carteiraprofissional.utils.PathUtils;
+import org.apm.carteiraprofissional.utils.WritePDFCarteira;
+import org.apm.carteiraprofissional.utils.ZipDirUtil;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -48,7 +55,8 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	private boolean makeAsReadOnly;
 	private String recordMode;
 	private Requisicao requisicao;
-	
+	private Utilizador logedInUser;
+
 	@Wire
 	private Window frmCriarCarteira;
 
@@ -69,9 +77,9 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	private RequisicaoService requisicaoService;
-	
-	
-	
+
+	@WireVariable
+	protected RequisitanteService requisitanteService;
 
 	public Window getFrmCriarCarteira() {
 		return frmCriarCarteira;
@@ -149,6 +157,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 		final HashMap<String, Object> map = (HashMap<String, Object>) Sessions
 				.getCurrent().getAttribute("carteiraValues");
 		formasPagamento = formaPagamentoService.getAllFormas();
+		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("logedIn");
 		if (map != null) {
 			this.recordMode = (String) map.get("recordMode");
 			if (this.recordMode.equalsIgnoreCase("NEW")) {
@@ -194,6 +203,15 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 	@Command
 	public void saveThis() throws Exception {
+
+		Requisitante requisitante = requisitanteService
+				.getRequisitanteById(this.selectedRecord.getRequisicao()
+						.getRequisitante().getId());
+
+		String dataDirectory = PathUtils.getWebInfPath() + "/data/"
+				+ this.requisicao.getNumeroRequisicao();
+		String dataZipDir = PathUtils.getWebInfPath() + "/data/datazip";
+
 		if (this.recordMode.equalsIgnoreCase("NEW")) {
 			String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWYXZ";
 			Random r = new Random();
@@ -204,78 +222,105 @@ public class CarteiraVM extends SelectorComposer<Component> {
 					.getNumeroRequisicao();
 			numeroCarteira += letraFinal;
 			this.selectedRecord.setNumeroCarteira(numeroCarteira);
-
-			String valorPDF417 = numeroCarteira + "-NOM:";
-			valorPDF417 += selectedRecord.getRequisicao().getRequisitante()
-					.getNomeCompleto();
-			valorPDF417 += "-EMI:"
-					+ selectedRecord.getDataEmissao()
-					+ "-VAL:"
-					+ selectedRecord.getDataValidade();
-					//+ "-CATG:"
-					//+ selectedRecord.getRequisicao().getRequisitante()
-					//		.getCategoria().getDesignacao();
-
-			BufferedImage pdf417 = BarcodeUtil.encodePDF417(valorPDF417);
-
-			selectedRecord.setPdf417(Images.encode("pdf417.png", pdf417)
-					.getByteData());
-
 			this.selectedRecord.setUuid(UUID.randomUUID().toString());
 			this.selectedRecord.setEmitida(false);
-			this.selectedRecord.setDataValidade(dataValidade.getValue());
 			this.selectedRecord.setDataCriacao(new Date());
-			// this.selectedRecord.setCriadoPor(criadoPor);
-
-			if (enviarEmissao.isChecked()) {
-				this.selectedRecord.setEnviarEmissao(true);
-				this.requisicao.setLockEdit(Boolean.TRUE);
-			} else {
-				this.selectedRecord.setEnviarEmissao(false);
-				this.requisicao.setLockEdit(Boolean.FALSE);
-			}
-
-			ImageIO.write(pdf417, "PNG", new File(PathUtils.getWebInfPath()
-					+ "/pdf417/" + this.selectedRecord.getNumeroCarteira()
-					+ ".png"));
-
-			requisicao.setTemCarteira(true);
-
-			carteiraService.saveCarteira(selectedRecord);
-
-			requisicaoService.saveRequisicao(requisicao);
-			
-			Clients.showNotification("Carteira registada com sucesso com o nr: "+this.selectedRecord.getNumeroCarteira());
-			
-			frmCriarCarteira.detach();
+			this.selectedRecord.setCriadoPor(logedInUser);
 
 		} else {
 			if (this.recordMode.equalsIgnoreCase("EDIT")) {
 				this.selectedRecord.setDataAlteracao(new Date());
-				// this.selectedRecord.setAlteradoPor(alteradoPor);
-
-				if (enviarEmissao.isChecked()) {
-					this.selectedRecord.setEnviarEmissao(true);
-					this.requisicao.setLockEdit(Boolean.TRUE);
-				} else {
-					this.selectedRecord.setEnviarEmissao(false);
-					this.requisicao.setLockEdit(Boolean.FALSE);
-				}
-				this.selectedRecord.setDataValidade(dataValidade.getValue());
-
-				carteiraService.saveCarteira(selectedRecord);
-				requisicaoService.saveRequisicao(requisicao);
-				
-				Clients.showNotification("Carteira actualizada com sucesso.");
-				
-				frmCriarCarteira.detach();
+				this.selectedRecord.setAlteradoPor(logedInUser);
 			}
 		}
 
+		if (enviarEmissao.isChecked()) {
+			this.selectedRecord.setEnviarEmissao(true);
+			this.requisicao.setLockEdit(Boolean.TRUE);
+		} else {
+			this.selectedRecord.setEnviarEmissao(false);
+			this.requisicao.setLockEdit(Boolean.FALSE);
+		}
+		this.selectedRecord.setDataValidade(dataValidade.getValue());
+
+		String valorPDF417 = this.selectedRecord.getNumeroCarteira() + "_";
+		valorPDF417 += requisitante.getNomeCompleto();
+		valorPDF417 += "_" + DateUtil.ptDate(requisitante.getDataNascimento())
+				+ "_" + requisitante.getSexo();
+
+		if (requisitante.getCategoria() != null) {
+			valorPDF417 += "_" + requisitante.getCategoria().getDesignacao();
+		}
+
+		valorPDF417 += "_" + DateUtil.ptDate(selectedRecord.getDataEmissao())
+				+ "_" + DateUtil.ptDate(selectedRecord.getDataValidade()) + "_"
+				+ requisitante.getNumeroDoc() + "_"
+				+ requisitante.getTipoDoc().getDesignacao();
+		// Produzir o PDF417
+		BufferedImage pdf417 = BarcodeUtil.encodePDF417(valorPDF417);
+
+		selectedRecord.setPdf417(Images.encode("pdf417.png", pdf417)
+				.getByteData());
+		// Colocar a Imagem PDF417 no directorio /WEB-INF/data/
+		File dataDir = new File(dataDirectory);
+		if (dataDir.exists()) {
+			ImageIO.write(pdf417, "PNG", new File(dataDirectory + "/"
+					+ this.selectedRecord.getNumeroCarteira() + ".png"));
+		} else {
+			if (dataDir.mkdir()) {
+				ImageIO.write(pdf417, "PNG", new File(dataDirectory + "/"
+						+ this.selectedRecord.getNumeroCarteira() + ".png"));
+			}
+		}
+
+		// Produzir o tamplate PDF guardar na pasta WEB-INF/data e colocar
+		this.selectedRecord.setTamplate(WritePDFCarteira.produzirPDFCarteira(
+				selectedRecord, requisitante));
+
+		requisicao.setTemCarteira(true);
+
+		carteiraService.saveCarteira(selectedRecord);
+
+		requisicaoService.saveRequisicao(requisicao);
+
+		if (this.selectedRecord.isEnviarEmissao()) {
+
+			try {
+				Clients.showBusy("Enviando email com dados para produção da carteira");
+				ZipDirUtil.zipDir(dataDirectory, dataZipDir + "/"
+						+ this.selectedRecord.getNumeroCarteira() + ".zip");
+
+				String sms = "A APM Solicita a V.Excia a produção da carteira com o número: "
+						+ this.selectedRecord.getNumeroCarteira() + "\n\n";
+				sms += "Os outros dados da carteira encontram-se no anexo deste email. \n\n";
+				sms += "Obrigado.";
+
+				EnviarEmail.sendEmail(
+						"circlemz2@yahoo.com",
+						"Envio de Dados Para Produção de Carteira: "
+								+ this.selectedRecord.getNumeroCarteira(),
+						sms,
+						dataZipDir + "/"
+								+ this.selectedRecord.getNumeroCarteira()
+								+ ".zip");
+				Clients.clearBusy();
+			} catch (Exception e) {
+				Clients.clearBusy();
+				Clients.showNotification("Dados gravados com sucesso. Mas houve erro no envio de email com dados para a produção da carteira");
+			}
+
+		}	
+
+		
+		Clients.showNotification("Carteira: "
+				+ this.selectedRecord.getNumeroCarteira()
+				+ " Registada/Actualizada com sucesso");
+		
+		frmCriarCarteira.detach();
 	}
-	
+
 	@Command
-	public void cancel(){
+	public void cancel() {
 		frmCriarCarteira.detach();
 	}
 

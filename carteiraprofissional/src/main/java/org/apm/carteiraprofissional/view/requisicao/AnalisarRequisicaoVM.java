@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
+import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.utils.EnviarEmail;
@@ -22,6 +23,8 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static Logger log = Logger.getLogger(AnalisarRequisicaoVM.class);
 
 	private Requisicao selectedRecord;
 	private boolean makeAsReadOnly;
@@ -98,30 +101,41 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 			this.selectedRecord.setAceite(false);
 		}
 		requisicaoService.saveRequisicao(selectedRecord);
+		
+		try{
+			
+			Clients.showBusy("Enviando email ao requisitante...");
+			
+			String title = "";
 
-		String title = "";
+			String mensagem = "Exmo(a) Srº(ª): "
+					+ selectedRecord.getRequisitante().getNomeCompleto() + "\n\n";
+			mensagem += "Vimos informar que a sua requisição de carteira profissional solicitada a APM foi: \n\n";
+			if (selectedRecord.getAceite()) {
+				mensagem += "ACEITE \n\n";
+				title = "ACEITAÇÃO DA REQUISIÇÃO DE CARTEIRA PROFISSIONAL APM: "
+						+ selectedRecord.getNumeroRequisicao();
+			} else {
+				mensagem += "REJEITADA \n\n";
+				title = "REJEIÇÃO DA REQUISIÇÃO DE CARTEIRA PROFISSIONAL APM: "
+						+ selectedRecord.getNumeroRequisicao();
+			}
 
-		String mensagem = "Exmo(a) Srº(ª): "
-				+ selectedRecord.getRequisitante().getNomeCompleto() + "\n\n";
-		mensagem += "Vimos informar que a sua requisição de carteira profissional solicitada a APM foi: \n\n";
-		if (selectedRecord.getAceite()) {
-			mensagem += "ACEITE \n\n";
-			title = "ACEITAÇÃO DA REQUISIÇÃO DE CARTEIRA PROFISSIONAL APM: "
-					+ selectedRecord.getNumeroRequisicao();
-		} else {
-			mensagem += "REJEITADA \n\n";
-			title = "REJEIÇÃO DA REQUISIÇÃO DE CARTEIRA PROFISSIONAL APM: "
-					+ selectedRecord.getNumeroRequisicao();
+			mensagem += "Observações: \n\n";
+
+			mensagem += selectedRecord.getJustificacaoAceitacao();
+
+			mensagem += "\n\n OBRIGADO.";
+
+			EnviarEmail.sendEmail(selectedRecord.getRequisitante().getEmail(),
+					title, mensagem);
+			
+			Clients.clearBusy();
+		}catch(Exception e){
+			log.debug(e);
 		}
 
-		mensagem += "Observações: \n\n";
-
-		mensagem += selectedRecord.getJustificacaoAceitacao();
-
-		mensagem += "\n\n OBRIGADO.";
-
-		EnviarEmail.sendEmail(selectedRecord.getRequisitante().getEmail(),
-				title, mensagem);
+		
 
 		Clients.showNotification("Requisição actualizada e um email foi enviado ao requisitante: "
 				+ selectedRecord.getRequisitante().getNomeCompleto());

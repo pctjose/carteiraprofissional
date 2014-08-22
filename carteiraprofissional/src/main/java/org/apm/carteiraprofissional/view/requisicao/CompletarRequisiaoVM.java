@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -14,6 +13,7 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
+import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.utils.PathUtils;
@@ -50,6 +50,8 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 	private static final long serialVersionUID = 1L;
 
 	private Requisicao requisicao;
+	
+	private Utilizador logedInUser;
 
 	private static Logger log = Logger.getLogger(CompletarRequisiaoVM.class);
 
@@ -89,6 +91,8 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 
 		requisicao = (Requisicao) Sessions.getCurrent().getAttribute(
 				"requisicao");
+		
+		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("logedIn");
 
 		if (requisicao != null) {
 			if (requisicao.isCompleta()) {
@@ -112,6 +116,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
 		window.setVisible(true);
+		Thread.sleep(30000);
 		BufferedImage image = webcam.getImage();
 		userImage = Images.encode("Foto.png", image);
 		Thread.sleep(300);
@@ -127,14 +132,14 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		Object objUploadEvent = ctx.getTriggerEvent();
 		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
 			upEvent = (UploadEvent) objUploadEvent;
-			System.out.println("My Event: "+upEvent.getName());
+			log.info("Evento do Upload de Imagem: " + upEvent.getName());
 		}
 		if (upEvent != null) {
 			Media media = upEvent.getMedia();
 			int lengthofImage = media.getByteData().length;
 			if (media instanceof Image) {
 				if (lengthofImage > 500 * 1024) {
-					Clients.showNotification("Seleccione uma imagem menor de 500kb");					
+					Clients.showNotification("Seleccione uma imagem menor de 500kb");
 					return;
 				} else {
 					userImage = (AImage) media;
@@ -144,7 +149,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 			}
 		} else {
 			Clients.showNotification("Dificuldades em accionar o evento de upload de imagem... Tente via webcan");
-			//log.debug("Upload Event Is not Coming");
+			log.debug("Upload Event Is not Coming");
 		}
 
 	}
@@ -162,29 +167,36 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		} else {
 			BufferedImage foto = ImageIO.read(userImage.getStreamData());
 
-			foto = Scalr.resize(foto, Scalr.Method.SPEED,
-					Scalr.Mode.FIT_EXACT, 118, 136, Scalr.OP_ANTIALIAS);
+			foto = Scalr.resize(foto, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT,
+					118, 136, Scalr.OP_ANTIALIAS);
 
 			Requisitante requisitante = requisicao.getRequisitante();
 
 			userImage = Images.encode("foto.png", foto);
 
-			requisitante.setFoto(userImage.getByteData());
-			requisitante.setUuid(UUID.randomUUID().toString());
-			requisitanteService.saveRequisitante(requisitante);
-
-			requisicao = requisicaoService.getRequisicaoByID(requisicao
-					.getRequisicaoId());
+			requisitante.setFoto(userImage.getByteData());			
+			requisitante.setDataAlteracao(new Date());
+			requisitante.setAlteradoPor(logedInUser);
 
 			requisicao.setCompleta(true);
-			requisicao.setAceite(true);
-			requisicao.setJustificacaoAceitacao("É porque foi aceite");
-			requisicao.setDataAceite(new Date());
+		
+
+			requisitanteService.saveRequisitante(requisitante);
 			requisicaoService.saveRequisicao(requisicao);
 
-			ImageIO.write(foto, "PNG", new File(PathUtils.getWebInfPath()
-					+ "/fotos/" + this.requisicao.getNumeroRequisicao()
-					+ ".png"));
+			String dataDirPath = PathUtils.getWebInfPath() + "/data/"
+					+ this.requisicao.getNumeroRequisicao();
+
+			File dataDir = new File(dataDirPath);
+			if (dataDir.exists()) {
+				ImageIO.write(foto, "PNG", new File(dataDirPath + "/"
+						+ this.requisicao.getNumeroRequisicao() + ".png"));
+			} else {
+				if (dataDir.mkdir()) {
+					ImageIO.write(foto, "PNG", new File(dataDirPath + "/"
+							+ this.requisicao.getNumeroRequisicao() + ".png"));
+				}
+			}
 
 			frmCompletarRequisicao.detach();
 
