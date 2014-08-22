@@ -3,6 +3,7 @@ package org.apm.carteiraprofissional.view.requisicao;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Image;
 import org.zkoss.image.Images;
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -48,6 +50,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
@@ -63,11 +66,13 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 
 public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
-	
+
 	private static Logger _log = Logger.getLogger(RequisicaoCarteiraVM.class); 
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private static String[] PDF_FORMAT = {"application/pdf"};
+	
 	private Requisitante selectedRecord;
 	
 	private boolean makeAsReadOnly;
@@ -214,6 +219,9 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Wire
 	Textbox localEmissao;
 	
+	@Wire
+	Textbox numeroNuit;
+	
 	public Requisitante getSelectedRecord() {
 		return selectedRecord;
 	}
@@ -320,6 +328,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		this.inPaises = paises;
 	}
 
+	@SuppressWarnings({ "unchecked", "unused" })
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 
@@ -348,30 +357,21 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		
 		formacao = new Formacao();
 
-		if (map != null) {
-			this.recordMode = (String) map.get("recordMode");
-			requisicao = (Requisitante) map.get("selectedRecord");
-
-		} else {
-			this.recordMode = "EDIT";
-			// userProfile = logedInUser;
-		}
-
-		if (recordMode.equals("NEW")) {
+		if (map == null) {
 			this.selectedRecord = new Requisitante();
-			//this.selectedRecord.setRequisitante(requisitante);
-		}
 
-		if (recordMode.equals("EDIT")) {
-			// this.selectedRecord = requisicao;
+		} /*else {
+			
+			if (recordMode.equals("EDIT")) {
+				// this.selectedRecord = requisicao;
 
-		}
+			}
 
-		if (recordMode.equals("READ")) {
-			setMakeAsReadOnly(true);
-			// this.selectedRecord = requisicao;
-
-		}
+			if (recordMode.equals("READ")) {
+				setMakeAsReadOnly(true);
+				// this.selectedRecord = requisicao;
+			}	
+		}*/
 	}
 
 	@Command("upload")
@@ -446,20 +446,24 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Command
 	@NotifyChange({ "formacao", "formacoesAdicionadas" })
 	public void onAddFormacao() {
+		
+		if (!instituicao.getValue().isEmpty() && !localizacao.getValue().isEmpty() 
+				&& !ano.getValue().toString().isEmpty() && (Escolaridade) grauObtido.getSelectedItem().getValue()==null) {
+			formacao = new Formacao();
+			formacao.setAno(ano.getValue());
+			formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
+					.getValue());
+			formacao.setInstituicao(instituicao.getValue());
+			formacao.setLocalizacao(localizacao.getValue());
+			formacao.setRequisitante(selectedRecord);
+			formacao.setUuid(UUID.randomUUID().toString());
+			formacao.setDataRegisto(new Date());
 
-		formacao = new Formacao();
-		formacao.setAno(ano.getValue());
-		formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
-				.getValue());
-		formacao.setInstituicao(instituicao.getValue());
-		formacao.setLocalizacao(localizacao.getValue());
-		formacao.setRequisitante(selectedRecord);
-		formacao.setUuid(UUID.randomUUID().toString());
-		formacao.setDataRegisto(new Date());
-
-		formacoesAdicionadas.add(formacao);
-		this.selectedRecord.getFormacoes().add(formacao);
-
+			formacoesAdicionadas.add(formacao);
+			this.selectedRecord.getFormacoes().add(formacao);
+		} else {
+			Clients.showNotification("Por favor adicione a formação acadêmica e profissional"); 
+		}
 	}
 
 	@Command
@@ -527,8 +531,12 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			System.out.println("ID GRAVADO: "+selectedRecord.getId());*/
 			
 			Sessions.getCurrent().setAttribute("requisitante", selectedRecord);
-			Executions.sendRedirect("/pages/requisicao/Requisicao.zul");
+			//Executions.sendRedirect("/pages/anonimo/requisicao/Requisicao.zul");
 			
+			Window window = (Window)Executions.createComponents("/pages/anonimo/requisicao/Requisicao.zul", null, null);
+			
+			window.doModal();
+						
 		} else {
 			
 			try {
@@ -713,6 +721,36 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		} else {
 			dataFinal.setReadonly(Boolean.FALSE);
 			dataFinal.setDisabled(Boolean.FALSE);
+		}
+	}
+	
+	@Command
+	public void onUploadPDF(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
+		_log.info("upload doc called...");
+		
+		UploadEvent upEvent = null;
+		
+		Object objUploadEvent = ctx.getTriggerEvent();
+		
+		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
+            upEvent = (UploadEvent) objUploadEvent;
+		}
+		
+		if (upEvent != null) {
+			Media media = upEvent.getMedia();
+			
+			if (Arrays.binarySearch(PDF_FORMAT, media.getContentType()) >= 0) { 
+				
+				selectedRecord = new Requisitante();
+				selectedRecord.setNumeroDoc(numeroBi.getValue());
+				selectedRecord.setDataEmissao(dataEmissao.getValue());
+				selectedRecord.setDataValidade(dataValidade.getValue());
+				selectedRecord.setLocalEmissao(localEmissao.getValue());
+				selectedRecord.setCopiaDoc(media.getByteData());
+				selectedRecord.setNumeroNuit(numeroNuit.getValue());
+				selectedRecord.setTipoDoc(selectedRecord.getTipoDoc());
+				
+			}
 		}
 	}
 }

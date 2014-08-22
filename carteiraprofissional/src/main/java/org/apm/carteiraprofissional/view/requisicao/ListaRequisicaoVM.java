@@ -105,6 +105,7 @@ public class ListaRequisicaoVM {
 	public List<Requisicao> getDataSet() {
 		return listaRequisicoes;
 	}
+	
 	@Command
 	public void onAddNew() {
 		final HashMap<String, Object> map = new HashMap<String, Object>();

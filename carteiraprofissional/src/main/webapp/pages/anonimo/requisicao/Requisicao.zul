@@ -1,0 +1,110 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="Registo de Requisicao" contentType="text/html;charset=UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="requisicao" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoVM')"
+		width="60%"
+		position="center,center" 
+		closable="true"
+		action="show: slideDown;hide: slideUp">
+		
+		<div
+			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+			<separator />
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label id="lcaption"
+									sclass="sectionTitleLabel" value="REGISTO DE REQUISICAO" />
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+			<panel sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<hlayout>
+									<label value="Data Requisição"
+										sclass="flabel" />
+									<datebox id="dataRequisiao"
+										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+										width="100px" value="@bind(fx.dataRequisiao)"
+										constraint="no future" format="dd-MM-yyyy" />
+								</hlayout>
+							</row>
+							<row>
+								<hlayout>
+									<label value="Local Requisicao"
+										sclass="flabel" />
+									<textbox id="localRequisicao"
+										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+										value="@bind(fx.localRequisicao)" width="200px" />
+								</hlayout>
+							</row>
+
+							<row>
+
+								<checkbox id="assinouCompromisso"
+									value="@bind(fx.assinouCompromisso)"
+									label="Assinou termo de compromisso" />
+
+							</row>
+
+							<row>
+								<vlayout>
+									<hlayout>
+										<checkbox id="concordaTermos"
+											value="@bind(fx.concordaTermos)"
+											label="Concordo com os termos" />
+
+
+										<button
+											label="Visualizar Termos">
+											<attribute name="onClick"><![CDATA[
+	Filedownload.save("/docs/termos/Regulamento.pdf", "pdf");
+]]></attribute>
+										</button>
+
+									</hlayout>
+									<label
+										value="Ao seleccionar em 'Concordo com os termos' considera-se que está assinando e concorda com os termos" />
+
+								</vlayout>
+
+							</row>
+							<row>
+								<hlayout>
+									<button label="Fechar"
+										onClick="@command('fechar')" />
+									<button label="Registar"
+										onClick="@command('saveThis')" />
+								</hlayout>
+
+							</row>
+
+						</rows>
+					</grid>
+
+
+				</panelchildren>
+			</panel>
+
+		</div>
+
+	</window>
+</zk>
