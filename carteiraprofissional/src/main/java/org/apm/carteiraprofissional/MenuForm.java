@@ -2,6 +2,7 @@ package org.apm.carteiraprofissional;
 
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Path;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
@@ -28,6 +29,8 @@ public class MenuForm extends GenericForwardComposer  {
 		log.info("paginaPretendida "+paginaPretendida);
 
 		incConteudo = (Include)Path.getComponent("//main/wndMain/contentSrc");
+		
+		Sessions.getCurrent().setAttribute("setContent", incConteudo);
 		
 		incConteudo.setSrc(null);
 		incConteudo.setSrc(paginaPretendida);

@@ -16,8 +16,10 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Window;
 
 public class RequisicaoVM extends SelectorComposer<Component> {
 
@@ -39,6 +41,9 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected NumeroRequisicaoService numeroRequisicaoService;
+	
+	@Wire
+	private Window requisicao;
 
 	public Requisicao getSelectedRecord() {
 		return selectedRecord;
@@ -122,6 +127,12 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 		
 		Clients.showNotification("Requisição Registada e um email foi enviado.");
 
+	}
+	
+	@Command("fechar")
+	public void close(){
+		
+		requisicao.detach();
 	}
 
 }

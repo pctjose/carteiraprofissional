@@ -84,8 +84,7 @@ public class StartSearchVM extends SelectorComposer<Component> {
 					map.put("recordMode", "EDIT");
 					Sessions.getCurrent().setAttribute("allmyvalues", map);
 
-					Executions
-							.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul");
+					Executions.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul");
 				}
 			}
 		} else {
