@@ -426,29 +426,34 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			"experienciasAdicionadas" })
 	public void onAddExperiencia() {
 
-		experiencia = new Experiencia();
-		experiencia.setEmpregador(empregador.getText());
-		experiencia.setActual((Boolean) actual.getValue());
-		experiencia.setEmpregadorContacto(empregadorContacto.getText());
-		experiencia.setEmpregadorEndereco(empregadorEndereco.getText());
-		experiencia.setDataFinal(dataFinal.getValue());
-		experiencia.setDataInicial(dataInicial.getValue());
-		experiencia.setFuncaoExercida(funcaoExercida.getText());
-		experiencia.setExperienciaRelevante(experienciaRelevante.getText());
-		experiencia.setUuid(UUID.randomUUID().toString());
-		experiencia.setRequisitante(selectedRecord);
-		experiencia.setDataRegisto(new Date());
+		if (!funcaoExercida.getText().isEmpty() || !experienciaRelevante.getText().isEmpty()
+				|| !empregadorEndereco.getText().isEmpty() || !empregadorContacto.getText().isEmpty()) {
+			experiencia = new Experiencia();
+			experiencia.setEmpregador(empregador.getText());
+			experiencia.setActual((Boolean) actual.getValue());
+			experiencia.setEmpregadorContacto(empregadorContacto.getText());
+			experiencia.setEmpregadorEndereco(empregadorEndereco.getText());
+			experiencia.setDataFinal(dataFinal.getValue());
+			experiencia.setDataInicial(dataInicial.getValue());
+			experiencia.setFuncaoExercida(funcaoExercida.getText());
+			experiencia.setExperienciaRelevante(experienciaRelevante.getText());
+			experiencia.setUuid(UUID.randomUUID().toString());
+			experiencia.setRequisitante(selectedRecord);
+			experiencia.setDataRegisto(new Date());
 
-		experienciasAdicionadas.add(experiencia);
-		this.selectedRecord.getExperiencias().add(experiencia);
+			experienciasAdicionadas.add(experiencia);
+			this.selectedRecord.getExperiencias().add(experiencia);
+		} else {
+			Clients.showNotification("Por favor adicione a experiência"); 
+		}
 	}
 
 	@Command
 	@NotifyChange({ "formacao", "formacoesAdicionadas" })
 	public void onAddFormacao() {
 		
-		if (!instituicao.getValue().isEmpty() && !localizacao.getValue().isEmpty() 
-				&& !ano.getValue().toString().isEmpty() && (Escolaridade) grauObtido.getSelectedItem().getValue()==null) {
+		if (!instituicao.getValue().isEmpty() || !localizacao.getValue().isEmpty() 
+				|| !ano.getValue().toString().isEmpty() || (Escolaridade) grauObtido.getSelectedItem().getValue()==null) {
 			formacao = new Formacao();
 			formacao.setAno(ano.getValue());
 			formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
