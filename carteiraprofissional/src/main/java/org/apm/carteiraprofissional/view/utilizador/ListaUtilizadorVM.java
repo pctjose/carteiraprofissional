@@ -22,6 +22,7 @@ import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
 
 public class ListaUtilizadorVM {
 
@@ -33,6 +34,8 @@ public class ListaUtilizadorVM {
 
 	private Utilizador selectedItem;
 	private List<Utilizador> allReordsInDB = null;
+	
+	Window frmListaUtilizador;
 
 	private String nome;
 	private String apelido;
@@ -88,17 +91,27 @@ public class ListaUtilizadorVM {
 	public void setSelectedItem(Utilizador selectedItem) {
 		this.selectedItem = selectedItem;
 	}
+	
+	
+
+	public Window getFrmListaUtilizador() {
+		return frmListaUtilizador;
+	}
+
+	public void setFrmListaUtilizador(Window frmListaUtilizador) {
+		this.frmListaUtilizador = frmListaUtilizador;
+	}
 
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 		// CRUDService = (CRUDService) SpringUtil.getBean("CRUDService");
 		// allReordsInDB = CRUDService.getAll(UserProfile.class);
-		utilizadorService = (UtilizadorService) SpringUtil
-				.getBean("utilizadorService");
+		//utilizadorService = (UtilizadorService) SpringUtil
+		//		.getBean("utilizadorService");
 
-		grupoUtilizadorService = (GrupoUtilizadorService) SpringUtil
-				.getBean("grupoUtilizadorService");
+		//grupoUtilizadorService = (GrupoUtilizadorService) SpringUtil
+		//		.getBean("grupoUtilizadorService");
 
 		inUserGrupos = grupoUtilizadorService.getAllGrupos();
 		allReordsInDB = utilizadorService.getAllUtilizadores(false);
@@ -117,8 +130,14 @@ public class ListaUtilizadorVM {
 		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("selectedRecord", null);
 		map.put("recordMode", "NEW");
-		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
+		Sessions.getCurrent().setAttribute("allmyvalues", map);		
+		Window cRequisicao = (Window) Executions.createComponents(
+				"/pages/admin/utilizador/NovoUtilizador.zul", null, null);
+		cRequisicao.setParent(frmListaUtilizador);
+		cRequisicao.doModal();
+		
+		
+		//Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
 	}
 
 	@Command
@@ -128,7 +147,11 @@ public class ListaUtilizadorVM {
 		map.put("selectedRecord", userProfile);
 		map.put("recordMode", "EDIT");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
+		Window cRequisicao = (Window) Executions.createComponents(
+				"/pages/admin/utilizador/NovoUtilizador.zul", null, null);
+		cRequisicao.setParent(frmListaUtilizador);
+		cRequisicao.doModal();
+		//Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
 	}
 
 	@Command
@@ -139,7 +162,13 @@ public class ListaUtilizadorVM {
 		map.put("selectedRecord", userProfile);
 		map.put("recordMode", "READ");
 		Sessions.getCurrent().setAttribute("allmyvalues", map);
-		Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
+		
+		Window cRequisicao = (Window) Executions.createComponents(
+				"/pages/admin/utilizador/NovoUtilizador.zul", null, null);
+		cRequisicao.setParent(frmListaUtilizador);
+		cRequisicao.doModal();
+		
+		//Executions.sendRedirect("/pages/admin/utilizador/NovoUtilizador.zul");
 	}
 
 	@Command
