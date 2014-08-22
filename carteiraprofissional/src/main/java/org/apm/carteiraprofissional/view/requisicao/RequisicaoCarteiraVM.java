@@ -25,10 +25,8 @@ import org.apm.carteiraprofissional.service.CategoriaService;
 import org.apm.carteiraprofissional.service.EscolaridadeService;
 import org.apm.carteiraprofissional.service.PaisService;
 import org.apm.carteiraprofissional.service.ProvinciaService;
-import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.service.TipoDocumentoService;
 import org.apm.carteiraprofissional.utils.AgeHelper;
-import org.apm.carteiraprofissional.utils.MessageBoxHelper;
 import org.apm.carteiraprofissional.utils.Msg;
 import org.zkoss.bind.BindContext;
 import org.zkoss.bind.BindUtils;
@@ -453,7 +451,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	public void onAddFormacao() {
 		
 		if (!instituicao.getValue().isEmpty() && !localizacao.getValue().isEmpty() 
-				&& !ano.getValue().toString().isEmpty() && (Escolaridade) grauObtido.getSelectedItem().getValue()==null) {
+				&& !ano.getValue().toString().isEmpty() && (Escolaridade) grauObtido.getSelectedItem().getValue()!=null) {
 			formacao = new Formacao();
 			formacao.setAno(ano.getValue());
 			formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
@@ -525,9 +523,9 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		
 		validate();
 		
-		List<Msg> errors = validateInput();
+		//List<Msg> errors = validateInput();
 		
-		if (errors.isEmpty()) {
+		//if (errors.isEmpty()) {
 			
 			/*System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
 			System.out.println("Experiencias:"+selectedRecord.getExperiencias().size());
@@ -542,16 +540,16 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			
 			window.doModal();
 						
-		} else {
+		//} else {
 			
-			try {
+			/*try {
 				
 				MessageBoxHelper.showFormError(errors,novaRequisicao);
 			} catch (InterruptedException e) {
 				_log.info("Nao foi possivel mostrar a lista de erros...");
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	public boolean validate() {
@@ -746,7 +744,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			
 			if (Arrays.binarySearch(PDF_FORMAT, media.getContentType()) >= 0) { 
 				
-				selectedRecord = new Requisitante();
+				//selectedRecord = new Requisitante();
 				selectedRecord.setNumeroDoc(numeroBi.getValue());
 				selectedRecord.setDataEmissao(dataEmissao.getValue());
 				selectedRecord.setDataValidade(dataValidade.getValue());
