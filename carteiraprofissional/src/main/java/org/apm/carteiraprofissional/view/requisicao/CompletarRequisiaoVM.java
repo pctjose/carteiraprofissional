@@ -92,7 +92,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		requisicao = (Requisicao) Sessions.getCurrent().getAttribute(
 				"requisicao");
 		
-		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("logedIn");
+		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("utilizador");
 
 		if (requisicao != null) {
 			if (requisicao.isCompleta()) {
