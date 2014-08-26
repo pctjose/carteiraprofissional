@@ -271,7 +271,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 		 */
 		utilizadorService.saveUtilizador(this.selectedRecord);
 		
-		criarUtilizador.detach();
+		//criarUtilizador.detach();
 		
 		Clients.showNotification("Utilizador Registado/Actualizado");
 		

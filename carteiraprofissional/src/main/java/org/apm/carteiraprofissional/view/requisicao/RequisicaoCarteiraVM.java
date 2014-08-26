@@ -25,6 +25,7 @@ import org.apm.carteiraprofissional.service.CategoriaService;
 import org.apm.carteiraprofissional.service.EscolaridadeService;
 import org.apm.carteiraprofissional.service.PaisService;
 import org.apm.carteiraprofissional.service.ProvinciaService;
+import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.service.TipoDocumentoService;
 import org.apm.carteiraprofissional.utils.AgeHelper;
 import org.apm.carteiraprofissional.utils.Msg;
@@ -65,52 +66,52 @@ import com.github.sarxos.webcam.WebcamPanel;
 
 public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
-	private static Logger _log = Logger.getLogger(RequisicaoCarteiraVM.class); 
+	private static Logger _log = Logger.getLogger(RequisicaoCarteiraVM.class);
 
 	private static final long serialVersionUID = 1L;
-	
-	private static String[] PDF_FORMAT = {"application/pdf"};
-	
+
+	private static String[] PDF_FORMAT = { "application/pdf" };
+
 	private Requisitante selectedRecord;
-	
+
 	private boolean makeAsReadOnly;
-	
+
 	private String recordMode;
-	
+
 	private Experiencia experiencia;
-	
+
 	private Formacao formacao;
-	
+
 	@Wire
 	private Image userImage;
 
 	@Wire
 	private List<Escolaridade> escolaridades;
-	
+
 	@Wire
 	private List<TipoDocumento> tipoDocs;
-	
+
 	@Wire
 	private List<Categoria> categorias;
 
 	@Wire
 	private List<Experiencia> experienciasAdicionadas;
-	
+
 	@Wire
 	private List<Formacao> formacoesAdicionadas;
-	
-	private List<Provincia> inProvincias;	
-	
+
+	private List<Provincia> inProvincias;
+
 	private List<Pais> inPaises;
-	
+
 	@Wire
 	Listbox paises;
-	
+
 	@Wire
 	Listbox provincias;
 
-	//@WireVariable
-	//protected RequisitanteService requisitanteService;
+	// @WireVariable
+	// protected RequisitanteService requisitanteService;
 
 	@WireVariable
 	protected EscolaridadeService escolaridadeService;
@@ -120,106 +121,108 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected CategoriaService categoriaService;
-	
+
 	@WireVariable
 	protected PaisService paisService;
-	
+
 	@WireVariable
 	protected ProvinciaService provinciaService;
-	
+
+	@WireVariable
+	protected RequisitanteService requisitanteService;
 
 	// ================= Experiencia =========================//
 	@Wire
 	Textbox empregador;
-	
+
 	@Wire
 	Checkbox actual;
-	
+
 	@Wire
 	Textbox empregadorEndereco;
-	
+
 	@Wire
 	Textbox empregadorContacto;
-	
+
 	@Wire
 	Datebox dataInicial;
-	
+
 	@Wire
 	Datebox dataFinal;
-	
+
 	@Wire
 	Textbox funcaoExercida;
-	
+
 	@Wire
 	Textbox experienciaRelevante;
 
 	// ==================== Formacao ==================//
 	@Wire
 	Textbox instituicao;
-	
+
 	@Wire
 	Textbox localizacao;
-	
+
 	@Wire
 	Intbox ano;
-	
+
 	@Wire
 	Listbox grauObtido;
 
 	@Wire
 	Textbox apelido;
-	
+
 	@Wire
 	Textbox nome;
-	
+
 	@Wire
 	Radiogroup sexo;
-	
+
 	@Wire
 	Radio sexoM;
-	
+
 	@Wire
 	Radio sexoF;
-	
+
 	@Wire
 	Datebox dataNascimento;
 
 	@Wire
 	Listitem lstEscola;
-	
+
 	@Wire
 	Listitem li;
-	
+
 	@Wire
 	Textbox cidade;
-	
+
 	@Wire
 	Textbox endereco;
-	
+
 	@Wire
 	Textbox contacto1;
-	
+
 	@Wire
 	Textbox email;
-	
+
 	@Wire
 	Textbox numeroBi;
-	
+
 	@Wire
 	private Window novaRequisicao;
-	
+
 	@Wire
 	Datebox dataEmissao;
-	
+
 	@Wire
 	Datebox dataValidade;
-	
+
 	@Wire
 	Textbox localEmissao;
-	
+
 	@Wire
 	Textbox numeroNuit;
-	
+
 	public Requisitante getSelectedRecord() {
 		return selectedRecord;
 	}
@@ -308,7 +311,6 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	public void setFormacoesAdicionadas(List<Formacao> formacoesAdicionadas) {
 		this.formacoesAdicionadas = formacoesAdicionadas;
 	}
-	
 
 	public List<Provincia> getProvincias() {
 		return inProvincias;
@@ -330,46 +332,46 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 
-		Requisitante requisicao;
+		// Requisitante requisicao;
 		Selectors.wireComponents(view, this, false);
 
-		final HashMap<String, Object> map = (HashMap<String, Object>) Sessions.getCurrent().getAttribute("allmyvalues");	
-		
+		// final HashMap<String, Object> map = (HashMap<String, Object>)
+		// Sessions.getCurrent().getAttribute("allmyvalues");
+
+		recordMode = Executions.getCurrent().getParameter("requisicaoMode");
+
 		escolaridades = escolaridadeService.getAllNiveis();
-		
+
 		tipoDocs = tipoDocumentoService.getAllTipoDocumento();
-		
+
 		categorias = categoriaService.getAllCategorias();
-		
+
 		inPaises = paisService.getAllPaises();
-		
-		if (inPaises!=null && inPaises.size()>0){
+
+		if (inPaises != null && inPaises.size() > 0) {
 			inProvincias = provinciaService.getAllProvincia(inPaises.get(0));
 		}
 
-		experienciasAdicionadas = new ArrayList<Experiencia>();
-		
-		formacoesAdicionadas = new ArrayList<Formacao>();
-
-		experiencia = new Experiencia();
-		
-		formacao = new Formacao();
-
-		if (map == null) {
+		if (recordMode.equalsIgnoreCase("NEW")) {
 			this.selectedRecord = new Requisitante();
+			experienciasAdicionadas = new ArrayList<Experiencia>();
+			formacoesAdicionadas = new ArrayList<Formacao>();
+		} else {
+			this.selectedRecord = (Requisitante) Sessions.getCurrent()
+					.getAttribute("requisitante");
 
-		} /*else {
-			
-			if (recordMode.equals("EDIT")) {
-				// this.selectedRecord = requisicao;
+			this.selectedRecord = requisitanteService
+					.getRequisitanteById(this.selectedRecord.getId());
+			if (this.selectedRecord.getExperiencias() != null)
+				experienciasAdicionadas = this.selectedRecord.getExperiencias();
+			else
+				experienciasAdicionadas = new ArrayList<Experiencia>();
 
-			}
-
-			if (recordMode.equals("READ")) {
-				setMakeAsReadOnly(true);
-				// this.selectedRecord = requisicao;
-			}	
-		}*/
+			if (this.selectedRecord.getFormacoes() != null)
+				formacoesAdicionadas = this.selectedRecord.getFormacoes();
+			else
+				formacoesAdicionadas = new ArrayList<Formacao>();
+		}
 	}
 
 	@Command("upload")
@@ -424,8 +426,10 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			"experienciasAdicionadas" })
 	public void onAddExperiencia() {
 
-		if (!funcaoExercida.getText().isEmpty() && !experienciaRelevante.getText().isEmpty()
-				&& !empregadorEndereco.getText().isEmpty() && !empregadorContacto.getText().isEmpty()) {
+		if (!funcaoExercida.getText().isEmpty()
+				&& !experienciaRelevante.getText().isEmpty()
+				&& !empregadorEndereco.getText().isEmpty()
+				&& !empregadorContacto.getText().isEmpty()) {
 			experiencia = new Experiencia();
 			experiencia.setEmpregador(empregador.getText());
 			experiencia.setActual((Boolean) actual.getValue());
@@ -442,16 +446,18 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			experienciasAdicionadas.add(experiencia);
 			this.selectedRecord.getExperiencias().add(experiencia);
 		} else {
-			Clients.showNotification("Por favor adicione a experiência"); 
+			Clients.showNotification("Por favor adicione a experiência");
 		}
 	}
 
 	@Command
 	@NotifyChange({ "formacao", "formacoesAdicionadas" })
 	public void onAddFormacao() {
-		
-		if (!instituicao.getValue().isEmpty() && !localizacao.getValue().isEmpty() 
-				&& !ano.getValue().toString().isEmpty() && (Escolaridade) grauObtido.getSelectedItem().getValue()!=null) {
+
+		if (!instituicao.getValue().isEmpty()
+				&& !localizacao.getValue().isEmpty()
+				&& !ano.getValue().toString().isEmpty()
+				&& (Escolaridade) grauObtido.getSelectedItem().getValue() != null) {
 			formacao = new Formacao();
 			formacao.setAno(ano.getValue());
 			formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
@@ -465,7 +471,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			formacoesAdicionadas.add(formacao);
 			this.selectedRecord.getFormacoes().add(formacao);
 		} else {
-			Clients.showNotification("Por favor adicione a formação acadêmica e profissional"); 
+			Clients.showNotification("Por favor adicione a formação acadêmica e profissional");
 		}
 	}
 
@@ -502,8 +508,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			}
 		}
 	}
-	
-	
+
 	@Command
 	public void changePais() {
 
@@ -512,211 +517,231 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			Pais selectedPais = (Pais) li.getValue();
 			inProvincias = provinciaService.getAllProvincia(selectedPais);
 
-			BindUtils.postNotifyChange(null, null, this,
-					"provincias");
+			BindUtils.postNotifyChange(null, null, this, "provincias");
 		}
 
 	}
-	
+
 	@Command
 	public void saveThis() {
-		
+
 		validate();
-		
-		//List<Msg> errors = validateInput();
-		
-		//if (errors.isEmpty()) {
-			
-			/*System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
-			System.out.println("Experiencias:"+selectedRecord.getExperiencias().size());
-			requisitanteService.saveRequisitante(selectedRecord);
-			
-			System.out.println("ID GRAVADO: "+selectedRecord.getId());*/
-			
-			Sessions.getCurrent().setAttribute("requisitante", selectedRecord);
-			//Executions.sendRedirect("/pages/anonimo/requisicao/Requisicao.zul");
-			
-			Window window = (Window)Executions.createComponents("/pages/anonimo/requisicao/Requisicao.zul", null, null);
-			
-			window.doModal();
-						
-		//} else {
-			
-			/*try {
-				
-				MessageBoxHelper.showFormError(errors,novaRequisicao);
-			} catch (InterruptedException e) {
-				_log.info("Nao foi possivel mostrar a lista de erros...");
-				e.printStackTrace();
-			}
-		}*/
+
+		// List<Msg> errors = validateInput();
+
+		// if (errors.isEmpty()) {
+
+		/*
+		 * System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
+		 * System
+		 * .out.println("Experiencias:"+selectedRecord.getExperiencias().size
+		 * ()); requisitanteService.saveRequisitante(selectedRecord);
+		 * 
+		 * System.out.println("ID GRAVADO: "+selectedRecord.getId());
+		 */
+
+		Sessions.getCurrent().setAttribute("requisitante", selectedRecord);
+		// Executions.sendRedirect("/pages/anonimo/requisicao/Requisicao.zul");
+
+		Window window = (Window) Executions.createComponents(
+				"/pages/anonimo/requisicao/Requisicao.zul", null, null);
+
+		window.doModal();
+
+		// } else {
+
+		/*
+		 * try {
+		 * 
+		 * MessageBoxHelper.showFormError(errors,novaRequisicao); } catch
+		 * (InterruptedException e) {
+		 * _log.info("Nao foi possivel mostrar a lista de erros...");
+		 * e.printStackTrace(); } }
+		 */
 	}
 
 	public boolean validate() {
-		
+
 		if (apelido.getValue().isEmpty()) {
-			throw new WrongValueException(apelido, "Apelido é um campo obrigatório");
+			throw new WrongValueException(apelido,
+					"Apelido é um campo obrigatório");
 		}
-		
+
 		if (nome.getValue().isEmpty()) {
 			throw new WrongValueException(nome, "Nome é um campo obrigatório");
 		}
-		
-		if (dataNascimento.getValue()==null) {
-			throw new WrongValueException(dataNascimento, "Data de Nascimento é um campo obrigatório");
+
+		if (dataNascimento.getValue() == null) {
+			throw new WrongValueException(dataNascimento,
+					"Data de Nascimento é um campo obrigatório");
 		}
-				
+
 		Calendar cal = Calendar.getInstance();
-		
+
 		cal.setTime(dataNascimento.getValue());
-		
-		int age = AgeHelper.calculateMyAge(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-		
-		if (age < 18) { 
-			throw new WrongValueException(dataNascimento, "A idade não deve ser inferior a 18");
+
+		int age = AgeHelper.calculateMyAge(cal.get(Calendar.YEAR),
+				cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
+		if (age < 18) {
+			throw new WrongValueException(dataNascimento,
+					"A idade não deve ser inferior a 18");
 		}
-		
-		if (li == null) { 
+
+		if (li == null) {
 			throw new WrongValueException(paises, "Pais é um campo obrigatorio");
 		}
-		
-		if (selectedRecord.getProvincia() == null) { 
-			throw new WrongValueException(provincias, "Provincia é um campo obrigatorio");
+
+		if (selectedRecord.getProvincia() == null) {
+			throw new WrongValueException(provincias,
+					"Provincia é um campo obrigatorio");
 		}
-		
-		if (cidade.getText().isEmpty()) { 
-			throw new WrongValueException(cidade, "Cidade é um campo obrigatorio");
+
+		if (cidade.getText().isEmpty()) {
+			throw new WrongValueException(cidade,
+					"Cidade é um campo obrigatorio");
 		}
-		
-		if (endereco.getText().isEmpty()) { 
-			throw new WrongValueException(endereco, "Endereco é um campo obrigatorio");
+
+		if (endereco.getText().isEmpty()) {
+			throw new WrongValueException(endereco,
+					"Endereco é um campo obrigatorio");
 		}
-		
-		if (contacto1.getText().isEmpty()) { 
-			throw new WrongValueException(contacto1, "Contacto é um campo obrigatorio");
+
+		if (contacto1.getText().isEmpty()) {
+			throw new WrongValueException(contacto1,
+					"Contacto é um campo obrigatorio");
 		}
-		
-		if (email.getText().isEmpty()) { 
+
+		if (email.getText().isEmpty()) {
 			throw new WrongValueException(email, "Email é um campo obrigatorio");
 		}
-		
+
 		if (numeroBi.getText().isEmpty()) {
-			throw new WrongValueException(numeroBi, "Nº Doc Ident. é um campo obrigatorio");
+			throw new WrongValueException(numeroBi,
+					"Nº Doc Ident. é um campo obrigatorio");
 		}
-		
-		if (dataEmissao.getValue()==null) {
-			throw new WrongValueException(dataEmissao, "Data Emissão é um campo obrigatorio");
+
+		if (dataEmissao.getValue() == null) {
+			throw new WrongValueException(dataEmissao,
+					"Data Emissão é um campo obrigatorio");
 		}
-		
-		if (dataValidade.getValue() == null) { 
-			throw new WrongValueException(dataValidade, "Data Validade é um campo obrigatorio");
+
+		if (dataValidade.getValue() == null) {
+			throw new WrongValueException(dataValidade,
+					"Data Validade é um campo obrigatorio");
 		}
-		
-		if (localEmissao.getValue().isEmpty()) { 
-			throw new WrongValueException(localEmissao, "Local Emissão é um campo obrigatorio");
+
+		if (localEmissao.getValue().isEmpty()) {
+			throw new WrongValueException(localEmissao,
+					"Local Emissão é um campo obrigatorio");
 		}
-		
-		if (instituicao.getValue().isEmpty()) { 
-			throw new WrongValueException(instituicao, "Instituição é um campo obrigatorio");
+
+		if (instituicao.getValue().isEmpty()) {
+			throw new WrongValueException(instituicao,
+					"Instituição é um campo obrigatorio");
 		}
-		
-		if (localizacao.getValue().isEmpty()) { 
-			throw new WrongValueException(localizacao, "Localização é um campo obrigatorio");
+
+		if (localizacao.getValue().isEmpty()) {
+			throw new WrongValueException(localizacao,
+					"Localização é um campo obrigatorio");
 		}
-		
-		if (ano.getValue().toString().isEmpty()) { 
+
+		if (ano.getValue().toString().isEmpty()) {
 			throw new WrongValueException(ano, "Ano é um campo obrigatorio");
 		}
-		
-		if (empregador.getValue().isEmpty()) { 
-			throw new WrongValueException(empregador, "Empregador é um campo obrigatorio");
+
+		if (empregador.getValue().isEmpty()) {
+			throw new WrongValueException(empregador,
+					"Empregador é um campo obrigatorio");
 		}
-		
-		if (funcaoExercida.getText().isEmpty()) { 
-			throw new WrongValueException(funcaoExercida, "Função é um campo obrigatorio");
+
+		if (funcaoExercida.getText().isEmpty()) {
+			throw new WrongValueException(funcaoExercida,
+					"Função é um campo obrigatorio");
 		}
-		
-		if (experienciaRelevante.getValue().isEmpty()) { 
-			throw new WrongValueException(experienciaRelevante, "Experiência Relevante é um campo obrigatorio");
+
+		if (experienciaRelevante.getValue().isEmpty()) {
+			throw new WrongValueException(experienciaRelevante,
+					"Experiência Relevante é um campo obrigatorio");
 		}
-								
+
 		return true;
 	}
-	
+
 	public List<Msg> validateInput() {
-		
+
 		List<Msg> errors = new ArrayList<Msg>();
-		
+
 		int errorId = 0;
-		
+
 		if (selectedRecord.getEscolaridade() == null) {
-			
+
 			Msg error = new Msg();
 			error.setId(++errorId);
 			error.setTxt("O Nivel Acadêmico é um campo obrigatório");
 			error.setHlp("Selecione um nível academico");
 			errors.add(error);
 		}
-		
+
 		if (selectedRecord.getTipoDoc() == null) {
-			
+
 			Msg error = new Msg();
 			error.setId(++errorId);
 			error.setTxt("Tipo de Identificação é um campo obrigatório");
 			error.setHlp("Selecione um Tipo de Identificação");
 			errors.add(error);
-			
+
 		}
-		
+
 		Date _dataEmissao = dataEmissao.getValue();
-		
+
 		Date _dataValidade = dataValidade.getValue();
-		
-		if (_dataEmissao.compareTo(_dataValidade) > 0) {  
-			
+
+		if (_dataEmissao.compareTo(_dataValidade) > 0) {
+
 			Msg error = new Msg();
 			error.setId(++errorId);
 			error.setTxt("A Data Emissão não deve ser maior que a Data de Validade");
 			error.setHlp("Selecione uma Data Emissão menor que a Data de Validade");
 			errors.add(error);
 		}
-		
-		if (formacao.getGrauObtido() == null) {  
-			
+
+		if (formacao.getGrauObtido() == null) {
+
 			Msg error = new Msg();
 			error.setId(++errorId);
 			error.setTxt("O Grau é um campo obrigatório");
 			error.setHlp("Selecione um grau");
 			errors.add(error);
 		}
-		
-		if (selectedRecord.getCategoria() == null) {  
-			
+
+		if (selectedRecord.getCategoria() == null) {
+
 			Msg error = new Msg();
 			error.setId(++errorId);
 			error.setTxt("Categoria é um campo obrigatório");
 			error.setHlp("Selecione uma categoria");
 			errors.add(error);
 		}
-		
+
 		Date _dataInicial = dataInicial.getValue();
-		
+
 		Date _dataFinal = dataFinal.getValue();
-		
-		if (_dataInicial.compareTo(_dataFinal) > 0) {  
-			
+
+		if (_dataInicial.compareTo(_dataFinal) > 0) {
+
 			Msg error = new Msg();
 			error.setId(++errorId);
 			error.setTxt("A Data Inicio não deve ser maior que a Data Final");
 			error.setHlp("Selecione uma Data Inicio menor que a Data Final");
 			errors.add(error);
 		}
-		
+
 		return errors;
 	}
-	
+
 	@Command
-	@NotifyChange({ "disableDataFinal"})
+	@NotifyChange({ "disableDataFinal" })
 	public void disableDataFinal() {
 		if (actual.isChecked()) {
 			dataFinal.setReadonly(Boolean.TRUE);
@@ -726,25 +751,26 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			dataFinal.setDisabled(Boolean.FALSE);
 		}
 	}
-	
+
 	@Command
-	public void onUploadPDF(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
+	public void onUploadPDF(
+			@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
 		_log.info("upload doc called...");
-		
+
 		UploadEvent upEvent = null;
-		
+
 		Object objUploadEvent = ctx.getTriggerEvent();
-		
+
 		if (objUploadEvent != null && (objUploadEvent instanceof UploadEvent)) {
-            upEvent = (UploadEvent) objUploadEvent;
+			upEvent = (UploadEvent) objUploadEvent;
 		}
-		
+
 		if (upEvent != null) {
 			Media media = upEvent.getMedia();
-			
-			if (Arrays.binarySearch(PDF_FORMAT, media.getContentType()) >= 0) { 
-				
-				//selectedRecord = new Requisitante();
+
+			if (Arrays.binarySearch(PDF_FORMAT, media.getContentType()) >= 0) {
+
+				// selectedRecord = new Requisitante();
 				selectedRecord.setNumeroDoc(numeroBi.getValue());
 				selectedRecord.setDataEmissao(dataEmissao.getValue());
 				selectedRecord.setDataValidade(dataValidade.getValue());
@@ -752,7 +778,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 				selectedRecord.setCopiaDoc(media.getByteData());
 				selectedRecord.setNumeroNuit(numeroNuit.getValue());
 				selectedRecord.setTipoDoc(selectedRecord.getTipoDoc());
-				
+
 			}
 		}
 	}

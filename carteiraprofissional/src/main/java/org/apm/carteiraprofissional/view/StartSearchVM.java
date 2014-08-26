@@ -79,12 +79,12 @@ public class StartSearchVM extends SelectorComposer<Component> {
 				if (requisicao == null) {
 					Clients.showNotification("Não foi encontrada nenhuma requisição com o número introduzido");
 				} else {
-					final HashMap<String, Object> map = new HashMap<String, Object>();
-					map.put("selectedRecord", requisicao.getRequisitante());
-					map.put("recordMode", "EDIT");
-					Sessions.getCurrent().setAttribute("allmyvalues", map);
+					//final HashMap<String, Object> map = new HashMap<String, Object>();
+					//map.put("selectedRecord", requisicao.getRequisitante());
+					//map.put("recordMode", "EDIT");
+					Sessions.getCurrent().setAttribute("requisitante", requisicao.getRequisitante());
 
-					Executions.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul");
+					Executions.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=EDIT");
 				}
 			}
 		} else {
