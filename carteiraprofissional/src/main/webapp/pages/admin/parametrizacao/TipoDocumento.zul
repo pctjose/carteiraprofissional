@@ -1,0 +1,94 @@
+<?page title="Categoria Profissional" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="frmTipoDocumento" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.TipoDocumentoVM')"
+		width="25%">
+		<div
+			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+
+
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label id="lcaption"
+									sclass="sectionTitleLabel"
+									value="REGISTO/ACTUALIZAÇÃO TIPO DOCUMENTO" />
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>			
+			
+				<panel width="100%" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="TIPO DOCUMENTO" />
+							</columns>
+							<rows>
+								
+								<row>
+									<vlayout>
+										<label value="Designação:"
+											sclass="flabel" />
+										<textbox id="designacao"											
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
+											value="@bind(fx.designacao)" constraint="no empty"/>
+									</vlayout>
+								</row>
+								
+								<row>
+									<vlayout>
+										<label value="Descrição:"
+											sclass="flabel" />
+										<textbox id="descricao"											
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
+											value="@bind(fx.descricao)" rows="3" cols="50"/>
+									</vlayout>
+								</row>								
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>		
+			<separator />
+			<separator />
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+								<hlayout>
+									<button label="Gravar" mold="trendy"
+										visible="@load(not vm.makeAsReadOnly)"
+										onClick="@command('saveThis')"
+										sclass="mybutton button blue small">
+									</button>
+									<button
+										label="@load(vm.makeAsReadOnly ?'Fechar':'Cancelar')"
+										mold="trendy" onClick="@command('cancel')"
+										sclass="mybutton button blue small">
+									</button>
+								</hlayout>
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+		</div>
+	</window>
+</zk>

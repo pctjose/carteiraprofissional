@@ -32,6 +32,8 @@ public class Escolaridade implements Serializable{
 	private String designacao;
 	@Column(name="uuid")
 	private String uuid;
+	@Column(name="descricao")
+	private String descricao;
 
 	public String getDesignacao() {
 		return designacao;
@@ -61,6 +63,16 @@ public class Escolaridade implements Serializable{
 	@Override
 	public String toString() {
 		return  designacao ;
+	}
+	
+	
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override

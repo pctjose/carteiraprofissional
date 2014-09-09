@@ -18,6 +18,8 @@ public class TipoDocumento {
 	private String designacao;
 	@Column(name = "uuid")
 	private String uuid;
+	@Column(name="descricao")
+	private String descricao;
 
 	public Integer getId() {
 		return id;
@@ -41,6 +43,16 @@ public class TipoDocumento {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+	
+	
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override

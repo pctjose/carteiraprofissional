@@ -1,0 +1,53 @@
+<?page title="Lista de Categorias Profissionais" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window id="frmListaEscolaridade" border="normal" sizable="true" 
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ListaEscolaridadeVM')">
+		<separator />
+		<separator />
+		<div width="80%">
+			<div sclass="sectionTitle">
+				<separator />
+				<label value="NIVEIS DE ESCOLARIDADE" sclass="sectionTitleLabel" />
+				<separator />
+			</div>
+			<div style="float:right">
+				<button label="Adicionar" onClick="@command('onAddNew')"
+					mold="trendy" sclass="mybutton button blue small" />
+			</div>
+			<div style="clear: both;"></div>
+			<div sclass="sectionSeperator"></div>
+		</div>
+		<separator />
+		<listbox id="dataSet" mold="paging" pageSize="10" pagingPosition="top"
+			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
+			model="@load(vm.dataSet)">
+			<listhead sizable="true">
+				<listheader label="DESIGNAÇÃO" sortDirection="ascending"
+					sort="auto(designacao)" />
+				<listheader label="DESCRIÇÃO" sort="auto(descricao)" />
+				<listheader label="ACCAO" />
+			</listhead>
+			<template name="model" var="p1">
+				<listitem>
+					<listcell label="@load(p1.designacao)" />
+					<listcell label="@load(p1.descricao)" />
+					<listcell>
+						<hbox spacing="20px">
+							<button label="Editar"
+								onClick="@command('onEdit',userRecord=p1)">
+							</button>
+							<button label="Visualizar"
+								onClick="@command('openAsReadOnly',userRecord=p1)">
+							</button>
+							<button label="Apagar"
+								onClick="@command('onDelete',userRecord=p1)">
+							</button>
+						</hbox>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</window>
+</zk>

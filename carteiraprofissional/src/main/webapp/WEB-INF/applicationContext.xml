@@ -100,6 +100,19 @@
 	<bean id="carteiraDAO" class="org.apm.carteiraprofissional.dao.impl.CarteiraDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	
+	<bean id="histCarteiraDAO" class="org.apm.carteiraprofissional.dao.impl.HistCarteiraDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="histRequisicaoDAO" class="org.apm.carteiraprofissional.dao.impl.HistRequisicaoDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="histRequisitanteDAO" class="org.apm.carteiraprofissional.dao.impl.HistRequisitanteDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
 
 	<!-- SERVICOS -->
 	<bean id="grupoUtilizadorService" class="org.apm.carteiraprofissional.service.impl.GrupoUtilizadorServiceImpl"/>
@@ -148,5 +161,17 @@
 	
 	<bean id="carteiraService" class="org.apm.carteiraprofissional.service.impl.CarteiraServiceImpl">
 		<property name="carteiraDAO" ref="carteiraDAO"/>
+	</bean>
+	
+	<bean id="histCarteiraService" class="org.apm.carteiraprofissional.service.impl.HistCarteiraServiceImpl">
+		<property name="histCarteiraDAO" ref="histCarteiraDAO"/>
+	</bean>
+	
+	<bean id="histRequisicaoService" class="org.apm.carteiraprofissional.service.impl.HistRequisicaoServiceImpl">
+		<property name="histRequisicaoDAO" ref="histRequisicaoDAO"/>
+	</bean>
+	
+	<bean id="histRequisitanteService" class="org.apm.carteiraprofissional.service.impl.HistRequisitanteServiceImpl">
+		<property name="histRequisitanteDAO" ref="histRequisitanteDAO"/>
 	</bean>
 </beans>

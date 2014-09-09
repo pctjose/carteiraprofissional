@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,15 +15,19 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "requisicao")
-public class Requisicao {
+@Table(name="hist_requisicao")
+public class HistRequisicao implements Serializable {
 
-	@SuppressWarnings("unused")
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "requisicao_id")
-	private Integer requisicaoId;
+	@Column(name = "hist_requisicao_id")
+	private Integer histRequisicaoId;
 	@Column(name = "assinou_compromisso")
 	private boolean assinouCompromisso;
 	@Column(name = "concorda_termos")
@@ -40,8 +45,8 @@ public class Requisicao {
 	@Column(name = "justificacao_aceite")
 	private String justificacaoAceitacao;
 	@ManyToOne
-	@JoinColumn(name = "requisitante_id")
-	private Requisitante requisitante;
+	@JoinColumn(name = "hist_requisitante_id")
+	private HistRequisitante histRequisitante;
 	@Column(name = "numero_requisicao")
 	private String numeroRequisicao;
 	@Column(name = "lock_edit")
@@ -58,12 +63,22 @@ public class Requisicao {
 	
 	
 
-	public Integer getRequisicaoId() {
-		return requisicaoId;
+	
+
+	public Integer getHistRequisicaoId() {
+		return histRequisicaoId;
 	}
 
-	public void setRequisicaoId(Integer requisicaoId) {
-		this.requisicaoId = requisicaoId;
+	public void setHistRequisicaoId(Integer histRequisicaoId) {
+		this.histRequisicaoId = histRequisicaoId;
+	}
+
+	public HistRequisitante getHistRequisitante() {
+		return histRequisitante;
+	}
+
+	public void setHistRequisitante(HistRequisitante histRequisitante) {
+		this.histRequisitante = histRequisitante;
 	}
 
 	@Deprecated
@@ -137,13 +152,7 @@ public class Requisicao {
 		this.justificacaoAceitacao = justificacaoAceitacao;
 	}
 
-	public Requisitante getRequisitante() {
-		return requisitante;
-	}
-
-	public void setRequisitante(Requisitante requisitante) {
-		this.requisitante = requisitante;
-	}
+	
 
 	public String getNumeroRequisicao() {
 		return numeroRequisicao;
@@ -208,7 +217,7 @@ public class Requisicao {
 
 	@Override
 	public String toString() {
-		return requisitante.toString() + " [" + numeroRequisicao + "]";
+		return histRequisitante.toString() + " [" + numeroRequisicao + "]";
 	}
 
 	@Override
@@ -216,7 +225,7 @@ public class Requisicao {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((requisicaoId == null) ? 0 : requisicaoId.hashCode());
+				+ ((histRequisicaoId == null) ? 0 : histRequisicaoId.hashCode());
 		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
 		return result;
 	}
@@ -229,11 +238,11 @@ public class Requisicao {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Requisicao other = (Requisicao) obj;
-		if (requisicaoId == null) {
-			if (other.requisicaoId != null)
+		HistRequisicao other = (HistRequisicao) obj;
+		if (histRequisicaoId == null) {
+			if (other.histRequisicaoId != null)
 				return false;
-		} else if (!requisicaoId.equals(other.requisicaoId))
+		} else if (!histRequisicaoId.equals(other.histRequisicaoId))
 			return false;
 		if (uuid == null) {
 			if (other.uuid != null)

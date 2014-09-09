@@ -34,6 +34,7 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Images;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -41,6 +42,7 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Window;
 
 public class CarteiraVM extends SelectorComposer<Component> {
@@ -68,6 +70,9 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 	@Wire
 	private Checkbox enviarEmissao;
+	
+	@Wire
+	private Decimalbox valorCobrado;
 
 	@WireVariable
 	protected FormaPagamentoService formaPagamentoService;
@@ -148,6 +153,16 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	public void setEnviarEmissao(Checkbox enviarEmissao) {
 		this.enviarEmissao = enviarEmissao;
 	}
+	
+	
+
+	public Decimalbox getValorCobrado() {
+		return valorCobrado;
+	}
+
+	public void setValorCobrado(Decimalbox valorCobrado) {
+		this.valorCobrado = valorCobrado;
+	}
 
 	@SuppressWarnings("unchecked")
 	@AfterCompose
@@ -157,7 +172,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 		final HashMap<String, Object> map = (HashMap<String, Object>) Sessions
 				.getCurrent().getAttribute("carteiraValues");
 		formasPagamento = formaPagamentoService.getAllFormas();
-		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("logedIn");
+		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("utilizador");
 		if (map != null) {
 			this.recordMode = (String) map.get("recordMode");
 			if (this.recordMode.equalsIgnoreCase("NEW")) {
@@ -184,14 +199,10 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 		Calendar calendario = Calendar.getInstance();
 		calendario.setTime(dataEmissao.getValue());
-
-		if (this.selectedRecord.getRequisicao().getRequisitante().getMembro() != null) {
-			if (this.selectedRecord.getRequisicao().getRequisitante()
-					.getMembro()) {
-				calendario.add(Calendar.YEAR, 3);
-			} else {
-				calendario.add(Calendar.YEAR, 2);
-			}
+		
+		if (this.selectedRecord.getRequisicao().getRequisitante()
+				.isMembro()) {
+			calendario.add(Calendar.YEAR, 3);
 		} else {
 			calendario.add(Calendar.YEAR, 2);
 		}
@@ -204,6 +215,9 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() throws Exception {
 
+		validate();
+		
+		
 		Requisitante requisitante = requisitanteService
 				.getRequisitanteById(this.selectedRecord.getRequisicao()
 						.getRequisitante().getId());
@@ -323,5 +337,16 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	public void cancel() {
 		frmCriarCarteira.detach();
 	}
-
+	
+	public void validate(){
+		if(dataEmissao.getValue()==null || dataEmissao.toString().isEmpty()){
+			throw new WrongValueException(dataEmissao, "A data de emissão deve ser preenchida");
+		}
+		
+		if(valorCobrado.getValue()==null ){
+			throw new WrongValueException(valorCobrado, "O valor cobrado deve ser preenchido");
+		}
+		
+		//return true;
+	}
 }

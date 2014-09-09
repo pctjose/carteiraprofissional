@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -328,7 +327,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		this.inPaises = paises;
 	}
 
-	@SuppressWarnings({ "unchecked", "unused" })
+	
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 

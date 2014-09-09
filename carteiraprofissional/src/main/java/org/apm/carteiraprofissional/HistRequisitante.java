@@ -9,6 +9,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,13 +20,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "requisitante")
-public class Requisitante extends BaseModel implements Serializable {
+@Table(name = "hist_requisitante")
+public class HistRequisitante implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4135925580655381866L;
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "hist_requisitante_id")
+	private Integer histRequisitanteId;
 
 	// Demografico
 	@Column(name = "nome")
@@ -84,22 +92,22 @@ public class Requisitante extends BaseModel implements Serializable {
 	private boolean membro;
 	@Column(name = "numero_membro")
 	private String numeroMembro;
-	
-	@Column(name="lock_edit")
+
+	@Column(name = "lock_edit")
 	private boolean lockEdit;
 
 	// Ainda por discutir esta ideia de implementação:
 
 	// private List<RequisicaoSubCategoria> requisicaoSubcategorias;
-	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Experiencia> experiencias;
-	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
-	private List<Formacao> formacoes;
+	@OneToMany(mappedBy = "histRequisitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<HistExperiencia> experiencias;
+	@OneToMany(mappedBy = "histRequisitante", cascade = CascadeType.ALL)
+	private List<HistFormacao> formacoes;
 
-	public Requisitante() {
+	public HistRequisitante() {
 
-		this.experiencias = new ArrayList<Experiencia>();
-		this.formacoes = new ArrayList<Formacao>();
+		this.experiencias = new ArrayList<HistExperiencia>();
+		this.formacoes = new ArrayList<HistFormacao>();
 	}
 
 	public Escolaridade getEscolaridade() {
@@ -141,8 +149,6 @@ public class Requisitante extends BaseModel implements Serializable {
 	public void setDataValidade(Date dataValidade) {
 		this.dataValidade = dataValidade;
 	}
-	
-	
 
 	public boolean isLockEdit() {
 		return lockEdit;
@@ -160,19 +166,29 @@ public class Requisitante extends BaseModel implements Serializable {
 		this.localEmissao = localEmissao;
 	}
 
-	public List<Experiencia> getExperiencias() {
+	
+
+	public Integer getHistRequisitanteId() {
+		return histRequisitanteId;
+	}
+
+	public void setHistRequisitanteId(Integer histRequisitanteId) {
+		this.histRequisitanteId = histRequisitanteId;
+	}
+
+	public List<HistExperiencia> getExperiencias() {
 		return experiencias;
 	}
 
-	public void setExperiencias(List<Experiencia> experiencias) {
+	public void setExperiencias(List<HistExperiencia> experiencias) {
 		this.experiencias = experiencias;
 	}
 
-	public List<Formacao> getFormacoes() {
+	public List<HistFormacao> getFormacoes() {
 		return formacoes;
 	}
 
-	public void setFormacoes(List<Formacao> formacoes) {
+	public void setFormacoes(List<HistFormacao> formacoes) {
 		this.formacoes = formacoes;
 	}
 
@@ -284,11 +300,10 @@ public class Requisitante extends BaseModel implements Serializable {
 	public boolean getMembro() {
 		return isMembro();
 	}
-	
+
 	public boolean isMembro() {
 		return membro;
 	}
-
 
 	public void setMembro(boolean membro) {
 		this.membro = membro;
@@ -317,7 +332,7 @@ public class Requisitante extends BaseModel implements Serializable {
 	public Categoria getCategoria() {
 		if (experiencias == null || experiencias.isEmpty())
 			return null;
-		for (Experiencia e : experiencias) {
+		for (HistExperiencia e : experiencias) {
 			if (e.getActual() != null)
 				if (e.getActual())
 					return e.getCategoria();

@@ -36,11 +36,11 @@
 						<treeitem label="Forma Pagamento"
 							value="/pages/admin/parametrizacao/ListaFormaPagamento.zul" image="/imgs/fn.png" />
 						<treeitem label="Nivel Escolaridade"
-							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+							value="/pages/admin/parametrizacao/ListaEscolaridade.zul" image="/imgs/fn.png" />
 						<treeitem label="Paises e Provincias"
 							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
 						<treeitem label="Tipo Documento"
-							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+							value="/pages/admin/parametrizacao/ListaTipoDocumento.zul" image="/imgs/fn.png" />
 					</treechildren>
 				</treeitem>
 			</treechildren>

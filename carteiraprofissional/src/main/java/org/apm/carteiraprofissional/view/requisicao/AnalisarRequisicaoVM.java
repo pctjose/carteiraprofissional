@@ -83,12 +83,10 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 		selectedRecord = (Requisicao) Sessions.getCurrent().getAttribute(
 				"requisicao");
 
-		if (this.selectedRecord.getAceite() != null) {
-			if (this.selectedRecord.getAceite()) {
-				this.aceiteString = "S";
-			} else {
-				this.aceiteString = "N";
-			}
+		if (this.selectedRecord.isAceite()) {
+			this.aceiteString = "S";
+		} else {
+			this.aceiteString = "N";
 		}
 
 	}
@@ -111,7 +109,7 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 			String mensagem = "Exmo(a) Srº(ª): "
 					+ selectedRecord.getRequisitante().getNomeCompleto() + "\n\n";
 			mensagem += "Vimos informar que a sua requisição de carteira profissional solicitada a APM foi: \n\n";
-			if (selectedRecord.getAceite()) {
+			if (selectedRecord.isAceite()) {
 				mensagem += "ACEITE \n\n";
 				title = "ACEITAÇÃO DA REQUISIÇÃO DE CARTEIRA PROFISSIONAL APM: "
 						+ selectedRecord.getNumeroRequisicao();

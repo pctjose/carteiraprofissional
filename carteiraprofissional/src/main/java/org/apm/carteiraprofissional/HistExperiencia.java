@@ -13,18 +13,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 @Entity
-@Table(name="requisitante_experiencia")
-public class Experiencia implements Serializable{
+@Table(name="hist_experiencia")
+public class HistExperiencia implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Integer id;
+	@Column(name = "hist_experiencia_id")
+	private Integer histExperienciaId;
 	@Column(name="empregador")
 	private String empregador;
 	@Temporal(TemporalType.DATE)
@@ -47,8 +50,8 @@ public class Experiencia implements Serializable{
 	@Column(name="empregador_contacto")
 	private String empregadorContacto;
 	@ManyToOne
-	@JoinColumn(name = "requisitante_id")
-	private Requisitante requisitante;
+	@JoinColumn(name = "hist_requisitante_id")
+	private HistRequisitante histRequisitante;
 	@Column(name="uuid")
 	private String uuid;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -71,13 +74,7 @@ public class Experiencia implements Serializable{
 		this.categoria = categoria;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 
 	public String getEmpregadorEndereco() {
 		return empregadorEndereco;
@@ -144,16 +141,25 @@ public class Experiencia implements Serializable{
 	public void setActual(Boolean actual) {
 		this.actual = actual;
 	}
-	
-	
 
-	public Requisitante getRequisitante() {
-		return requisitante;
+
+	public Integer getHistExperienciaId() {
+		return histExperienciaId;
 	}
 
 
-	public void setRequisitante(Requisitante requisitante) {
-		this.requisitante = requisitante;
+	public void setHistExperienciaId(Integer histExperienciaId) {
+		this.histExperienciaId = histExperienciaId;
+	}
+
+
+	public HistRequisitante getHistRequisitante() {
+		return histRequisitante;
+	}
+
+
+	public void setHistRequisitante(HistRequisitante histRequisitante) {
+		this.histRequisitante = histRequisitante;
 	}
 
 
@@ -202,7 +208,7 @@ public class Experiencia implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Experiencia other = (Experiencia) obj;
+		HistExperiencia other = (HistExperiencia) obj;
 		if (uuid == null) {
 			if (other.uuid != null)
 				return false;
@@ -210,4 +216,5 @@ public class Experiencia implements Serializable{
 			return false;
 		return true;
 	}
+
 }
