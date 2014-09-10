@@ -33,17 +33,18 @@
 					<panelchildren>
 						<grid sclass="vgrid">
 							<columns>
-								<column label="CATEGORIA PROFISSIONAL" />
+								<column label="CATEGORIA PROFISSIONAL" />	
 							</columns>
 							<rows>
 								
 								<row>
 									<vlayout>
+										<separator/>
 										<label value="Designação:"
 											sclass="flabel" />
 										<textbox id="designacao"											
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
-											value="@bind(fx.designacao)" constraint="no empty"/>
+											value="@bind(fx.designacao)" constraint="no empty" hflex="1"/>
 									</vlayout>
 								</row>
 								
@@ -53,7 +54,7 @@
 											sclass="flabel" />
 										<textbox id="descricao"											
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
-											value="@bind(fx.descricao)" rows="3" cols="50"/>
+											value="@bind(fx.descricao)" rows="3" cols="50" hflex="1"/>
 									</vlayout>
 								</row>								
 							</rows>
