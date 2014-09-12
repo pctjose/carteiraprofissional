@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apm.carteiraprofissional.Escolaridade;
-import org.apm.carteiraprofissional.service.EscolaridadeService;
+import org.apm.carteiraprofissional.Pais;
+import org.apm.carteiraprofissional.service.PaisService;
 import org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -26,46 +26,56 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-public class ListaEscolaridadeVM {
+public class ListaPaisVM {
 	private static Logger _log = Logger.getLogger(RequisicaoCarteiraVM.class);
-	private Escolaridade selectedItem;
-	private List<Escolaridade> dataSet;
+	private Pais selectedItem;
+	private List<Pais> dataSet;
 
 	@WireVariable
-	protected EscolaridadeService escolaridadeService;
+	protected PaisService paisService;
 
 	@Wire
-	private Window frmListaEscolaridade;
+	private Window frmListaPais;
 
-	public Window getFrmListaEscolaridade() {
-		return frmListaEscolaridade;
-	}
+	
 
-	public void setFrmListaEscolaridade(Window frmListaEscolaridade) {
-		this.frmListaEscolaridade = frmListaEscolaridade;
-	}
-
-	public Escolaridade getSelectedItem() {
+	public Pais getSelectedItem() {
 		return selectedItem;
 	}
 
-	public void setSelectedItem(Escolaridade selectedItem) {
+	public void setSelectedItem(Pais selectedItem) {
 		this.selectedItem = selectedItem;
 	}
 
-	public List<Escolaridade> getDataSet() {
+	public List<Pais> getDataSet() {
 		return dataSet;
 	}
 
-	public void setDataSet(List<Escolaridade> dataSet) {
+	public void setDataSet(List<Pais> dataSet) {
 		this.dataSet = dataSet;
+	}
+
+	public PaisService getPaisService() {
+		return paisService;
+	}
+
+	public void setPaisService(PaisService paisService) {
+		this.paisService = paisService;
+	}
+
+	public Window getFrmListaPais() {
+		return frmListaPais;
+	}
+
+	public void setFrmListaPais(Window frmListaPais) {
+		this.frmListaPais = frmListaPais;
 	}
 
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 
-		dataSet = escolaridadeService.getAllNiveis();
+		dataSet = paisService.getAllPaises();
 
 	}
 
@@ -76,40 +86,40 @@ public class ListaEscolaridadeVM {
 		map.put("selectedRecord", null);
 		Sessions.getCurrent().setAttribute("parameterValues", map);
 		Window cRequisicao = (Window) Executions.createComponents(
-				"/pages/admin/parametrizacao/Escolaridade.zul", null, null);
-		cRequisicao.setParent(frmListaEscolaridade);
+				"/pages/admin/parametrizacao/Pais.zul", null, null);
+		cRequisicao.setParent(frmListaPais);
 		cRequisicao.doModal();
 	}
 
 	@Command
-	public void onEdit(@BindingParam("userRecord") Escolaridade escolaridade) {
+	public void onEdit(@BindingParam("userRecord") Pais pais) {
 
 		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("recordMode", "EDIT");
-		map.put("selectedRecord", escolaridade);
+		map.put("selectedRecord", pais);
 
 		Sessions.getCurrent().setAttribute("parameterValues", map);
 
 		Window cRequisicao = (Window) Executions.createComponents(
-				"/pages/admin/parametrizacao/Escolaridade.zul", null, null);
-		cRequisicao.setParent(frmListaEscolaridade);
+				"/pages/admin/parametrizacao/Pais.zul", null, null);
+		cRequisicao.setParent(frmListaPais);
 		cRequisicao.doModal();
 
 	}
 
 	@Command
 	public void openAsReadOnly(
-			@BindingParam("userRecord") Escolaridade escolaridade) {
+			@BindingParam("userRecord") Pais pais) {
 
 		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("recordMode", "VIEW");
-		map.put("selectedRecord", escolaridade);
+		map.put("selectedRecord", pais);
 
 		Sessions.getCurrent().setAttribute("parameterValues", map);
 
 		Window cRequisicao = (Window) Executions.createComponents(
-				"/pages/admin/parametrizacao/Escolaridade.zul", null, null);
-		cRequisicao.setParent(frmListaEscolaridade);
+				"/pages/admin/parametrizacao/Pais.zul", null, null);
+		cRequisicao.setParent(frmListaPais);
 		cRequisicao.doModal();
 
 	}
@@ -118,27 +128,28 @@ public class ListaEscolaridadeVM {
 	@Command
 	@NotifyChange("dataSet")
 	public void onDelete(
-			@BindingParam("userRecord") final Escolaridade escolaridade) {
+			@BindingParam("userRecord") final Pais pais) {
 		Messagebox.show(
-				"Confirma que pretende apagar o nivel de escolaridade: "
-						+ escolaridade.getDesignacao() + "?",
+				"Confirma que pretende apagar o pais: "
+						+ pais.getDesignacao() + "?",
 				"Confirmar Apagar", Messagebox.OK | Messagebox.CANCEL,
 				Messagebox.QUESTION, new org.zkoss.zk.ui.event.EventListener() {
 					public void onEvent(Event evt) throws InterruptedException {
 						if (evt.getName().equals("onOK")) {
 							try {
-								escolaridadeService.delete(escolaridade);
-								dataSet.remove(escolaridade);
+								
+								paisService.delete(pais);
+								dataSet.remove(pais);
 								BindUtils.postNotifyChange(null, null,
-										ListaEscolaridadeVM.this, "dataSet");
-								Clients.showNotification("Nivel Escolaridade: "
-										+ escolaridade.getDesignacao()
-										+ " apagada com sucesso");
+										ListaPaisVM.this, "dataSet");
+								Clients.showNotification("Pais: "
+										+ pais.getDesignacao()
+										+ " apagado com sucesso");
 
 							} catch (Exception e) {
 								_log.debug(e);
-								Clients.showNotification("Não foi possível apagar a escolaridade: "
-										+ escolaridade.getDesignacao()
+								Clients.showNotification("Não foi possível apagar o pais: "
+										+ pais.getDesignacao()
 										+ ". Está em uso");
 							}
 
@@ -151,7 +162,7 @@ public class ListaEscolaridadeVM {
 	@GlobalCommand
 	@NotifyChange("dataSet")
 	public void refreshvalues(
-			@BindingParam("returnvalue") List<Escolaridade> dataSet) {
+			@BindingParam("returnvalue") List<Pais> dataSet) {
 		this.dataSet = dataSet;
 	}
 

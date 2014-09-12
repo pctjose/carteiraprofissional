@@ -13,6 +13,7 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
+import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -141,5 +142,12 @@ public class ListaTipoDocumentoVM {
 		    }
 		});
 
+	}
+	
+	@GlobalCommand
+	@NotifyChange("dataSet")
+	public void refreshvalues(
+			@BindingParam("returnvalue") List<TipoDocumento> dataSet) {
+		this.dataSet = dataSet;
 	}
 }

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apm.carteiraprofissional.TipoDocumento;
-import org.apm.carteiraprofissional.service.TipoDocumentoService;
+import org.apm.carteiraprofissional.Pais;
+import org.apm.carteiraprofissional.service.PaisService;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
@@ -19,16 +19,16 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Window;
 
-public class TipoDocumentoVM {
-	private TipoDocumento selectedRecord;
+public class PaisVM {
+	private Pais selectedRecord;
 	private boolean makeAsReadOnly;
 	private String recordMode;
 
 	@WireVariable
-	protected TipoDocumentoService tipoDocumentoService;
+	protected PaisService paisService;
 
 	@Wire
-	private Window frmTipoDocumento;
+	private Window frmPais;
 
 	public boolean isMakeAsReadOnly() {
 		return makeAsReadOnly;
@@ -46,20 +46,28 @@ public class TipoDocumentoVM {
 		this.recordMode = recordMode;
 	}
 
-	public TipoDocumento getSelectedRecord() {
+	public Pais getSelectedRecord() {
 		return selectedRecord;
 	}
 
-	public void setSelectedRecord(TipoDocumento selectedRecord) {
+	public void setSelectedRecord(Pais selectedRecord) {
 		this.selectedRecord = selectedRecord;
 	}
 
-	public Window getFrmTipoDocumento() {
-		return frmTipoDocumento;
+	public PaisService getPaisService() {
+		return paisService;
 	}
 
-	public void setFrmTipoDocumento(Window frmTipoDocumento) {
-		this.frmTipoDocumento = frmTipoDocumento;
+	public void setPaisService(PaisService paisService) {
+		this.paisService = paisService;
+	}
+
+	public Window getFrmPais() {
+		return frmPais;
+	}
+
+	public void setFrmPais(Window frmPais) {
+		this.frmPais = frmPais;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -73,13 +81,13 @@ public class TipoDocumentoVM {
 		if (map != null) {
 			this.recordMode = (String) map.get("recordMode");
 			if (this.recordMode.equalsIgnoreCase("NEW")) {
-				selectedRecord = new TipoDocumento();
+				selectedRecord = new Pais();
 			}
 			if (this.recordMode.equalsIgnoreCase("EDIT")) {
-				selectedRecord = (TipoDocumento) map.get("selectedRecord");
+				selectedRecord = (Pais) map.get("selectedRecord");
 			}
 			if (this.recordMode.equalsIgnoreCase("VIEW")) {
-				selectedRecord = (TipoDocumento) map.get("selectedRecord");
+				selectedRecord = (Pais) map.get("selectedRecord");
 				setMakeAsReadOnly(true);
 			}
 
@@ -89,7 +97,7 @@ public class TipoDocumentoVM {
 
 	@Command
 	public void cancel() {
-		frmTipoDocumento.detach();
+		frmPais.detach();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -98,20 +106,26 @@ public class TipoDocumentoVM {
 		String sms = "";
 		if (selectedRecord.getId() == null) {
 			selectedRecord.setUuid(UUID.randomUUID().toString());
+			Pais temp = paisService.getByDesignacao(selectedRecord
+					.getDesignacao());
+			if (temp != null) {
+				Clients.showNotification("Pais: "
+						+ selectedRecord.getDesignacao() + " já existe");
+				return;
+			}
 			sms = " Registado com sucesso";
 		} else {
 			sms = " Actualizado com sucesso";
 		}
 
-		tipoDocumentoService.saveTipoDocumento(selectedRecord);
-		
-		Map args = new HashMap();
-        args.put("returnvalue", tipoDocumentoService.getAllTipoDocumento());        
-        BindUtils.postGlobalCommand(null, null, "refreshvalues", args);
-		
-		frmTipoDocumento.detach();
-		Clients.showNotification("Tipo Documento: "
-				+ selectedRecord.getDesignacao() + sms);
-	}
+		paisService.savePais(selectedRecord);
 
+		Map args = new HashMap();
+		args.put("returnvalue", paisService.getAllPaises());
+		BindUtils.postGlobalCommand(null, null, "refreshvalues", args);
+
+		frmPais.detach();
+		Clients.showNotification("Pais: " + selectedRecord.getDesignacao()
+				+ sms);
+	}
 }

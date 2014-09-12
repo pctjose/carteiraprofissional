@@ -1,15 +1,15 @@
 <?page title="Lista de Categorias Profissionais" contentType="text/html;charset=UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>
-	<window id="frmListaTipoDocumento" border="normal" sizable="true" 
+	<window id="frmListaPais" border="normal" sizable="true" 
 		apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ListaTipoDocumentoVM')">
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ListaPaisVM')" >
 		<separator />
-		
+			
 		<div width="100%">
 			<div sclass="sectionTitle">
 				<separator />
-				<label value="TIPOS DE DOCUMENTO" sclass="sectionTitleLabel" />
+				<label value="PAISES" sclass="sectionTitleLabel" />
 				<separator />
 			</div>
 			<div style="float:right">
@@ -25,17 +25,15 @@
 			model="@load(vm.dataSet)">
 			<listhead sizable="true">
 				<listheader label="DESIGNAÇÃO" sortDirection="ascending"
-					sort="auto(designacao)" />
-				<listheader label="DESCRIÇÃO" sort="auto(descricao)" />
+					sort="auto(designacao)" />				
 				<listheader label="ACCAO" />
 			</listhead>
 			<template name="model" var="p1">
 				<listitem>
-					<listcell label="@load(p1.designacao)" />
-					<listcell label="@load(p1.descricao)" />
+					<listcell label="@load(p1.designacao)" />					
 					<listcell>
 						<hbox spacing="20px">
-							<!--  <button label="Editar"
+						<!--  	<button label="Editar"
 								onClick="@command('onEdit',userRecord=p1)">
 							</button>
 							<button label="Visualizar"
@@ -44,6 +42,7 @@
 							<button label="Apagar"
 								onClick="@command('onDelete',userRecord=p1)">
 							</button>-->
+							
 							<image
 								onClick="@command('onEdit',userRecord=p1)" sclass="fimageedit"
 								tooltiptext="Para editar este registo">
@@ -58,6 +57,8 @@
 								onClick="@command('onDelete',userRecord=p1)"
 								sclass="fimageDelete" tooltiptext="Apagar este registo ">
 							</image>
+							
+							
 						</hbox>
 					</listcell>
 				</listitem>

@@ -11,5 +11,6 @@ public interface ProvinciaDAO {
 	public Provincia getByID(Integer id);
 	public Provincia getByDesignacao(String designacao);
 	public List<Provincia> getAllProvincia(Pais...paises );
+	public void delete(Provincia provincia);
 
 }

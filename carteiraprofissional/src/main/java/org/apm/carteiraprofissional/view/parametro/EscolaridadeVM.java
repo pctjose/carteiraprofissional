@@ -1,10 +1,12 @@
 package org.apm.carteiraprofissional.view.parametro;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apm.carteiraprofissional.Escolaridade;
 import org.apm.carteiraprofissional.service.EscolaridadeService;
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -92,13 +94,26 @@ public class EscolaridadeVM {
 		frmEscolaridade.detach();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Command
 	public void saveThis() {
-		if (selectedRecord.getId() == null)
+		String sms="";
+		if (selectedRecord.getId() == null){
 			selectedRecord.setUuid(UUID.randomUUID().toString());
-		escolaridadeService.saveUpdateEscolaridade(selectedRecord);		
+			sms=" Registado com sucesso";
+		}else{
+			sms=" Actualizado com sucesso";
+		}		
+		escolaridadeService.saveUpdateEscolaridade(selectedRecord);
+		
+		
+		Map args = new HashMap();
+        args.put("returnvalue", escolaridadeService.getAllNiveis());        
+        BindUtils.postGlobalCommand(null, null, "refreshvalues", args);
+		
+		
 		frmEscolaridade.detach();
-		Clients.showNotification("Nivel de Escolaridade: "+selectedRecord.getDesignacao()+" Registada/Actualizada");
+		Clients.showNotification("Nivel de Escolaridade: "+selectedRecord.getDesignacao()+sms);
 	}
 
 }

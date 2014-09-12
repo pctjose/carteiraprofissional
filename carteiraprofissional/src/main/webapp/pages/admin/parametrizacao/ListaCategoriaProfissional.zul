@@ -5,8 +5,8 @@
 		apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ListaCategoriaProfissionalVM')">
 		<separator />
-		<separator />
-		<div width="80%">
+		
+		<div width="100%">
 			<div sclass="sectionTitle">
 				<separator />
 				<label value="CATEGORIAS" sclass="sectionTitleLabel" />
@@ -20,7 +20,7 @@
 			<div sclass="sectionSeperator"></div>
 		</div>
 		<separator />
-		<listbox id="dataSet" mold="paging" pageSize="9"
+		<listbox id="dataSet" mold="paging" pageSize="10"
 			pagingPosition="top" sclass="mylist"
 			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)">
 			<listhead sizable="true">

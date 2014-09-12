@@ -36,11 +36,13 @@
 						<treeitem label="Forma Pagamento"
 							value="/pages/admin/parametrizacao/ListaFormaPagamento.zul" image="/imgs/fn.png" />
 						<treeitem label="Nivel Escolaridade"
-							value="/pages/admin/parametrizacao/ListaEscolaridade.zul" image="/imgs/fn.png" />
-						<treeitem label="Paises e Provincias"
-							value="/pages/PaginaEmConstrucao.zul" image="/imgs/fn.png" />
+							value="/pages/admin/parametrizacao/ListaEscolaridade.zul" image="/imgs/fn.png" />						
 						<treeitem label="Tipo Documento"
 							value="/pages/admin/parametrizacao/ListaTipoDocumento.zul" image="/imgs/fn.png" />
+						<treeitem label="Paises"
+							value="/pages/admin/parametrizacao/ListaPais.zul" image="/imgs/fn.png" />
+						<treeitem label="Provincias"
+							value="/pages/admin/parametrizacao/ListaProvincia.zul" image="/imgs/fn.png" />
 					</treechildren>
 				</treeitem>
 			</treechildren>

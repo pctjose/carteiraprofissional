@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apm.carteiraprofissional.Escolaridade;
-import org.apm.carteiraprofissional.service.EscolaridadeService;
+import org.apm.carteiraprofissional.Provincia;
+import org.apm.carteiraprofissional.service.ProvinciaService;
 import org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -26,46 +26,54 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-public class ListaEscolaridadeVM {
+public class ListaProvinciaVM {
 	private static Logger _log = Logger.getLogger(RequisicaoCarteiraVM.class);
-	private Escolaridade selectedItem;
-	private List<Escolaridade> dataSet;
+	private Provincia selectedItem;
+	private List<Provincia> dataSet;
 
 	@WireVariable
-	protected EscolaridadeService escolaridadeService;
+	protected ProvinciaService provinciaService;
 
 	@Wire
-	private Window frmListaEscolaridade;
+	private Window frmListaProvincia;	
 
-	public Window getFrmListaEscolaridade() {
-		return frmListaEscolaridade;
-	}
-
-	public void setFrmListaEscolaridade(Window frmListaEscolaridade) {
-		this.frmListaEscolaridade = frmListaEscolaridade;
-	}
-
-	public Escolaridade getSelectedItem() {
+	public Provincia getSelectedItem() {
 		return selectedItem;
 	}
 
-	public void setSelectedItem(Escolaridade selectedItem) {
+	public void setSelectedItem(Provincia selectedItem) {
 		this.selectedItem = selectedItem;
 	}
 
-	public List<Escolaridade> getDataSet() {
+	public List<Provincia> getDataSet() {
 		return dataSet;
 	}
 
-	public void setDataSet(List<Escolaridade> dataSet) {
+	public void setDataSet(List<Provincia> dataSet) {
 		this.dataSet = dataSet;
+	}
+
+	public ProvinciaService getProvinciaService() {
+		return provinciaService;
+	}
+
+	public void setProvinciaService(ProvinciaService provinciaService) {
+		this.provinciaService = provinciaService;
+	}
+
+	public Window getFrmListaProvincia() {
+		return frmListaProvincia;
+	}
+
+	public void setFrmListaProvincia(Window frmListaProvincia) {
+		this.frmListaProvincia = frmListaProvincia;
 	}
 
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 
-		dataSet = escolaridadeService.getAllNiveis();
+		dataSet = provinciaService.getAllProvincia();
 
 	}
 
@@ -76,40 +84,40 @@ public class ListaEscolaridadeVM {
 		map.put("selectedRecord", null);
 		Sessions.getCurrent().setAttribute("parameterValues", map);
 		Window cRequisicao = (Window) Executions.createComponents(
-				"/pages/admin/parametrizacao/Escolaridade.zul", null, null);
-		cRequisicao.setParent(frmListaEscolaridade);
+				"/pages/admin/parametrizacao/Provincia.zul", null, null);
+		cRequisicao.setParent(frmListaProvincia);
 		cRequisicao.doModal();
 	}
 
 	@Command
-	public void onEdit(@BindingParam("userRecord") Escolaridade escolaridade) {
+	public void onEdit(@BindingParam("userRecord") Provincia provincia) {
 
 		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("recordMode", "EDIT");
-		map.put("selectedRecord", escolaridade);
+		map.put("selectedRecord", provincia);
 
 		Sessions.getCurrent().setAttribute("parameterValues", map);
 
 		Window cRequisicao = (Window) Executions.createComponents(
-				"/pages/admin/parametrizacao/Escolaridade.zul", null, null);
-		cRequisicao.setParent(frmListaEscolaridade);
+				"/pages/admin/parametrizacao/Provincia.zul", null, null);
+		cRequisicao.setParent(frmListaProvincia);
 		cRequisicao.doModal();
 
 	}
 
 	@Command
 	public void openAsReadOnly(
-			@BindingParam("userRecord") Escolaridade escolaridade) {
+			@BindingParam("userRecord") Provincia provincia) {
 
 		final HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("recordMode", "VIEW");
-		map.put("selectedRecord", escolaridade);
+		map.put("selectedRecord", provincia);
 
 		Sessions.getCurrent().setAttribute("parameterValues", map);
 
 		Window cRequisicao = (Window) Executions.createComponents(
-				"/pages/admin/parametrizacao/Escolaridade.zul", null, null);
-		cRequisicao.setParent(frmListaEscolaridade);
+				"/pages/admin/parametrizacao/Provincia.zul", null, null);
+		cRequisicao.setParent(frmListaProvincia);
 		cRequisicao.doModal();
 
 	}
@@ -118,27 +126,28 @@ public class ListaEscolaridadeVM {
 	@Command
 	@NotifyChange("dataSet")
 	public void onDelete(
-			@BindingParam("userRecord") final Escolaridade escolaridade) {
+			@BindingParam("userRecord") final Provincia provincia) {
 		Messagebox.show(
-				"Confirma que pretende apagar o nivel de escolaridade: "
-						+ escolaridade.getDesignacao() + "?",
+				"Confirma que pretende apagar a Provincia: "
+						+ provincia.getDesignacao() + "?",
 				"Confirmar Apagar", Messagebox.OK | Messagebox.CANCEL,
 				Messagebox.QUESTION, new org.zkoss.zk.ui.event.EventListener() {
 					public void onEvent(Event evt) throws InterruptedException {
 						if (evt.getName().equals("onOK")) {
 							try {
-								escolaridadeService.delete(escolaridade);
-								dataSet.remove(escolaridade);
+								
+								provinciaService.delete(provincia);
+								dataSet.remove(provincia);
 								BindUtils.postNotifyChange(null, null,
-										ListaEscolaridadeVM.this, "dataSet");
-								Clients.showNotification("Nivel Escolaridade: "
-										+ escolaridade.getDesignacao()
+										ListaProvinciaVM.this, "dataSet");
+								Clients.showNotification("Provincia: "
+										+ provincia.getDesignacao()
 										+ " apagada com sucesso");
 
 							} catch (Exception e) {
 								_log.debug(e);
-								Clients.showNotification("Não foi possível apagar a escolaridade: "
-										+ escolaridade.getDesignacao()
+								Clients.showNotification("Não foi possível apagar a provincia: "
+										+ provincia.getDesignacao()
 										+ ". Está em uso");
 							}
 
@@ -151,8 +160,7 @@ public class ListaEscolaridadeVM {
 	@GlobalCommand
 	@NotifyChange("dataSet")
 	public void refreshvalues(
-			@BindingParam("returnvalue") List<Escolaridade> dataSet) {
+			@BindingParam("returnvalue") List<Provincia> dataSet) {
 		this.dataSet = dataSet;
 	}
-
 }

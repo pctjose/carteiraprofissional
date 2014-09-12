@@ -1,10 +1,12 @@
 package org.apm.carteiraprofissional.view.parametro;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apm.carteiraprofissional.Categoria;
 import org.apm.carteiraprofissional.service.CategoriaService;
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -91,13 +93,27 @@ public class CategoriaProfissionalVM {
 		frmCategoriaProfissional.detach();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Command
 	public void saveThis() {
-		if (selectedRecord.getId() == null)
+		String sms = "";
+		if (selectedRecord.getId() == null) {
 			selectedRecord.setUuid(UUID.randomUUID().toString());
+			sms = " Registada com sucesso";
+		} else {
+			sms = " Actualizada com sucesso";
+		}
+
 		categoriaService.saveCategoria(selectedRecord);
+		
+		Map args = new HashMap();
+        args.put("returnvalue", categoriaService.getAllCategorias());        
+        BindUtils.postGlobalCommand(null, null, "refreshvalues", args);
+		
+		
 		frmCategoriaProfissional.detach();
-		Clients.showNotification("Categoria Profissional: "+selectedRecord.getDesignacao()+" Registada/Actualizada");
+		Clients.showNotification("Categoria Profissional: "
+				+ selectedRecord.getDesignacao() + sms);
 	}
 
 }

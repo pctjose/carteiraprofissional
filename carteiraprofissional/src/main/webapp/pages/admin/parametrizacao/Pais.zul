@@ -2,9 +2,9 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="frmTipoDocumento" border="normal"
+	<window id="frmPais" border="normal"
 		apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.TipoDocumentoVM')"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.PaisVM')"
 		width="25%">
 		<div
 			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
@@ -21,7 +21,7 @@
 
 								<label id="lcaption"
 									sclass="sectionTitleLabel"
-									value="@load(vm.makeAsReadOnly ? 'VISUALIZAÇÃO DE TIPO DOCUMENTO': empty fx.id ?'REGISTO DE TIPO DOCUMENTO':'ACTUALIZAÇÃO DE TIPO DOCUMENTO')"/>
+									value="@load(vm.makeAsReadOnly ? 'VISUALIZAÇÃO DE PAIS': empty fx.id ?'REGISTO DE PAIS':'ACTUALIZAÇÃO DE PAIS')" />
 							</row>
 
 						</rows>
@@ -33,30 +33,20 @@
 					<panelchildren>
 						<grid sclass="vgrid">
 							<columns>
-								<column label="TIPO DOCUMENTO" />
+								<column label="PAÍS" />
 							</columns>
 							<rows>
 								
 								<row>
 									<vlayout>
-										<separator/>
+									<separator/>
 										<label value="Designação:"
 											sclass="flabel" />
 										<textbox id="designacao"											
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
 											value="@bind(fx.designacao)" constraint="no empty: Designação deve ser preenchida" hflex="1"/>
 									</vlayout>
-								</row>
-								
-								<row>
-									<vlayout>
-										<label value="Descrição:"
-											sclass="flabel" />
-										<textbox id="descricao"											
-											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
-											value="@bind(fx.descricao)" rows="3" cols="50" hflex="1"/>
-									</vlayout>
-								</row>								
+								</row>															
 							</rows>
 						</grid>
 					</panelchildren>

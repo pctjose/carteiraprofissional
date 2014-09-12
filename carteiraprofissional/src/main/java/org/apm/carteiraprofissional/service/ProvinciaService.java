@@ -12,5 +12,6 @@ public interface ProvinciaService {
 	public Provincia getByDesignacao(String designacao);
 	public List<Provincia> getAllProvincia();
 	public List<Provincia> getAllProvincia(Pais pais);
+	public void delete(Provincia provincia);
 
 }

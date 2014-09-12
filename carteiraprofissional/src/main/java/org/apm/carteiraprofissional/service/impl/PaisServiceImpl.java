@@ -50,4 +50,9 @@ public class PaisServiceImpl implements PaisService {
 		return paisDAO.getAllPaises();
 	}
 
+	public void delete(Pais pais) {
+		paisDAO.delete(pais);
+		
+	}
+
 }

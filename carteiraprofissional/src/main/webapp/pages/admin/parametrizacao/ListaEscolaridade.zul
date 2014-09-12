@@ -3,10 +3,10 @@
 <zk>
 	<window id="frmListaEscolaridade" border="normal" sizable="true" 
 		apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ListaEscolaridadeVM')">
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ListaEscolaridadeVM')" >
 		<separator />
-		<separator />
-		<div width="80%">
+			
+		<div width="100%">
 			<div sclass="sectionTitle">
 				<separator />
 				<label value="NIVEIS DE ESCOLARIDADE" sclass="sectionTitleLabel" />
@@ -35,7 +35,7 @@
 					<listcell label="@load(p1.descricao)" />
 					<listcell>
 						<hbox spacing="20px">
-							<button label="Editar"
+						<!--  	<button label="Editar"
 								onClick="@command('onEdit',userRecord=p1)">
 							</button>
 							<button label="Visualizar"
@@ -43,7 +43,24 @@
 							</button>
 							<button label="Apagar"
 								onClick="@command('onDelete',userRecord=p1)">
-							</button>
+							</button>-->
+							
+							<image
+								onClick="@command('onEdit',userRecord=p1)" sclass="fimageedit"
+								tooltiptext="Para editar este registo">
+							</image>
+
+							<image
+								onClick="@command('openAsReadOnly',userRecord=p1)"
+								sclass="fimageView" tooltiptext="Visualizar este registo">
+							</image>
+
+							<image
+								onClick="@command('onDelete',userRecord=p1)"
+								sclass="fimageDelete" tooltiptext="Apagar este registo ">
+							</image>
+							
+							
 						</hbox>
 					</listcell>
 				</listitem>

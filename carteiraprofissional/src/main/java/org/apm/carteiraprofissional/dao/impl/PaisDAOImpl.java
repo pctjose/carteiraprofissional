@@ -68,4 +68,10 @@ public class PaisDAOImpl implements PaisDAO {
 		return paises;
 	}
 
+	@Transactional
+	public void delete(Pais pais) {
+		sessionFactory.getCurrentSession().delete(pais);
+		
+	}
+
 }

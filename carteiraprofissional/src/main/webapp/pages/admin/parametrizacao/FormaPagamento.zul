@@ -21,7 +21,7 @@
 
 								<label id="lcaption"
 									sclass="sectionTitleLabel"
-									value="REGISTO/ACTUALIZAÇÃO DE FORMAS DE PAGAMENTO" />
+									value="@load(vm.makeAsReadOnly ? 'VISUALIZAÇÃO DE FORMAS DE PAGAMENTO': empty fx.id ?'REGISTO DE FORMAS DE PAGAMENTO':'ACTUALIZAÇÃO DE FORMAS DE PAGAMENTO')" />
 							</row>
 
 						</rows>
@@ -39,11 +39,12 @@
 								
 								<row>
 									<vlayout>
+										<separator/>
 										<label value="Designação:"
 											sclass="flabel" />
 										<textbox id="designacao"											
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
-											value="@bind(fx.designacao)" constraint="no empty"/>
+											value="@bind(fx.designacao)" constraint="no empty: Designação deve ser preenhida" vflex="1"/>
 									</vlayout>
 								</row>
 								
@@ -53,7 +54,7 @@
 											sclass="flabel" />
 										<textbox id="descricao"											
 											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
-											value="@bind(fx.descricao)" rows="3" cols="50"/>
+											value="@bind(fx.descricao)" rows="3" cols="50" vflex="1"/>
 									</vlayout>
 								</row>								
 							</rows>

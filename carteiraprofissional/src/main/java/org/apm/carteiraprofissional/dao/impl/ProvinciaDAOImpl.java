@@ -69,4 +69,10 @@ public class ProvinciaDAOImpl implements ProvinciaDAO {
 		return provincias;
 	}
 
+	@Transactional
+	public void delete(Provincia provincia) {
+		sessionFactory.getCurrentSession().delete(provincia);
+		
+	}
+
 }

@@ -51,4 +51,9 @@ public class ProvinciaServiceImpl implements ProvinciaService {
 		return provinciaDAO.getAllProvincia(pais);
 	}
 
+	public void delete(Provincia provincia) {
+		provinciaDAO.delete(provincia);
+		
+	}
+
 }
