@@ -55,8 +55,18 @@ public class Requisicao {
 	private String uuid;
 	@Column(name="tem_carteira")
 	private boolean temCarteira;
+	@Column(name="expirou")
+	private boolean expirou;
 	
 	
+
+	public boolean isExpirou() {
+		return expirou;
+	}
+
+	public void setExpirou(boolean expirou) {
+		this.expirou = expirou;
+	}
 
 	public Integer getRequisicaoId() {
 		return requisicaoId;

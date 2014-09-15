@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class SolicitarEditarRequisicao implements Serializable {
+public class SolicitarEditarCarteira implements Serializable {
 
 	/**
 	 * 
@@ -28,8 +28,8 @@ public class SolicitarEditarRequisicao implements Serializable {
 	@Column(name = "data_solicitacao")
 	private Date dataSolicitacao;
 	@ManyToOne
-	@JoinColumn(name = "requisicao_id")
-	private Requisicao requisicao;
+	@JoinColumn(name = "carteira_id")
+	private Carteira carteira;
 	@Column(name = "tratada")
 	private boolean tratada;
 	@Column(name = "uuid")
@@ -67,12 +67,14 @@ public class SolicitarEditarRequisicao implements Serializable {
 		this.dataSolicitacao = dataSolicitacao;
 	}
 
-	public Requisicao getRequisicao() {
-		return requisicao;
+	
+
+	public Carteira getCarteira() {
+		return carteira;
 	}
 
-	public void setRequisicao(Requisicao requisicao) {
-		this.requisicao = requisicao;
+	public void setCarteira(Carteira carteira) {
+		this.carteira = carteira;
 	}
 
 	public boolean isTratada() {

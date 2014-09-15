@@ -2,7 +2,7 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="frmProvinvia" border="normal"
+	<window id="frmProvincia" border="normal"
 		apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.ProvinciaVM')"
 		width="25%">
@@ -27,30 +27,46 @@
 						</rows>
 					</grid>
 				</panelchildren>
-			</panel>			
-			
-				<panel width="100%" sclass="sectionPanel">
-					<panelchildren>
-						<grid sclass="vgrid">
-							<columns>
-								<column label="PROVINCIA" />
-							</columns>
-							<rows>
-								
-								<row>
-									<vlayout>
-									<separator/>
-										<label value="Designação:"
-											sclass="flabel" />
-										<textbox id="designacao"											
-											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
-											value="@bind(fx.designacao)" constraint="no empty: Designação deve ser preenchida" hflex="1"/>
-									</vlayout>
-								</row>															
-							</rows>
-						</grid>
-					</panelchildren>
-				</panel>		
+			</panel>
+
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column label="PROVINCIA" />
+						</columns>
+						<rows>
+							<row>
+
+								<vlayout>
+									<label value="Pais" sclass="flabel" />
+									<listbox model="@load(vm.paises)"
+										mold="select" width="170px" id="paises"
+										selectedItem="@bind(fx.pais)">
+										<template name="model">
+											<listitem
+												label="@load(each)" width="170px" />
+										</template>
+									</listbox>
+								</vlayout>
+
+							</row>
+							<row>
+								<vlayout>
+									<separator />
+									<label value="Designação:"
+										sclass="flabel" />
+									<textbox id="designacao"
+										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+										width="150px" value="@bind(fx.designacao)"
+										constraint="no empty: Designação deve ser preenchida"
+										hflex="1" />
+								</vlayout>
+							</row>
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
 			<separator />
 			<separator />
 			<panel width="100%" sclass="sectionPanel">

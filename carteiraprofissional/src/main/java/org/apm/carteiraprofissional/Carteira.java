@@ -38,6 +38,18 @@ public class Carteira extends BaseModel {
 	private Date dataPagamento;
 	@Column(name = "enviar_emissao")
 	private boolean enviarEmissao;
+	@Column(name="expirou")
+	private boolean expirou;
+	
+	
+
+	public boolean isExpirou() {
+		return expirou;
+	}
+
+	public void setExpirou(boolean expirou) {
+		this.expirou = expirou;
+	}
 
 	public Requisicao getRequisicao() {
 		return requisicao;
