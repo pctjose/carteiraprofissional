@@ -29,6 +29,8 @@ public class NumeroRequisicao {
 	private Date dataEmissao;
 	@Column(name = "uuid")
 	private String uuid;
+	@Column(name="nome_real")
+	private String numeroReal;
 
 	public Integer getId() {
 		return id;
@@ -68,6 +70,14 @@ public class NumeroRequisicao {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}	
+
+	public String getNumeroReal() {
+		return numeroReal;
+	}
+
+	public void setNumeroReal(String numeroReal) {
+		this.numeroReal = numeroReal;
 	}
 
 	@Override

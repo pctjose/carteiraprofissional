@@ -60,7 +60,7 @@
 							<row>
 
 								<checkbox id="assinouCompromisso"
-									value="@bind(fx.assinouCompromisso)"
+									checked="@bind(fx.assinouCompromisso)"
 									label="Assinou termo de compromisso" />
 
 							</row>
@@ -69,7 +69,7 @@
 								<vlayout>
 									<hlayout>
 										<checkbox id="concordaTermos"
-											value="@bind(fx.concordaTermos)"
+											checked="@bind(fx.concordaTermos)"
 											label="Concordo com os termos" />
 
 

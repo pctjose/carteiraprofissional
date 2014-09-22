@@ -61,11 +61,11 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 	@Transactional(readOnly=true)
 	public List<Requisitante> getAllRequisitantes() {
 		Session sessao = sessionFactory.getCurrentSession();
-		//Transaction tx = sessao.beginTransaction();
+		
 		Criteria c = sessao.createCriteria(Requisitante.class);
-		c.addOrder(Order.asc("apelido"));
+		c.addOrder(Order.asc("nome"));
 		List<Requisitante> requisicoes = c.list();
-		//tx.commit();
+		
 		return requisicoes;
 	}
 
@@ -73,6 +73,16 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 	public void delete(Requisitante requisitante) {
 		sessionFactory.getCurrentSession().delete(requisitante);
 
+	}
+
+	@Transactional(readOnly=true)
+	public Requisitante getRequisitanteByEmail(String email) {
+		Session sessao = sessionFactory.getCurrentSession();		
+		Criteria cr = sessao.createCriteria(Requisitante.class);
+		cr.add(Restrictions.eq("email", email));
+		Requisitante requisicao = (Requisitante) cr.uniqueResult();
+		
+		return requisicao;
 	}
 
 }

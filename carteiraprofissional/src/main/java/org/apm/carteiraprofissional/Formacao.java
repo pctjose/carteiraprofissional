@@ -43,8 +43,20 @@ public class Formacao implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_registo")
 	private Date dataRegisto;
+	@Column(name="lock_edit")
+	private boolean lockEdit;
 	
 	
+	
+	
+
+	public boolean isLockEdit() {
+		return lockEdit;
+	}
+
+	public void setLockEdit(boolean lockEdit) {
+		this.lockEdit = lockEdit;
+	}
 
 	public String getInstituicao() {
 		return instituicao;

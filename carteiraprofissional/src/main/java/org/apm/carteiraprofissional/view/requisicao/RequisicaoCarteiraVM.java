@@ -1,15 +1,11 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.Categoria;
@@ -37,10 +33,10 @@ import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.Image;
-import org.zkoss.image.Images;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Path;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.UploadEvent;
@@ -48,20 +44,17 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Include;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamPanel;
 
 public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
@@ -155,6 +148,9 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Wire
 	Textbox experienciaRelevante;
 
+	@Wire
+	Listbox categoria;
+
 	// ==================== Formacao ==================//
 	@Wire
 	Textbox instituicao;
@@ -167,9 +163,6 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 	@Wire
 	Listbox grauObtido;
-
-	@Wire
-	Textbox apelido;
 
 	@Wire
 	Textbox nome;
@@ -221,6 +214,27 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 	@Wire
 	Textbox numeroNuit;
+
+	@Wire
+	Checkbox membro;
+
+	@Wire
+	Textbox numeroMembro;
+
+	@Wire
+	Tab tabDadosPessoas;
+
+	@Wire
+	Tab tabFormacao;
+
+	@Wire
+	Tab tabExperiencia;
+
+	@Wire
+	Listbox escolaridadesLista;
+
+	@Wire
+	Listbox tipoDocsLista;
 
 	public Requisitante getSelectedRecord() {
 		return selectedRecord;
@@ -327,7 +341,6 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		this.inPaises = paises;
 	}
 
-	
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 
@@ -336,6 +349,8 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 		// final HashMap<String, Object> map = (HashMap<String, Object>)
 		// Sessions.getCurrent().getAttribute("allmyvalues");
+		
+		
 
 		recordMode = Executions.getCurrent().getParameter("requisicaoMode");
 
@@ -346,6 +361,9 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		categorias = categoriaService.getAllCategorias();
 
 		inPaises = paisService.getAllPaises();
+
+		formacao = new Formacao();
+		experiencia = new Experiencia();
 
 		if (inPaises != null && inPaises.size() > 0) {
 			inProvincias = provinciaService.getAllProvincia(inPaises.get(0));
@@ -373,105 +391,103 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		}
 	}
 
-	@Command("upload")
-	@NotifyChange("userImage")
-	public void upload(@ContextParam(ContextType.BIND_CONTEXT) BindContext ctx) {
-		UploadEvent upEvent = (UploadEvent) ctx.getTriggerEvent();
-
-		org.zkoss.util.media.Media media = upEvent.getMedia();
-		if (media instanceof org.zkoss.image.Image) {
-			// userImage = org.zkoss.image.AImage();
-			// userImage.setContent((org.zkoss.image.AImage) media);
-			// org.zkoss.image.AImage e = new org.zkoss.image.AImage()
-
-		} else {
-			Messagebox.show("Not an image: " + media, "Error", Messagebox.OK,
-					Messagebox.ERROR);
-		}
-		System.out.println("uploading " + upEvent.getMedia().getName());
-	}
-
-	@Command
-	@NotifyChange("userImage")
-	public void getWebCam() throws IOException, InterruptedException {
-		Webcam webcam = Webcam.getDefault();
-
-		WebcamPanel panel = new WebcamPanel(webcam);
-
-		panel.setFillArea(true);
-
-		JFrame window = new JFrame("Test webcam panel");
-		window.add(panel);
-		window.setResizable(true);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.pack();
-		window.setVisible(true);
-
-		BufferedImage image = webcam.getImage();
-
-		// ImageIO.write(image, "PNG", new File("/resources/teste.png"));
-
-		userImage = Images.encode("Foto.png", image);
-		// userImage=new AImage("",image);
-
-		Thread.sleep(300);
-		webcam.close();
-		window.dispose();
-
-	}
-
 	@Command
 	@NotifyChange({ "experiencia", "listaExperiencia",
 			"experienciasAdicionadas" })
 	public void onAddExperiencia() {
 
-		if (!funcaoExercida.getText().isEmpty()
-				&& !experienciaRelevante.getText().isEmpty()
-				&& !empregadorEndereco.getText().isEmpty()
-				&& !empregadorContacto.getText().isEmpty()) {
-			experiencia = new Experiencia();
-			experiencia.setEmpregador(empregador.getText());
-			experiencia.setActual((Boolean) actual.getValue());
-			experiencia.setEmpregadorContacto(empregadorContacto.getText());
-			experiencia.setEmpregadorEndereco(empregadorEndereco.getText());
-			experiencia.setDataFinal(dataFinal.getValue());
-			experiencia.setDataInicial(dataInicial.getValue());
-			experiencia.setFuncaoExercida(funcaoExercida.getText());
-			experiencia.setExperienciaRelevante(experienciaRelevante.getText());
-			experiencia.setUuid(UUID.randomUUID().toString());
-			experiencia.setRequisitante(selectedRecord);
-			experiencia.setDataRegisto(new Date());
-
-			experienciasAdicionadas.add(experiencia);
-			this.selectedRecord.getExperiencias().add(experiencia);
-		} else {
-			Clients.showNotification("Por favor adicione a experiência");
+		if (empregador == null || empregador.getValue().trim().isEmpty()) {
+			throw new WrongValueException(empregador,
+					"O Campo Empregador deve ser preenchido");
 		}
+		if (categoria == null || categoria.getSelectedItem() == null
+				|| categoria.getSelectedItem().getValue() == null) {
+			throw new WrongValueException(categoria,
+					"Deve seleccionar a Categoria exercida");
+		}
+		if (dataInicial == null || dataInicial.getValue() == null) {
+			throw new WrongValueException(dataInicial,
+					"Deve indicar a data de inicio de trabalhos com este empregador");
+		}
+		if (funcaoExercida == null
+				|| funcaoExercida.getValue().trim().isEmpty()) {
+			throw new WrongValueException(funcaoExercida,
+					"A Função exercida deve ser preenchida");
+		}
+		if (experienciaRelevante == null
+				|| experienciaRelevante.getValue().trim().isEmpty()) {
+			throw new WrongValueException(experienciaRelevante,
+					"Deve indicar as experiencias relevantes com este empregador");
+		}
+		if (actual.isChecked()) {
+			for (Experiencia e : experienciasAdicionadas) {
+				if (e.isActual()) {
+					throw new WrongValueException(actual,
+							"Existe uma experiencia marcada como actual na lista");
+				}
+			}
+		}
+
+		experiencia = new Experiencia();
+		experiencia.setEmpregador(empregador.getText());
+		experiencia.setActual(actual.isChecked());
+		// experiencia.setActual((Boolean) actual.getValue());
+		experiencia.setCategoria((Categoria) categoria.getSelectedItem()
+				.getValue());
+		experiencia.setEmpregadorContacto(empregadorContacto.getText());
+		experiencia.setEmpregadorEndereco(empregadorEndereco.getText());
+		experiencia.setDataFinal(dataFinal.getValue());
+		experiencia.setDataInicial(dataInicial.getValue());
+		experiencia.setFuncaoExercida(funcaoExercida.getText());
+		experiencia.setExperienciaRelevante(experienciaRelevante.getText());
+		experiencia.setUuid(UUID.randomUUID().toString());
+		experiencia.setRequisitante(selectedRecord);
+		experiencia.setDataRegisto(new Date());
+
+		experienciasAdicionadas.add(experiencia);
+		this.selectedRecord.getExperiencias().add(experiencia);
+
 	}
 
 	@Command
 	@NotifyChange({ "formacao", "formacoesAdicionadas" })
 	public void onAddFormacao() {
 
-		if (!instituicao.getValue().isEmpty()
-				&& !localizacao.getValue().isEmpty()
-				&& !ano.getValue().toString().isEmpty()
-				&& (Escolaridade) grauObtido.getSelectedItem().getValue() != null) {
-			formacao = new Formacao();
-			formacao.setAno(ano.getValue());
-			formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
-					.getValue());
-			formacao.setInstituicao(instituicao.getValue());
-			formacao.setLocalizacao(localizacao.getValue());
-			formacao.setRequisitante(selectedRecord);
-			formacao.setUuid(UUID.randomUUID().toString());
-			formacao.setDataRegisto(new Date());
-
-			formacoesAdicionadas.add(formacao);
-			this.selectedRecord.getFormacoes().add(formacao);
-		} else {
-			Clients.showNotification("Por favor adicione a formação acadêmica e profissional");
+		if (instituicao == null || instituicao.getValue().trim().isEmpty()) {
+			throw new WrongValueException(instituicao,
+					"O Campo Instituição deve ser preenchido");
 		}
+
+		if (localizacao == null || localizacao.getValue().trim().isEmpty()) {
+			throw new WrongValueException(localizacao,
+					"O Campo Localização deve ser preenchido");
+		}
+
+		if (ano == null || ano.getValue() == null || ano.getValue() < 1900
+				|| ano.getValue() > Calendar.getInstance().get(Calendar.YEAR)) {
+			throw new WrongValueException(ano,
+					"O campo 'Ano' deve ser preechido ou foi preenchido incorrectamente");
+		}
+
+		if (grauObtido == null || grauObtido.getSelectedItem() == null
+				|| grauObtido.getSelectedItem().getValue() == null) {
+			throw new WrongValueException(grauObtido,
+					"Deve seleccionar o Grau obtido");
+		}
+
+		formacao = new Formacao();
+		formacao.setAno(ano.getValue());
+		formacao.setGrauObtido((Escolaridade) grauObtido.getSelectedItem()
+				.getValue());
+		formacao.setInstituicao(instituicao.getValue());
+		formacao.setLocalizacao(localizacao.getValue());
+		formacao.setRequisitante(selectedRecord);
+		formacao.setUuid(UUID.randomUUID().toString());
+		formacao.setDataRegisto(new Date());
+
+		formacoesAdicionadas.add(formacao);
+
+		this.selectedRecord.getFormacoes().add(formacao);
 	}
 
 	@Command
@@ -524,6 +540,22 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
+		
+		//Include incConteudo = (Include)Path.getComponent("//main/wndMain/contentSrc");
+		
+		Include incConteudo = (Include) Sessions.getCurrent().getAttribute("setContent");
+		
+		if(incConteudo!=null){
+			//System.out.println("Peguei o include");
+			//Sessions.getCurrent().setAttribute("setContent", incConteudo);
+			incConteudo.setSrc("/pages/anonimo/requisicao/startSearch.zul");
+		}else{
+			System.out.println("Nao peguei o incluede");
+		}
+		
+		
+		
+		
 		validate();
 
 		// List<Msg> errors = validateInput();
@@ -561,16 +593,20 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 	public boolean validate() {
 
-		if (apelido.getValue().isEmpty()) {
-			throw new WrongValueException(apelido,
-					"Apelido é um campo obrigatório");
-		}
-
-		if (nome.getValue().isEmpty()) {
+		if (nome == null || nome.getValue().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(nome, "Nome é um campo obrigatório");
 		}
 
-		if (dataNascimento.getValue() == null) {
+		if (sexo == null || sexo.getSelectedItem() == null
+				|| sexo.getSelectedItem().getValue() == null) {
+			tabDadosPessoas.setSelected(true);
+			throw new WrongValueException(sexo,
+					"Deve seleccionar o Sexo do requisitante");
+		}
+
+		if (dataNascimento == null || dataNascimento.getValue() == null) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(dataNascimento,
 					"Data de Nascimento é um campo obrigatório");
 		}
@@ -583,85 +619,108 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 				cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 
 		if (age < 18) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(dataNascimento,
 					"A idade não deve ser inferior a 18");
 		}
 
-		if (li == null) {
+		if (escolaridadesLista == null
+				|| escolaridadesLista.getSelectedItem() == null
+				|| escolaridadesLista.getSelectedItem().getValue() == null) {
+			tabDadosPessoas.setSelected(true);
+			throw new WrongValueException(escolaridadesLista,
+					"Deve seleccionar o nivel de escolaridade do requisitante");
+		}
+
+		if (membro.isChecked()) {
+			if (numeroMembro == null || numeroMembro.getValue().isEmpty()) {
+				tabDadosPessoas.setSelected(true);
+				throw new WrongValueException(numeroMembro,
+						"Como indicou que este é um membro da APM, deve indicar o nº do Membro");
+			}
+		}
+
+		if (paises == null || paises.getSelectedItem() == null
+				|| paises.getSelectedItem().getValue() == null) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(paises, "Pais é um campo obrigatorio");
 		}
 
 		if (selectedRecord.getProvincia() == null) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(provincias,
 					"Provincia é um campo obrigatorio");
 		}
 
 		if (cidade.getText().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(cidade,
 					"Cidade é um campo obrigatorio");
 		}
 
 		if (endereco.getText().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(endereco,
 					"Endereco é um campo obrigatorio");
 		}
 
 		if (contacto1.getText().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(contacto1,
 					"Contacto é um campo obrigatorio");
 		}
 
 		if (email.getText().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(email, "Email é um campo obrigatorio");
 		}
+		
+		if(!email.getText().matches(".+@.+\\.[a-z]+")){
+			tabDadosPessoas.setSelected(true);
+			throw new WrongValueException(email, "O Email introduzido é inválido");
+		}
+		
 
 		if (numeroBi.getText().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(numeroBi,
 					"Nº Doc Ident. é um campo obrigatorio");
 		}
 
+		if (tipoDocsLista == null || tipoDocsLista.getSelectedItem() == null
+				|| tipoDocsLista.getSelectedItem().getValue() == null) {
+			tabDadosPessoas.setSelected(true);
+			throw new WrongValueException(tipoDocsLista,
+					"Deve Indicar o tipo de documento");
+		}
+
 		if (dataEmissao.getValue() == null) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(dataEmissao,
 					"Data Emissão é um campo obrigatorio");
 		}
 
 		if (dataValidade.getValue() == null) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(dataValidade,
 					"Data Validade é um campo obrigatorio");
 		}
 
 		if (localEmissao.getValue().isEmpty()) {
+			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(localEmissao,
 					"Local Emissão é um campo obrigatorio");
 		}
-
-		if (instituicao.getValue().isEmpty()) {
+		if (this.selectedRecord.getFormacoes().isEmpty()) {
+			tabFormacao.setSelected(true);
 			throw new WrongValueException(instituicao,
-					"Instituição é um campo obrigatorio");
+					"Deve indicar pelo menos uma formação academica ou técnico profissional");
 		}
 
-		if (localizacao.getValue().isEmpty()) {
-			throw new WrongValueException(localizacao,
-					"Localização é um campo obrigatorio");
-		}
-
-		if (ano.getValue().toString().isEmpty()) {
-			throw new WrongValueException(ano, "Ano é um campo obrigatorio");
-		}
-
-		if (empregador.getValue().isEmpty()) {
+		if (this.selectedRecord.getExperiencias().isEmpty()) {
+			tabExperiencia.setSelected(true);
 			throw new WrongValueException(empregador,
-					"Empregador é um campo obrigatorio");
-		}
-
-		if (funcaoExercida.getText().isEmpty()) {
-			throw new WrongValueException(funcaoExercida,
-					"Função é um campo obrigatorio");
-		}
-
-		if (experienciaRelevante.getValue().isEmpty()) {
-			throw new WrongValueException(experienciaRelevante,
-					"Experiência Relevante é um campo obrigatorio");
+					"Deve indicar pelo menos uma experiência profissional");
 		}
 
 		return true;
@@ -740,14 +799,24 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	}
 
 	@Command
-	@NotifyChange({ "disableDataFinal" })
 	public void disableDataFinal() {
 		if (actual.isChecked()) {
 			dataFinal.setReadonly(Boolean.TRUE);
 			dataFinal.setDisabled(Boolean.TRUE);
+			dataFinal.setValue(null);
 		} else {
 			dataFinal.setReadonly(Boolean.FALSE);
 			dataFinal.setDisabled(Boolean.FALSE);
+		}
+	}
+
+	@Command
+	public void disableNumeroMembro() {
+		if (membro.isChecked()) {
+			numeroMembro.setReadonly(false);
+		} else {
+			numeroMembro.setReadonly(true);
+			numeroMembro.setValue(null);
 		}
 	}
 
@@ -770,13 +839,13 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			if (Arrays.binarySearch(PDF_FORMAT, media.getContentType()) >= 0) {
 
 				// selectedRecord = new Requisitante();
-				selectedRecord.setNumeroDoc(numeroBi.getValue());
-				selectedRecord.setDataEmissao(dataEmissao.getValue());
-				selectedRecord.setDataValidade(dataValidade.getValue());
-				selectedRecord.setLocalEmissao(localEmissao.getValue());
+				// selectedRecord.setNumeroDoc(numeroBi.getValue());
+				// selectedRecord.setDataEmissao(dataEmissao.getValue());
+				// selectedRecord.setDataValidade(dataValidade.getValue());
+				// selectedRecord.setLocalEmissao(localEmissao.getValue());
 				selectedRecord.setCopiaDoc(media.getByteData());
-				selectedRecord.setNumeroNuit(numeroNuit.getValue());
-				selectedRecord.setTipoDoc(selectedRecord.getTipoDoc());
+				// selectedRecord.setNumeroNuit(numeroNuit.getValue());
+				// selectedRecord.setTipoDoc(selectedRecord.getTipoDoc());
 
 			}
 		}

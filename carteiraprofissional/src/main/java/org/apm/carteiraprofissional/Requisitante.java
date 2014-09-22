@@ -26,10 +26,8 @@ public class Requisitante extends BaseModel implements Serializable {
 	private static final long serialVersionUID = -4135925580655381866L;
 
 	// Demografico
-	@Column(name = "nome")
+	@Column(name = "nome_completo")
 	private String nome;
-	@Column(name = "apelido")
-	private String apelido;
 	@Column(name = "sexo")
 	private String sexo;
 	@Temporal(TemporalType.DATE)
@@ -61,6 +59,9 @@ public class Requisitante extends BaseModel implements Serializable {
 	private TipoDocumento tipoDoc;
 
 	// Endereco
+	@ManyToOne
+	@JoinColumn(name = "pais_id")
+	private Pais pais;
 	@ManyToOne
 	@JoinColumn(name = "provincia_id")
 	private Provincia provincia;
@@ -142,7 +143,14 @@ public class Requisitante extends BaseModel implements Serializable {
 		this.dataValidade = dataValidade;
 	}
 	
-	
+
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
+	}
 
 	public boolean isLockEdit() {
 		return lockEdit;
@@ -184,13 +192,7 @@ public class Requisitante extends BaseModel implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getApelido() {
-		return apelido;
-	}
-
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
-	}
+	
 
 	public String getSexo() {
 		return sexo;
@@ -311,16 +313,22 @@ public class Requisitante extends BaseModel implements Serializable {
 	}
 
 	public String getNomeCompleto() {
-		return this.nome + " " + this.apelido;
+		return this.nome;
+	}
+	
+	public String getApelido(){
+		if(nome!=null && !nome.isEmpty()){
+			return nome.substring(nome.lastIndexOf(" "));
+		}
+		return "";
 	}
 
 	public Categoria getCategoria() {
 		if (experiencias == null || experiencias.isEmpty())
 			return null;
 		for (Experiencia e : experiencias) {
-			if (e.getActual() != null)
-				if (e.getActual())
-					return e.getCategoria();
+			if (e.isActual())
+				return e.getCategoria();					
 		}
 		return experiencias.get(0).getCategoria();
 	}

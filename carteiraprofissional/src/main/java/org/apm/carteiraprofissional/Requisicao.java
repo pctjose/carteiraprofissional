@@ -58,7 +58,29 @@ public class Requisicao {
 	@Column(name="expirou")
 	private boolean expirou;
 	
+	@Column(name="data_criacao")
+	private Date DataCriacao;
+	@ManyToOne
+	@JoinColumn(name = "criado_por")
+	private Utilizador criadoPor;
 	
+	
+	
+	public Date getDataCriacao() {
+		return DataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		DataCriacao = dataCriacao;
+	}
+
+	public Utilizador getCriadoPor() {
+		return criadoPor;
+	}
+
+	public void setCriadoPor(Utilizador criadoPor) {
+		this.criadoPor = criadoPor;
+	}
 
 	public boolean isExpirou() {
 		return expirou;

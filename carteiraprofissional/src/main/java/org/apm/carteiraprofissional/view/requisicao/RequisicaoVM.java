@@ -1,7 +1,11 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
-import java.util.Random;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
+import org.apm.carteiraprofissional.NumeroRequisicao;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.service.NumeroRequisicaoService;
@@ -41,7 +45,7 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 	@WireVariable
 	protected NumeroRequisicaoService numeroRequisicaoService;
-	
+
 	@Wire
 	private Window requisicao;
 
@@ -108,30 +112,84 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
-		requisitanteService.saveRequisitante(requisitante);
+		if (requisitante.getId() == null) {
+			requisitante.setUuid(UUID.randomUUID().toString());
+			requisitante.setDataCriacao(new Date());
+		}
 
-		this.selectedRecord.setRequisitante(requisitante);
+		if (this.selectedRecord.getRequisicaoId() == null) {
+			this.selectedRecord.setUuid(UUID.randomUUID().toString());
+			this.selectedRecord.setDataCriacao(new Date());
 
-		Random r = new Random();
+			List<NumeroRequisicao> numeros = numeroRequisicaoService
+					.getAllNumeros();
+			NumeroRequisicao numero;
+			if (numeros != null) {
+				numero = numeros.get(0);
+				Integer ano = numero.getAno();
+				Integer numInt = numero.getNumero();
+				if (ano != Calendar.getInstance().get(Calendar.YEAR)) {
+					ano = Calendar.getInstance().get(Calendar.YEAR);
+					numero.setAno(ano);
+					numInt = 0;
+				}
+				numInt++;
+				String valorStr = "";
+				if (numInt < 10) {
+					valorStr = "1000" + numInt;
+				} else if (numInt < 100) {
+					valorStr = "100" + numInt;
+				} else if (numInt < 1000) {
+					valorStr = "10" + numInt;
+				} else if (numInt < 10000) {
+					valorStr = "1" + numInt;
+				} else {
+					valorStr = numInt.toString();
+				}
 
-		this.selectedRecord.setNumeroRequisicao("2014100" + r.nextInt(20));
+				numero.setDataEmissao(new Date());
+				numero.setNumero(numInt);
+				numero.setNumeroReal(ano + valorStr);
 
-		requisicaoService.saveRequisicao(selectedRecord);
+			} else {
+				numero = new NumeroRequisicao();
+				numero.setAno(Calendar.getInstance().get(Calendar.YEAR));
+				numero.setDataEmissao(new Date());
+				numero.setNumero(1);
+				numero.setUuid(UUID.randomUUID().toString());
+				numero.setNumeroReal(numero.getAno() + "1000"
+						+ numero.getNumero());
+			}
 
-		EnviarEmail
-				.sendEmail(
-						requisitante.getEmail(),
-						"Requisicao de Carteira Profissional - APM",
-						"Registamos a sua requisicao de carteira profissional no nosso sistema. \n\n Para todos efeitos o numero de requisição é: "
-								+ selectedRecord.getNumeroRequisicao());
+			numeroRequisicaoService.saveNumeroRequisicao(numero);
+			this.selectedRecord.setNumeroRequisicao(numero.getNumeroReal());
+
+			requisitanteService.saveRequisitante(requisitante);
+
+			this.selectedRecord.setRequisitante(requisitante);
+
+			requisicaoService.saveRequisicao(selectedRecord);
+
+			EnviarEmail
+					.sendEmail(
+							requisitante.getEmail(),
+							"Requisicao de Carteira Profissional - APM",
+							"Registamos a sua requisicao de carteira profissional no nosso sistema. \n\n Para todos efeitos o numero de requisição é: "
+									+ selectedRecord.getNumeroRequisicao());
+
+			Clients.showNotification("Requisição Registada e um email foi enviado.");
+		}else{
+			requisitanteService.saveRequisitante(requisitante);
+			requisicaoService.saveRequisicao(selectedRecord);
+		}
 		
-		Clients.showNotification("Requisição Registada e um email foi enviado.");
+		//IR PARA PESQUISA DE REQUISICAO
 
 	}
-	
+
 	@Command("fechar")
-	public void close(){
-		
+	public void close() {
+
 		requisicao.detach();
 	}
 

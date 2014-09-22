@@ -49,4 +49,9 @@ public class RequisitanteServiceImpl implements RequisitanteService {
 
 	}
 
+	public Requisitante getRequisitanteByEmail(String email) {
+		
+		return requisitanteDAO.getRequisitanteByEmail(email);
+	}
+
 }

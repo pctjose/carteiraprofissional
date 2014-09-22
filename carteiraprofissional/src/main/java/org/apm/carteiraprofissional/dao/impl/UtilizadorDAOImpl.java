@@ -11,13 +11,13 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UtilizadorDAOImpl implements UtilizadorDAO {
@@ -44,6 +44,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		this.passwordEncoder = passwordEncoder;
 	}
 
+	@Transactional
 	public void saveUtilizador(Utilizador utilizador) {
 		String password = utilizador.getSenha();
 		String senhaEncriptado = passwordEncoder.encodePassword(password, null);
@@ -67,78 +68,85 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 
 	}
 
+	@Transactional(readOnly=true)
 	public Utilizador getUtilizadorByID(Integer id) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Utilizador user = (Utilizador) sessao.get(Utilizador.class, id);
-		tx.commit();
+		//tx.commit();
 		return user;
 	}
 
+	@Transactional(readOnly=true)
 	public Utilizador getUtilizadorByUserNameAndPassword(String username,
 			String senha) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(Utilizador.class);
 		cr.add(Restrictions.eq("userName", username));
 		cr.add(Restrictions.eq("senha", senha));
 		Utilizador user = (Utilizador) cr.uniqueResult();
-		tx.commit();
+		//tx.commit();
 		return user;
 	}
 
+	@Transactional(readOnly=true)
 	public Utilizador getUtilizadorByUUID(String uuid) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(Utilizador.class);
 		cr.add(Restrictions.eq("uuid", uuid));
 		Utilizador user = (Utilizador) cr.uniqueResult();
-		tx.commit();
+		//tx.commit();
 		return user;
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Utilizador> getAllUtilizadores(Boolean includeVoided) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria c = sessao.createCriteria(Utilizador.class);
 		c.addOrder(Order.asc("apelido"));
 		if (!includeVoided) {
 			c.add(Restrictions.eq("anulado", false));
 		}
 		List<Utilizador> users = c.list();
-		tx.commit();
+		//tx.commit();
 		return users;
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<Utilizador> ValidateLogin(String username, String password) {
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(Utilizador.class);
 		cr.add(Restrictions.eq("userName", username));
 		cr.add(Restrictions.eq("senha", password));
 		List<Utilizador> users = cr.list();
-		tx.commit();
+		//tx.commit();
 		return users;
 	}
 
+	@Transactional(readOnly=true)
 	public Utilizador getUtilizador(String login) {
 		Utilizador user = null;
 		Session sessao = sessionFactory.getCurrentSession();
-		Transaction tx = sessao.beginTransaction();
+		//Transaction tx = sessao.beginTransaction();
 		try {
 			Criteria cr = sessao.createCriteria(Utilizador.class);
 			cr.add(Restrictions.eq("userName", login));
 			user = (Utilizador) cr.uniqueResult();
-			tx.commit();
+			//tx.commit();
 		} catch (Exception e) {
-			tx.rollback();
+			//tx.rollback();
 			log.info(e);
 		}
 		return user;
 	}
 
+	@Transactional
 	public String activarUtilizador(Integer id) {
 		String hql = "update Utilizador set activo = :activo where id = :id";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -148,6 +156,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		return "";
 	}
 
+	@Transactional
 	public String disabilitarUtilizador(Integer id) {
 		String hql = "update Utilizador set activo = :activo where id = :id";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -157,6 +166,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		return null;
 	}
 
+	@Transactional
 	public void updateUtilizador(Utilizador utilizador) {
 		try {
 			sessionFactory.getCurrentSession().update(utilizador);

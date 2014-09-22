@@ -1,5 +1,7 @@
 package org.apm.carteiraprofissional.service.impl;
 
+import java.util.List;
+
 import org.apm.carteiraprofissional.NumeroRequisicao;
 import org.apm.carteiraprofissional.dao.NumeroRequisicaoDAO;
 import org.apm.carteiraprofissional.service.NumeroRequisicaoService;
@@ -28,6 +30,10 @@ public class NumeroRequisicaoServiceImpl implements NumeroRequisicaoService {
 	public NumeroRequisicao getNumeroRequisicao(Integer id) {
 
 		return numeroRequisicaoDAO.getNumeroRequisicao(id);
+	}
+
+	public List<NumeroRequisicao> getAllNumeros() {
+		return numeroRequisicaoDAO.getAllNumeros();
 	}
 
 }

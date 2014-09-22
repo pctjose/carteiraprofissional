@@ -1,5 +1,7 @@
 package org.apm.carteiraprofissional.dao.impl;
 
+import java.util.List;
+
 import org.apm.carteiraprofissional.NumeroRequisicao;
 import org.apm.carteiraprofissional.dao.NumeroRequisicaoDAO;
 import org.hibernate.SessionFactory;
@@ -27,11 +29,18 @@ public class NumeroRequisicaoDAOImpl implements NumeroRequisicaoDAO {
 
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public NumeroRequisicao getNumeroRequisicao(Integer id) {
 
 		return (NumeroRequisicao) sessionFactory.getCurrentSession().get(
 				NumeroRequisicao.class, id);
+	}
+
+	@Transactional(readOnly=true)
+	@SuppressWarnings("unchecked")
+	public List<NumeroRequisicao> getAllNumeros() {
+		return sessionFactory.getCurrentSession()
+				.createCriteria(NumeroRequisicao.class).list();
 	}
 
 }

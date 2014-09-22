@@ -2,20 +2,22 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 <?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
 <zk>
-	<window id="novaRequisicao" border="normal" apply="org.zkoss.bind.BindComposer" width="100%"
-		    viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM')">
-		    
-		<tabbox width="95%">
-				
-		        <tabs>
-		            <tab label="Dados pessoais" />
-		            <tab label="Identificação e Formação" />
-		            <tab label="Experiências" />
-		        </tabs>
-		        <tabpanels>	
-		            <tabpanel><!-- start 1 -->
-		            	<div form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">	
-		            	<grid sclass="vgrid">
+	<window id="novaRequisicao" border="normal"
+		apply="org.zkoss.bind.BindComposer" width="100%"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.requisicao.RequisicaoCarteiraVM')" >
+
+		<tabbox width="100%" >
+
+			<tabs>
+				<tab label="Dados Pessoais" id="tabDadosPessoas"/>
+				<tab label="Formação" id="tabFormacao"/>
+				<tab label="Experiências" id="tabExperiencia"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel><!-- start 1 -->
+					<div 
+						form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+						<grid sclass="vgrid">
 							<columns>
 								<column label="DADOS PESSOAIS" />
 								<column label="ENDEREÇO E CONTACTO" />
@@ -25,31 +27,29 @@
 									<grid sclass="vgrid">
 										<rows>
 											<row>
-												<hlayout>
-	
-													<vlayout>
-														<label value="Apelido" sclass="flabel" />
-														<textbox
-															id="apelido" readonly="@load(vm.makeAsReadOnly)"
-															mold="rounded" value="@bind(fx.apelido)" width="150px" />
-													</vlayout>
-													<vlayout>
-														<label value="Nome"
-															sclass="flabel" />
-														<textbox id="nome"
-															readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-															value="@bind(fx.nome)" width="150px" />
-													</vlayout>
-												</hlayout>
+
+
+
+												<vlayout>
+													<label
+														value="Nome Completo" sclass="flabel" />
+													<textbox id="nome"
+														readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+														value="@bind(fx.nome)" width="250px" />
+												</vlayout>
+
 											</row>
 											<row>
 												<hlayout>
 													<vlayout>
-														<label value="Sexo"
-															sclass="flabel" />
-														<radiogroup selectedItem="@bind(fx.sexo)" id="sexo">
-															<radio label="M" value="M" id="sexoM" selected="true"/>
-															<radio label="F" value="F" id="sexoF"/>
+														<label
+															value="Sexo" sclass="flabel" />
+														<radiogroup
+															selectedItem="@bind(fx.sexo)" id="sexo">
+															<radio
+																label="M" value="M" id="sexoM"/>
+															<radio
+																label="F" value="F" id="sexoF" />
 														</radiogroup>
 													</vlayout>
 													<separator />
@@ -70,16 +70,39 @@
 												<vlayout>
 													<label
 														value="Nivel Acadêmico" sclass="flabel" />
-													<listbox model="@bind(vm.escolaridades)" selectedItem="@bind(fx.escolaridade)" mold="select" id="escolaridades" width="200px">
-														<template name="model">
-															<listitem label="@load(each)" width="200px" />
+													<listbox
+														model="@bind(vm.escolaridades)"
+														selectedItem="@bind(fx.escolaridade)" mold="select"
+														id="escolaridadesLista" width="200px">
+														<template
+															name="model">
+															<listitem
+																label="@load(each)" width="200px" />
 														</template>
 													</listbox>
 												</vlayout>
 											</row>
+
+											<row>
+												<vlayout>
+													<checkbox
+														id="membro" value="@bind(fx.membro)" label="Membro da APM"
+														checked="@load(fx.membro)" onCheck="@command('disableNumeroMembro')" />
+
+
+													<vlayout>
+													<label
+														value="Nº Membro" sclass="flabel" />
+													<textbox id="numeroMembro"
+														readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+														value="@bind(fx.numeroMembro)" width="150px" />
+												</vlayout>
+													
+												</vlayout>
+											</row>
 										</rows>
 									</grid>
-									
+
 									<grid sclass="vgrid">
 										<columns>
 											<column />
@@ -88,11 +111,11 @@
 											<row>
 												<hlayout>
 													<vlayout>
-														<label value="Pais"
-															sclass="flabel" />
+														<label
+															value="Pais" sclass="flabel" />
 														<listbox
 															model="@load(vm.paises)" mold="select" width="170px"
-															id="paises" onSelect="@command('changePais')">
+															id="paises" onSelect="@command('changePais')" selectedItem="@bind(fx.pais)">
 															<template
 																name="model">
 																<listitem
@@ -118,13 +141,13 @@
 											</row>
 											<row>
 												<hlayout>
-	
+
 													<vlayout>
 														<label
 															value="Distrito/Cidade" sclass="flabel" />
-														<textbox id="cidade"
-															readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-															value="@bind(fx.cidade)" width="150px" />
+														<textbox
+															id="cidade" readonly="@load(vm.makeAsReadOnly)"
+															mold="rounded" value="@bind(fx.cidade)" width="150px" />
 													</vlayout>
 													<vlayout>
 														<label
@@ -134,9 +157,9 @@
 															mold="rounded" value="@bind(fx.endereco)" width="200px" />
 													</vlayout>
 												</hlayout>
-	
+
 											</row>
-	
+
 											<row>
 												<hlayout>
 													<vlayout>
@@ -157,15 +180,16 @@
 													</vlayout>
 												</hlayout>
 											</row>
-	
+
 											<row>
 												<hlayout>
 													<vlayout>
-														<label value="Email"
-															sclass="flabel" />
-														<textbox id="email"
-															width="150px" readonly="@load(vm.makeAsReadOnly)"
-															mold="rounded" value="@bind(fx.email)" />
+														<label
+															value="Email" sclass="flabel" />
+														<textbox
+															id="email" width="150px"
+															readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+															value="@bind(fx.email)" />
 													</vlayout>
 													<vlayout>
 														<label
@@ -182,8 +206,8 @@
 								</row>
 							</rows>
 						</grid>
-						
-						<grid sclass="vgrid">
+
+						<grid sclass="vgrid" >
 							<columns>
 								<column label="IDENTIFICAÇÃO" />
 							</columns>
@@ -201,12 +225,12 @@
 															mold="rounded" value="@bind(fx.numeroDoc)" width="130px" />
 													</vlayout>
 													<vlayout>
-														<label value="Tipo"
-															sclass="flabel" />
+														<label
+															value="Tipo" sclass="flabel" />
 														<listbox
 															model="@bind(vm.tipoDocs)"
 															selectedItem="@bind(fx.tipoDoc)" mold="select"
-															id="tipoDocs" width="110px">
+															id="tipoDocsLista" width="110px">
 															<template
 																name="model">
 																<listitem
@@ -219,8 +243,9 @@
 															value="Data Emissão" sclass="flabel" />
 														<datebox
 															id="dataEmissao" readonly="@load(vm.makeAsReadOnly)"
-															mold="rounded" width="100px" value="@bind(fx.dataEmissao)"
-															constraint="no future" format="dd-MM-yyyy" />
+															mold="rounded" width="100px"
+															value="@bind(fx.dataEmissao)" constraint="no future"
+															format="dd-MM-yyyy" />
 													</vlayout>
 													<vlayout>
 														<label
@@ -230,7 +255,7 @@
 															mold="rounded" width="100px"
 															value="@bind(fx.dataValidade)" format="dd-MM-yyyy" />
 													</vlayout>
-	
+
 													<vlayout>
 														<label
 															value="Local Emissão" sclass="flabel" />
@@ -240,11 +265,12 @@
 															width="120px" />
 													</vlayout>
 													<vlayout>
-														<label value="NUIT"
-															sclass="flabel" />
+														<label
+															value="NUIT" sclass="flabel" />
 														<textbox
 															id="numeroNuit" readonly="@load(vm.makeAsReadOnly)"
-															mold="rounded" value="@bind(fx.numeroNuit)" width="120px" />
+															mold="rounded" value="@bind(fx.numeroNuit)"
+															width="120px" />
 													</vlayout>
 													<vlayout>
 														<label
@@ -257,15 +283,16 @@
 											</row>
 										</rows>
 									</grid>
-				
+
 								</row>
 							</rows>
 						</grid>
-						</div>	
-					</tabpanel><!-- end 1 -->
-				            
-		            <tabpanel><!-- start 2 -->	
-	        <div form="@id('fedu') @load(vm.formacao) @save(vm.formacao, before='onAddFormacao')">				
+					</div>
+				</tabpanel><!-- end 1 -->
+
+				<tabpanel><!-- start 2 <div form="@id('fedu') @load(vm.formacao) @save(vm.formacao, before='onAddFormacao')">-->
+					<div
+						form="@id('fedu') @load(vm.formacao)  @save(vm.formacao,after='onAddFormacao')">
 						<grid sclass="vgrid">
 							<columns>
 								<column
@@ -303,12 +330,13 @@
 													<separator />
 													<separator />
 													<vlayout>
-														<label value="Ano"
-															sclass="flabel" />
+														<label
+															value="Ano" sclass="flabel" />
 														<hlayout>
-															<intbox id="ano"
-																readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-																value="@bind(fedu.ano)" width="50px" maxlength="4" />
+															<intbox
+																id="ano" readonly="@load(vm.makeAsReadOnly)"
+																mold="rounded" value="@bind(fedu.ano)" width="50px"
+																maxlength="4" />
 															<label
 																class="error" value="@load(fedusgs['ano'])" />
 														</hlayout>
@@ -317,8 +345,8 @@
 													<separator />
 													<separator />
 													<vlayout>
-														<label value="Grau"
-															sclass="flabel" />
+														<label
+															value="Grau" sclass="flabel" />
 														<hlayout>
 															<listbox
 																model="@bind(vm.escolaridades)"
@@ -334,15 +362,16 @@
 															<separator />
 															<separator />
 															<button
-																label="Adicionar" onClick="@command('onAddFormacao')" />
+																label="Adicionar" onClick="@command('onAddFormacao')"
+																sclass="mybutton button blue small" />
 														</hlayout>
 													</vlayout>
 												</hlayout>
 											</row>
 											<row>
-	
+
 												<div>
-	
+
 													<listbox
 														id="listaFormacao" mold="paging" pageSize="11"
 														pagingPosition="top" sclass="mylist"
@@ -372,29 +401,37 @@
 																<listcell>
 																	<hbox
 																		spacing="20px">
-																		<button
+																		<!--  <button
 																			label="Remover"
 																			onClick="@command('onRemoveFormacao',eduRemoved=p2)">
-																		</button>
+																			</button>-->
+
+																		<image
+																			onClick="@command('onRemoveFormacao',eduRemoved=p2)"
+																			sclass="fimageDelete"
+																			tooltiptext="Apagar este registo ">
+																		</image>
+
 																	</hbox>
 																</listcell>
 															</listitem>
 														</template>
 													</listbox>
 												</div>
-	
+
 											</row>
 										</rows>
 									</grid>
 								</row>
 							</rows>
 						</grid>
-		   			</div>
-		            </tabpanel><!-- end 2 -->
-		            
-		            <tabpanel><!-- start 3 -->
-		    <div form="@id('fexp') @load(vm.experiencia)">
-		            	<grid sclass="vgrid">
+					</div>
+				</tabpanel><!-- end 2 -->
+
+				<tabpanel><!-- start 3 -->
+					<div
+						form="@id('fexp') @load(vm.experiencia) @save(vm.experiencia,after='onAddExperiencia')">
+						<grid sclass="vgrid">
 							<columns>
 								<column label="EXPERIENCIAS" />
 							</columns>
@@ -416,18 +453,19 @@
 																mold="rounded" value="@bind(fexp.empregador)"
 																width="150px" />
 															<checkbox
-																id="actual" value="@bind(fexp.actual)" label="Actual" 
-																onCheck="@command('disableDataFinal')"/>
+																id="actual" checked="@bind(fexp.actual)" label="Actual"
+																onCheck="@command('disableDataFinal')"
+																 />
 														</hlayout>
 													</vlayout>
-	
+
 													<vlayout>
 														<label
 															value="Categoria" sclass="flabel" />
 														<listbox
 															model="@bind(vm.categorias)"
 															selectedItem="@bind(fexp.categoria)" mold="select"
-															id="categorias" width="180px">
+															id="categoria" width="180px">
 															<template
 																name="model">
 																<listitem
@@ -435,7 +473,7 @@
 															</template>
 														</listbox>
 													</vlayout>
-	
+
 													<vlayout>
 														<label
 															value="Data Inicio" sclass="flabel" />
@@ -445,19 +483,20 @@
 															value="@bind(fexp.dataInicial)" constraint="no future"
 															format="dd-MM-yyyy" />
 													</vlayout>
-	
+
 													<vlayout>
 														<label
 															value="Data Final" sclass="flabel" />
 														<datebox
 															id="dataFinal" readonly="@load(vm.makeAsReadOnly)"
-															mold="rounded" width="100px" value="@bind(fexp.dataFinal)"
-															constraint="no future" format="dd-MM-yyyy" />
+															mold="rounded" width="100px"
+															value="@bind(fexp.dataFinal)" constraint="no future"
+															format="dd-MM-yyyy" />
 													</vlayout>
-	
+
 												</hlayout>
 											</row>
-	
+
 											<row>
 												<hlayout>
 													<vlayout>
@@ -495,13 +534,14 @@
 													</vlayout>
 													<vlayout>
 														<button
-															label="Adicionar" onClick="@command('onAddExperiencia')" />
+															label="Adicionar" onClick="@command('onAddExperiencia')"
+															sclass="mybutton button blue small" />
 													</vlayout>
 												</hlayout>
 											</row>
 											<row>
 												<div>
-	
+
 													<listbox
 														id="listaExperiencia" mold="paging" pageSize="11"
 														pagingPosition="top" sclass="mylist"
@@ -527,41 +567,49 @@
 																<listcell
 																	label="@load(p1.empregador)" />
 																<listcell
-																	label="@load(p1.dataInicial)" />
+																	label="@load(p1.dataInicial) @converter('formatedDate',format='dd-MM-yyyy')" />
 																<listcell
 																	label="@load(p1.funcaoExercida)" />
 																<listcell
-																	label="@load(p1.actual)" />
+																	label="@load(p1.actual ? 'SIM':'NAO')" />
 																<listcell>
 																	<hbox
 																		spacing="20px">
-																		<button
+																		<!--  <button
 																			label="Remover"
 																			onClick="@command('onRemoveExperiencia',expRemoved=p1)">
-																		</button>
+																			</button>-->
+																		<image
+																			onClick="@command('onRemoveExperiencia',expRemoved=p1)"
+																			sclass="fimageDelete"
+																			tooltiptext="Apagar este registo ">
+																		</image>
+
 																	</hbox>
 																</listcell>
 															</listitem>
 														</template>
 													</listbox>
 												</div>
-	
+
 											</row>
 										</rows>
 									</grid>
 								</row>
 							</rows>
 						</grid>
-		  			</div>
-		  			<grid sclass="vgrid">
+					</div>
+					<grid sclass="vgrid">
 						<rows>
-							<row>	
-								<button label="Registar" onClick="@command('saveThis')"/>
+							<row>
+								<button label="${param.requisicaoMode}"
+									onClick="@command('saveThis')"
+									sclass="mybutton button blue medium" id="btnSalvar"/>
 							</row>
 						</rows>
 					</grid>
-		            </tabpanel><!-- end 3 -->
-		      </tabpanels>
-	     </tabbox>    
+				</tabpanel><!-- end 3 -->
+			</tabpanels>
+		</tabbox>
 	</window>
 </zk>

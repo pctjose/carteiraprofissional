@@ -15,5 +15,7 @@ public interface RequisitanteDAO {
 	public List<Requisitante> getAllRequisitantes();
 
 	public void delete(Requisitante requisitante);
+	
+	public Requisitante getRequisitanteByEmail(String email);
 
 }

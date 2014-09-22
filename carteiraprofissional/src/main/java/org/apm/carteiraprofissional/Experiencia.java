@@ -41,7 +41,7 @@ public class Experiencia implements Serializable{
 	@Column(name="experiencia_relevante")
 	private String experienciaRelevante;
 	@Column(name="actual")
-	private Boolean actual;
+	private boolean actual;
 	@Column(name="empregador_endereco")
 	private String empregadorEndereco;
 	@Column(name="empregador_contacto")
@@ -54,8 +54,21 @@ public class Experiencia implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_registo")
 	private Date dataRegisto;
+	@Column(name="lock_edit")
+	private boolean lockEdit;
 	
 	
+	
+	public boolean isLockEdit() {
+		return lockEdit;
+	}
+
+
+	public void setLockEdit(boolean lockEdit) {
+		this.lockEdit = lockEdit;
+	}
+
+
 	public String getActualString(){
 		if(actual)
 			return "SIM";
@@ -137,12 +150,16 @@ public class Experiencia implements Serializable{
 		this.experienciaRelevante = experienciaRelevante;
 	}
 
-	public Boolean getActual() {
-		return actual;
+	@Deprecated
+	public boolean getActual() {
+		return isActual();
 	}
 
-	public void setActual(Boolean actual) {
+	public void setActual(boolean actual) {
 		this.actual = actual;
+	}
+	public boolean isActual(){
+		return actual;
 	}
 	
 	

@@ -7,7 +7,7 @@
 		<west title="Carteira Professional" size="20%" flex="true"
 			splittable="true" collapsible="true" autoscroll="true">
 			<borderlayout>
-				<north>
+				<north flex="true">
 					<include src="/pages/tamplate/banner.zul" />
 				</north>
 				<center flex="true">
