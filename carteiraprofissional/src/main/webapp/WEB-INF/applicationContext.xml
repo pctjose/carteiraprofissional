@@ -113,6 +113,10 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
+	<bean id="propriedadesGlobaisDAO" class="org.apm.carteiraprofissional.dao.impl.PropriedadesGlobaisDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
 
 	<!-- SERVICOS -->
 	<bean id="grupoUtilizadorService" class="org.apm.carteiraprofissional.service.impl.GrupoUtilizadorServiceImpl"/>
@@ -173,5 +177,9 @@
 	
 	<bean id="histRequisitanteService" class="org.apm.carteiraprofissional.service.impl.HistRequisitanteServiceImpl">
 		<property name="histRequisitanteDAO" ref="histRequisitanteDAO"/>
+	</bean>
+	
+	<bean id="propriedadesGlobaisService" class="org.apm.carteiraprofissional.service.impl.PropriedadesGlobaisServiceImpl">
+		<property name="propriedadesGlobaisDAO" ref="propriedadesGlobaisDAO"/>
 	</bean>
 </beans>

@@ -17,25 +17,18 @@
 						<rows>
 							<row>
 								<hlayout>
-									<label value="Número"
+									<label value="Número da Carteira:"
 										sclass="flabel" />
 									<textbox id="numeroCarteira"
 										mold="rounded" value="@bind(vm.numeroCarteira)" width="150px" />
-								</hlayout>
-							</row>
-							<row>
-								<hlayout>
+									<separator/>
+									<separator/>
 									<label value="Nome (Titular):"
 										sclass="flabel" />
 									<textbox id="nomeTitular"
 										mold="rounded" value="@bind(vm.nomeTitular)" width="150px" />
-									<label value="Apelido (Titular):"
-										sclass="flabel" />
-									<textbox id="apelidoTitular"
-										mold="rounded" value="@bind(vm.apelidoTitular)" width="150px" />
 								</hlayout>
 							</row>
-
 							<row spans="2">
 								<hlayout>
 									<label value="Periodo de Emissão"
@@ -139,9 +132,9 @@
 						<hbox spacing="20px">
 							<button label="Editar"
 								disabled="@load(p1.emitida)"
-								onClick="@command('onEdit',carteiraRecord=p1)" />
+								onClick="@command('onEdit',carteiraRecord=p1)" sclass="mybutton button blue small" tooltiptext="Editar os dados da carteira profissional"/>
 							<button label="Visualizar"
-								onClick="@command('visualizar',carteiraRecord=p1)" />
+								onClick="@command('visualizar',carteiraRecord=p1)" sclass="mybutton button blue small" tooltiptext="Visualizar os dados da carteira profissional" />
 						</hbox>
 					</listcell>
 				</listitem>

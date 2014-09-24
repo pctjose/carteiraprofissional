@@ -92,7 +92,7 @@ public class Requisitante extends BaseModel implements Serializable {
 	// Ainda por discutir esta ideia de implementação:
 
 	// private List<RequisicaoSubCategoria> requisicaoSubcategorias;
-	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
 	private List<Experiencia> experiencias;
 	@OneToMany(mappedBy = "requisitante", cascade = CascadeType.ALL)
 	private List<Formacao> formacoes;

@@ -42,9 +42,9 @@
 									<label value="Data Requisição"
 										sclass="flabel" />
 									<datebox id="dataRequisiao"
-										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+										mold="rounded"
 										width="100px" value="@bind(fx.dataRequisiao)"
-										constraint="no future" format="dd-MM-yyyy" />
+										constraint="no future" format="dd-MM-yyyy" disabled="@load(fx.lockEdit)"/>
 								</hlayout>
 							</row>
 							<row>
@@ -52,7 +52,7 @@
 									<label value="Local Requisicao"
 										sclass="flabel" />
 									<textbox id="localRequisicao"
-										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+										readonly="@load(fx.lockEdit)" mold="rounded"
 										value="@bind(fx.localRequisicao)" width="200px" />
 								</hlayout>
 							</row>
@@ -61,7 +61,7 @@
 
 								<checkbox id="assinouCompromisso"
 									checked="@bind(fx.assinouCompromisso)"
-									label="Assinou termo de compromisso" />
+									label="Assinou termo de compromisso" disabled="@load(fx.lockEdit)" />
 
 							</row>
 
@@ -70,7 +70,7 @@
 									<hlayout>
 										<checkbox id="concordaTermos"
 											checked="@bind(fx.concordaTermos)"
-											label="Concordo com os termos" />
+											label="Concordo com os termos" disabled="@load(fx.lockEdit)"/>
 
 
 										<button

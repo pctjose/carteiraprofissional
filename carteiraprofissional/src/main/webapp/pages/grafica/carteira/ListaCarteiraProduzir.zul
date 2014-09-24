@@ -40,10 +40,10 @@
 						<hbox spacing="20px">
 							<button label="Baixar Dados"
 								disabled="@load(p1.emitida)"
-								onClick="@command('onBaixarDados',carteiraRecord=p1)" />
+								onClick="@command('onBaixarDados',carteiraRecord=p1)" sclass="mybutton button blue small" tooltiptext="Baixar dados para produção da carteira"/>
 							<button label="Actualizar Produzida"
 								disabled="@load(p1.emitida)"
-								onClick="@command('onActualizarEmitida',carteiraRecord=p1)" />
+								onClick="@command('onActualizarEmitida',carteiraRecord=p1)" sclass="mybutton button blue small" tooltiptext="Actualizar que esta carteira já foi produzida"/>
 						</hbox>
 					</listcell>
 				</listitem>

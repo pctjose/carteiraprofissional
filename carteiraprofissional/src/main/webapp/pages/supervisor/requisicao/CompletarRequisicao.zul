@@ -21,20 +21,20 @@
 
 					<button id="btnUpload" mold="trendy"
 						upload="true,maxsize=300" label="Upload Foto"
-						onUpload="@command('upload')" />
+						onUpload="@command('upload')" sclass="mybutton button blue small"/>
 
 
 
 					<button label="WebCam"
-						onClick="@command('getWebCam')" />
+						onClick="@command('getWebCam')" sclass="mybutton button blue small" />
 				
 
 				
 
-					<button label="Salvar" onClick="@command('salvar')" />
+					<button label="Salvar" onClick="@command('salvar')" sclass="mybutton button blue small" />
 
 					<button label="Cancelar"
-						onClick="@command('cancelar')" />
+						onClick="@command('cancelar')" sclass="mybutton button blue small" />
 				
 			</vbox>
 		</hbox>

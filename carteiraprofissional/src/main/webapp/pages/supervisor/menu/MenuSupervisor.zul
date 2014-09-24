@@ -12,18 +12,18 @@
 							value="/pages/anonimo/requisicao/startSearch.zul"
 							image="/imgs/world.gif" />
 						<treeitem label="Requisitar Carteira"
-							value="/pages/anonimo/requisicao/NovoRequisitante.zul"
-							image="/imgs/application_form_edit.gif" />
+							value="/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=NEW"
+							image="/imgs/plus.png" />
 					</treechildren>
 				</treeitem>
-			<treeitem label="Administração de Requisições" open="true">
+			<treeitem label="Requisições" open="true">
 				<treechildren>
-					<treeitem label="Pesquisa Avançada" value="/pages/supervisor/requisicao/ListaRequisicao.zul" image="/imgs/note_new.gif"/>					
+					<treeitem label="Pesquisa Avançada" value="/pages/supervisor/requisicao/ListaRequisicao.zul" image="/imgs/application_view_detail.png"/>					
 				</treechildren>
 			</treeitem>
-			<treeitem label="Administração de Carteiras" open="false">
+			<treeitem label="Carteiras" open="false">
 				<treechildren>
-					<treeitem label="Pesquisa Avançada" value="/pages/supervisor/carteira/ListaCarteira.zul" image="/imgs/note_new.gif"/>					
+					<treeitem label="Pesquisa Avançada" value="/pages/supervisor/carteira/ListaCarteira.zul" image="/imgs/application_view_detail.png"/>					
 				</treechildren>
 			</treeitem>
 			

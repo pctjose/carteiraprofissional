@@ -24,6 +24,7 @@ import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.service.TipoDocumentoService;
 import org.apm.carteiraprofissional.utils.AgeHelper;
 import org.apm.carteiraprofissional.utils.Msg;
+import org.apm.carteiraprofissional.utils.PageUtils;
 import org.zkoss.bind.BindContext;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -349,8 +350,6 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 		// final HashMap<String, Object> map = (HashMap<String, Object>)
 		// Sessions.getCurrent().getAttribute("allmyvalues");
-		
-		
 
 		recordMode = Executions.getCurrent().getParameter("requisicaoMode");
 
@@ -450,7 +449,7 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	}
 
 	@Command
-	@NotifyChange({ "formacao", "formacoesAdicionadas" })
+	@NotifyChange({"formacoesAdicionadas" })
 	public void onAddFormacao() {
 
 		if (instituicao == null || instituicao.getValue().trim().isEmpty()) {
@@ -488,39 +487,50 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 		formacoesAdicionadas.add(formacao);
 
 		this.selectedRecord.getFormacoes().add(formacao);
+		
+		
 	}
 
 	@Command
 	@NotifyChange("experienciasAdicionadas")
 	public void onRemoveExperiencia(@BindingParam("expRemoved") Experiencia exp) {
-		if (exp.getId() != null) {
-			//
-		} else {
-			for (Experiencia e : experienciasAdicionadas) {
-				if (e.equals(exp)) {
-					experienciasAdicionadas.remove(e);
-					this.selectedRecord.getExperiencias().remove(e);
-					return;
-				}
+		/*
+		 * if (exp.getId() != null) { // } else { for (Experiencia e :
+		 * experienciasAdicionadas) { if (e.equals(exp)) {
+		 * experienciasAdicionadas.remove(e);
+		 * this.selectedRecord.getExperiencias().remove(e); return; }
+		 * 
+		 * } }
+		 */
 
+		for (Experiencia e : experienciasAdicionadas) {
+			if (e.equals(exp)) {
+				experienciasAdicionadas.remove(e);
+				this.selectedRecord.getExperiencias().remove(e);
+				return;
 			}
+
 		}
 	}
 
 	@Command
 	@NotifyChange("formacoesAdicionadas")
 	public void onRemoveFormacao(@BindingParam("eduRemoved") Formacao edu) {
-		if (edu.getId() != null) {
-			//
-		} else {
-			for (Formacao f : formacoesAdicionadas) {
-				if (f.equals(edu)) {
-					formacoesAdicionadas.remove(edu);
-					this.selectedRecord.getFormacoes().remove(edu);
-					return;
-				}
-
+		/*
+		 * if (edu.getId() != null) { // } else { for (Formacao f :
+		 * formacoesAdicionadas) { if (f.equals(edu)) {
+		 * formacoesAdicionadas.remove(edu);
+		 * this.selectedRecord.getFormacoes().remove(edu); return; }
+		 * 
+		 * } }
+		 */
+		for (Formacao f : formacoesAdicionadas) {
+			if (f.equals(edu)) {
+				formacoesAdicionadas.remove(edu);
+				this.selectedRecord.getFormacoes().remove(edu);
+				return;
 			}
+
 		}
 	}
 
@@ -540,58 +550,18 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
-		
-		//Include incConteudo = (Include)Path.getComponent("//main/wndMain/contentSrc");
-		
-		Include incConteudo = (Include) Sessions.getCurrent().getAttribute("setContent");
-		
-		if(incConteudo!=null){
-			//System.out.println("Peguei o include");
-			//Sessions.getCurrent().setAttribute("setContent", incConteudo);
-			incConteudo.setSrc("/pages/anonimo/requisicao/startSearch.zul");
-		}else{
-			System.out.println("Nao peguei o incluede");
-		}
-		
-		
-		
-		
 		validate();
 
-		// List<Msg> errors = validateInput();
-
-		// if (errors.isEmpty()) {
-
-		/*
-		 * System.out.println("Formacoes:"+selectedRecord.getFormacoes().size());
-		 * System
-		 * .out.println("Experiencias:"+selectedRecord.getExperiencias().size
-		 * ()); requisitanteService.saveRequisitante(selectedRecord);
-		 * 
-		 * System.out.println("ID GRAVADO: "+selectedRecord.getId());
-		 */
-
 		Sessions.getCurrent().setAttribute("requisitante", selectedRecord);
-		// Executions.sendRedirect("/pages/anonimo/requisicao/Requisicao.zul");
 
-		Window window = (Window) Executions.createComponents(
-				"/pages/anonimo/requisicao/Requisicao.zul", null, null);
+		// Include incConteudo = (Include)
+		// Sessions.getCurrent().getAttribute("setContent");
+		// incConteudo.setSrc("/pages/anonimo/requisicao/Requisicao.zul");
+		PageUtils.redirectTo("/pages/anonimo/requisicao/Requisicao.zul");
 
-		window.doModal();
-
-		// } else {
-
-		/*
-		 * try {
-		 * 
-		 * MessageBoxHelper.showFormError(errors,novaRequisicao); } catch
-		 * (InterruptedException e) {
-		 * _log.info("Nao foi possivel mostrar a lista de erros...");
-		 * e.printStackTrace(); } }
-		 */
 	}
 
-	public boolean validate() {
+	public void validate() {
 
 		if (nome == null || nome.getValue().isEmpty()) {
 			tabDadosPessoas.setSelected(true);
@@ -674,12 +644,12 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 			tabDadosPessoas.setSelected(true);
 			throw new WrongValueException(email, "Email é um campo obrigatorio");
 		}
-		
-		if(!email.getText().matches(".+@.+\\.[a-z]+")){
+
+		if (!email.getText().matches(".+@.+\\.[a-z]+")) {
 			tabDadosPessoas.setSelected(true);
-			throw new WrongValueException(email, "O Email introduzido é inválido");
+			throw new WrongValueException(email,
+					"O Email introduzido é inválido");
 		}
-		
 
 		if (numeroBi.getText().isEmpty()) {
 			tabDadosPessoas.setSelected(true);
@@ -723,7 +693,43 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 					"Deve indicar pelo menos uma experiência profissional");
 		}
 
-		return true;
+		Requisitante tempReq = requisitanteService
+				.getRequisitanteByEmail(this.email.getText());
+
+		if (tempReq != null) {
+			if (this.selectedRecord.getId() == null) {
+				tabDadosPessoas.setSelected(true);
+				throw new WrongValueException(email,
+						"O Email introduzido está em uso");
+			} else {
+				if (!tempReq.equals(selectedRecord)) {
+					tabDadosPessoas.setSelected(true);
+					throw new WrongValueException(email,
+							"O Email introduzido está em uso");
+				}
+			}
+
+		}
+
+		tempReq = requisitanteService.getRequisitanteByBI(this.numeroBi
+				.getText());
+
+		if (tempReq != null) {
+			if (this.selectedRecord.getId() == null) {
+				tabDadosPessoas.setSelected(true);
+				throw new WrongValueException(numeroBi,
+						"O Número de documento introduzido está em uso");
+			} else {
+				if (!tempReq.equals(selectedRecord)) {
+					tabDadosPessoas.setSelected(true);
+					throw new WrongValueException(numeroBi,
+							"O Número de documento introduzido está em uso");
+				}
+			}
+
+		}
+
+		// return true;
 	}
 
 	public List<Msg> validateInput() {

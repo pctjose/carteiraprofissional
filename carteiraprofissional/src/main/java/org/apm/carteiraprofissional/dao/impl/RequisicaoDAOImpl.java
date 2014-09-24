@@ -84,7 +84,7 @@ public class RequisicaoDAOImpl implements RequisicaoDAO {
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Requisicao> getRequisicaoByAttributes(String numeroRequisicao,
-			String nome, String apelido, Date dataInicial, Date dataFinal,
+			String nome, Date dataInicial, Date dataFinal,
 			Boolean aceite, Boolean completa) {
 		Session sessao = sessionFactory.getCurrentSession();
 		Criteria cr = sessao.createCriteria(Requisicao.class);
@@ -99,10 +99,7 @@ public class RequisicaoDAOImpl implements RequisicaoDAO {
 			cr.add(Restrictions.like("req.nome", nome,
 					MatchMode.ANYWHERE));
 		}
-		if (apelido != null && !apelido.trim().isEmpty()) {
-			cr.add(Restrictions.like("req.apelido", apelido,
-					MatchMode.ANYWHERE));
-		}
+		
 
 		if (dataInicial != null && dataFinal != null) {
 			cr.add(Restrictions

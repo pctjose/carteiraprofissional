@@ -51,7 +51,7 @@ public class RequisitanteDAOImpl implements RequisitanteDAO {
 		Session sessao = sessionFactory.getCurrentSession();
 		//Transaction tx = sessao.beginTransaction();
 		Criteria cr = sessao.createCriteria(Requisitante.class);
-		cr.add(Restrictions.eq("numeroBi", bi));
+		cr.add(Restrictions.eq("numeroDoc", bi));
 		Requisitante requisicao = (Requisitante) cr.uniqueResult();
 		//tx.commit();
 		return requisicao;

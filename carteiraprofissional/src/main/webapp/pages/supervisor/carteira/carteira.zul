@@ -104,7 +104,7 @@
 								<row>
 									<vlayout>
 										<checkbox id="enviarEmissao" disabled="@load(vm.makeAsReadOnly)"
-											value="@bind(fx.enviarEmissao)" label="Enviar para Produção" checked="@load(fx.enviarEmissao)"/>
+											checked="@bind(fx.enviarEmissao)" label="Enviar para Produção"/>
 									</vlayout>
 								</row>
 							</rows>

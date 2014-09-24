@@ -11,32 +11,27 @@
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
-							<column label="PARÂMETROS DE PESQUISA DA REQUISIÇÃO" />
+							<column
+								label="PARÂMETROS DE PESQUISA DA REQUISIÇÃO" />
 						</columns>
 						<rows>
 							<row>
 								<hlayout>
-									<label value="Número:"
+									<label value="Número Requisição:"
 										sclass="flabel" />
 									<textbox id="numeroRequisicao"
 										mold="rounded" value="@bind(vm.numeroRequisicao)"
 										width="150px" />
-								</hlayout>
-							</row>
-							<row>
-								<hlayout>
-									<label value="Nome:"
+									<separator/>
+									<separator/>
+									<separator/>	
+									<label value="Nome Requisitante:"
 										sclass="flabel" />
 									<textbox id="nomeRequisitante"
 										mold="rounded" value="@bind(vm.nomeRequisitante)"
-										width="150px" />
-									<label value="Apelido:"
-										sclass="flabel" />
-									<textbox id="apelidoRequisitante"
-										mold="rounded" value="@bind(vm.apelidoRequisitante)"
-										width="150px" />
+										width="250px" />
 								</hlayout>
-							</row>						
+							</row>	
 
 							<row spans="2">
 								<hlayout>
@@ -56,7 +51,7 @@
 								</hlayout>
 							</row>
 							<row>
-								<div style="float:right">
+								<div style="float:center">
 									<button label="Pesquisar"
 										onClick="@command('pesquisar')" mold="trendy"
 										sclass="mybutton button blue small" />
@@ -71,44 +66,83 @@
 		</div>
 		<separator />
 		<separator />
-		<listbox id="listaRequisicoes" mold="paging" pageSize="11" pagingPosition="top"
-			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
-			model="@load(vm.dataSet)">
+		<listbox id="listaRequisicoes" mold="paging" pageSize="5"
+			pagingPosition="top" sclass="mylist"
+			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)"
+			emptyMessage="Não há requisições de carteira por visualizar">
 			<listhead sizable="true">
 				<listheader label="Número Requisição"
-					sortDirection="ascending" sort="auto(numeroRequisicao)" width="130px" />
-			<listheader label="Requisitante"
-					sortDirection="ascending" sort="auto(requisitante.NomeCompleto)" width="250px" />
+					sortDirection="ascending" sort="auto(numeroRequisicao)"
+					width="130px" />
+				<listheader label="Requisitante"
+					sortDirection="ascending" sort="auto(requisitante.NomeCompleto)"
+					width="250px" />
 				<listheader label="Data Requisição"
-					sort="auto(dataRequisiao)" width="100px"/>
-				<listheader label="Completa"
-					sort="auto(completa)" width="70px"/>
-				<listheader label="Aceite" sort="auto(aceite)" width="70px"/>
+					sort="auto(dataRequisiao)" width="100px" />
+				<listheader label="Completa" sort="auto(completa)"
+					width="70px" />
+				<listheader label="Aceite" sort="auto(aceite)"
+					width="70px" />
 				<listheader label="Acções" />
 			</listhead>
 			<template name="model" var="p1">
 				<listitem>
-				<listcell
-						label="@load(p1.numeroRequisicao)" />
+					<listcell label="@load(p1.numeroRequisicao)" />
 					<listcell
 						label="@load(p1.requisitante.nomeCompleto)" />
-					<listcell label="@load(p1.dataRequisiao) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell
+						label="@load(p1.dataRequisiao) @converter('formatedDate',format='dd-MM-yyyy')" />
 					<listcell label="@load(p1.completa ? 'SIM':'NÃO')" />
 					<listcell label="@load(p1.aceite ? 'SIM':'NÃO')" />
 					<listcell>
 						<hbox spacing="20px">
-							<button label="Editar"
+						<!--  	<button tooltiptext="Editar esta requisição" label="Editar"
 								disabled="@load(p1.lockEdit)"
-								onClick="@command('onEdit',requisicaoRecord=p1)" />
-							<button label="Foto"
+								onClick="@command('onEdit',requisicaoRecord=p1)"
+								sclass="mybutton button white small"
+								image="/imgs/EditRecord.png" />
+
+							<button
+								tooltiptext="Actualizar foto do requisitante" label="Foto"
 								disabled="@load(p1.lockEdit)"
-								onClick="@command('completar',requisicaoRecord=p1)" />
-							<button label="Analisar"
-								disabled="@load(not p1.completa)"
-								onClick="@command('analisar',requisicaoRecord=p1)" />
-							<button label="Registar Cartão" visible="@load( not p1.temCarteira )"
+								onClick="@command('completar',requisicaoRecord=p1)"
+								sclass="mybutton button blue small" image="/imgs/user_suit.png" />
+
+							<button
+								tooltiptext="Analisar a requisição e aceitar ou não" label="Analisar"
+								disabled="@load(p1.completa)"
+								onClick="@command('analisar',requisicaoRecord=p1)"
+								sclass="mybutton button blue small" image="/imgs/note.gif" />
+
+							<button tooltiptext="Registar Cartão" label="Carteira"
+								visible="@load( not p1.temCarteira )"
 								disabled="@load(not p1.aceite)"
-								onClick="@command('registarCartao',requisicaoRecord=p1)" />
+								onClick="@command('registarCartao',requisicaoRecord=p1)"
+								sclass="mybutton button blue small"
+								image="/imgs/application_view_list.png" />-->
+								
+							<button tooltiptext="Editar esta requisição" label="Editar"
+								disabled="@load(p1.lockEdit)"
+								onClick="@command('onEdit',requisicaoRecord=p1)"
+								sclass="mybutton button blue small" />
+
+							<button
+								tooltiptext="Actualizar foto do requisitante" label="Foto"
+								disabled="@load(p1.lockEdit)"
+								onClick="@command('completar',requisicaoRecord=p1)"
+								sclass="mybutton button blue small"/>
+
+							<button
+								tooltiptext="Analisar a requisição e aceitar ou não" label="Analisar"
+								disabled="@load(p1.lockEdit)"
+								onClick="@command('analisar',requisicaoRecord=p1)"
+								sclass="mybutton button blue small"/>
+
+							<button tooltiptext="Registar Cartão" label="Carteira"
+								visible="@load( not p1.temCarteira )"
+								disabled="@load(not p1.aceite)"
+								onClick="@command('registarCartao',requisicaoRecord=p1)"
+								sclass="mybutton button blue small" />
 
 						</hbox>
 					</listcell>

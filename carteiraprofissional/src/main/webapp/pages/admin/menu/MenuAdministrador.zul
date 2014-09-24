@@ -13,8 +13,8 @@
 							value="/pages/anonimo/requisicao/startSearch.zul"
 							image="/imgs/world.gif" />
 						<treeitem label="Requisitar Carteira"
-							value="/pages/anonimo/requisicao/NovoRequisitante.zul"
-							image="/imgs/application_form_edit.gif" />
+							value="/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=NEW"
+							image="/imgs/plus.png" />
 					</treechildren>
 				</treeitem>
 

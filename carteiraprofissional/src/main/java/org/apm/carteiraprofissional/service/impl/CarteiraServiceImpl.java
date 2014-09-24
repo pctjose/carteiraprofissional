@@ -79,12 +79,12 @@ public class CarteiraServiceImpl implements CarteiraService {
 	}
 
 	public List<Carteira> getAllByAttributes(String numeroCarteira,
-			String nomeTitular, String apelidoTitular, Date startDateEmissao,
+			String nomeTitular, Date startDateEmissao,
 			Date endDateEmissao, Date startDateValidade, Date endDateValidade,
 			Boolean emitida) {
 
 		return carteiraDAO.getAllByAttributes(numeroCarteira, nomeTitular,
-				apelidoTitular, startDateEmissao, endDateEmissao,
+				startDateEmissao, endDateEmissao,
 				startDateValidade, endDateValidade, emitida);
 	}
 

@@ -1,5 +1,7 @@
 package org.apm.carteiraprofissional;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tipo_documento")
-public class TipoDocumento {
+public class TipoDocumento implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

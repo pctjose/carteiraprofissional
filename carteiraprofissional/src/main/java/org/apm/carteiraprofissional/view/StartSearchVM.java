@@ -6,6 +6,7 @@ import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.GrupoUtilizadorService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.UtilizadorService;
+import org.apm.carteiraprofissional.utils.PageUtils;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -14,6 +15,7 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Include;
 
 public class StartSearchVM extends SelectorComposer<Component> {
 
@@ -84,7 +86,11 @@ public class StartSearchVM extends SelectorComposer<Component> {
 					//map.put("recordMode", "EDIT");
 					Sessions.getCurrent().setAttribute("requisitante", requisicao.getRequisitante());
 
-					Executions.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=EDIT");
+					//Executions.sendRedirect("/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=EDIT");
+					
+					//Include incConteudo = (Include) Sessions.getCurrent().getAttribute("setContent");
+					//incConteudo.setSrc("/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=EDIT");
+					PageUtils.redirectTo("/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=EDIT");
 				}
 			}
 		} else {

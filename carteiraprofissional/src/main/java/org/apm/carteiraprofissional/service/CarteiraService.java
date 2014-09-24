@@ -25,7 +25,7 @@ public void saveCarteira(Carteira carteira);
 	
 	public Carteira getCarteiraByRequisitante(Requisitante requisitante);
 	
-	public List<Carteira> getAllByAttributes(String numeroCarteira,String nomeTitular,String apelidoTitular,Date startDateEmissao,Date endDateEmissao,Date startDateValidade,Date endDateValidade,Boolean emitida);
+	public List<Carteira> getAllByAttributes(String numeroCarteira,String nomeTitular,Date startDateEmissao,Date endDateEmissao,Date startDateValidade,Date endDateValidade,Boolean emitida);
 	
 	public Carteira getCarteiraByRequisicao(Requisicao requisicao);
 }

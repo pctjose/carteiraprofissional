@@ -13,10 +13,10 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
-import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.utils.PathUtils;
+import org.apm.carteiraprofissional.utils.UtilizadorUtils;
 import org.imgscalr.Scalr;
 import org.zkoss.bind.BindContext;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -51,7 +51,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 
 	private Requisicao requisicao;
 	
-	private Utilizador logedInUser;
+	//private Utilizador logedInUser;
 
 	private static Logger log = Logger.getLogger(CompletarRequisiaoVM.class);
 
@@ -92,7 +92,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		requisicao = (Requisicao) Sessions.getCurrent().getAttribute(
 				"requisicao");
 		
-		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("utilizador");
+		//logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("utilizador");
 
 		if (requisicao != null) {
 			if (requisicao.isCompleta()) {
@@ -116,7 +116,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.pack();
 		window.setVisible(true);
-		Thread.sleep(30000);
+		Thread.sleep(15000);
 		BufferedImage image = webcam.getImage();
 		userImage = Images.encode("Foto.png", image);
 		Thread.sleep(300);
@@ -176,7 +176,7 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 
 			requisitante.setFoto(userImage.getByteData());			
 			requisitante.setDataAlteracao(new Date());
-			requisitante.setAlteradoPor(logedInUser);
+			requisitante.setAlteradoPor(UtilizadorUtils.getLogedUser());
 
 			requisicao.setCompleta(true);
 		

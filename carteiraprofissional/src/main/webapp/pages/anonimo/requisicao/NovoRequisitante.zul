@@ -34,7 +34,7 @@
 													<label
 														value="Nome Completo" sclass="flabel" />
 													<textbox id="nome"
-														readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+														readonly="@load(fx.lockEdit)" mold="rounded"
 														value="@bind(fx.nome)" width="250px" />
 												</vlayout>
 
@@ -47,9 +47,9 @@
 														<radiogroup
 															selectedItem="@bind(fx.sexo)" id="sexo">
 															<radio
-																label="M" value="M" id="sexoM"/>
+																label="M" value="M" id="sexoM" disabled="@load(fx.lockEdit)"/>
 															<radio
-																label="F" value="F" id="sexoF" />
+																label="F" value="F" id="sexoF" disabled="@load(fx.lockEdit)"/>
 														</radiogroup>
 													</vlayout>
 													<separator />
@@ -59,8 +59,8 @@
 														<label
 															value="Data de Nascimento" sclass="flabel" />
 														<datebox
-															id="dataNascimento" readonly="@load(vm.makeAsReadOnly)"
-															mold="rounded" width="100px"
+															id="dataNascimento" 
+															mold="rounded" width="100px" disabled="@load(fx.lockEdit)"
 															value="@bind(fx.dataNascimento)" constraint="no future"
 															format="dd-MM-yyyy" />
 													</vlayout>
@@ -73,7 +73,7 @@
 													<listbox
 														model="@bind(vm.escolaridades)"
 														selectedItem="@bind(fx.escolaridade)" mold="select"
-														id="escolaridadesLista" width="200px">
+														id="escolaridadesLista" width="200px" disabled="@load(fx.lockEdit)">
 														<template
 															name="model">
 															<listitem
@@ -86,15 +86,13 @@
 											<row>
 												<vlayout>
 													<checkbox
-														id="membro" value="@bind(fx.membro)" label="Membro da APM"
-														checked="@load(fx.membro)" onCheck="@command('disableNumeroMembro')" />
-
-
+														id="membro" checked="@bind(fx.membro)" label="Membro da APM"
+														 onCheck="@command('disableNumeroMembro')" disabled="@load(fx.lockEdit)"/>
 													<vlayout>
 													<label
 														value="Nº Membro" sclass="flabel" />
 													<textbox id="numeroMembro"
-														readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+														readonly="@load(fx.lockEdit)" mold="rounded"
 														value="@bind(fx.numeroMembro)" width="150px" />
 												</vlayout>
 													
@@ -115,7 +113,7 @@
 															value="Pais" sclass="flabel" />
 														<listbox
 															model="@load(vm.paises)" mold="select" width="170px"
-															id="paises" onSelect="@command('changePais')" selectedItem="@bind(fx.pais)">
+															id="paises" onSelect="@command('changePais')" selectedItem="@bind(fx.pais)" disabled="@load(fx.lockEdit)">
 															<template
 																name="model">
 																<listitem
@@ -129,7 +127,7 @@
 														<listbox
 															model="@bind(vm.provincias)"
 															selectedItem="@bind(fx.provincia)" mold="select"
-															id="provincias" width="170px">
+															id="provincias" width="170px" disabled="@load(fx.lockEdit)">
 															<template
 																name="model">
 																<listitem
@@ -146,14 +144,14 @@
 														<label
 															value="Distrito/Cidade" sclass="flabel" />
 														<textbox
-															id="cidade" readonly="@load(vm.makeAsReadOnly)"
+															id="cidade" readonly="@load(fx.lockEdit)"
 															mold="rounded" value="@bind(fx.cidade)" width="150px" />
 													</vlayout>
 													<vlayout>
 														<label
 															value="Endereço" sclass="flabel" />
 														<textbox
-															id="endereco" readonly="@load(vm.makeAsReadOnly)"
+															id="endereco" readonly="@load(fx.lockEdit)"
 															mold="rounded" value="@bind(fx.endereco)" width="200px" />
 													</vlayout>
 												</hlayout>
@@ -167,7 +165,7 @@
 															value="Contacto 1" sclass="flabel" />
 														<textbox
 															id="contacto1" width="150px"
-															readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+															readonly="@load(fx.lockEdit)" mold="rounded"
 															value="@bind(fx.contacto1)" />
 													</vlayout>
 													<vlayout>
@@ -175,7 +173,7 @@
 															value="Contacto 2" sclass="flabel" />
 														<textbox
 															id="contacto2" width="150px"
-															readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+															readonly="@load(fx.lockEdit)" mold="rounded"
 															value="@bind(fx.contacto2)" />
 													</vlayout>
 												</hlayout>
@@ -188,14 +186,14 @@
 															value="Email" sclass="flabel" />
 														<textbox
 															id="email" width="150px"
-															readonly="@load(vm.makeAsReadOnly)" mold="rounded"
+															readonly="@load(fx.lockEdit)" mold="rounded"
 															value="@bind(fx.email)" />
 													</vlayout>
 													<vlayout>
 														<label
 															value="Outro Contacto" sclass="flabel" />
 														<textbox
-															id="outroContacto" readonly="@load(vm.makeAsReadOnly)"
+															id="outroContacto" readonly="@load(fx.lockEdit)"
 															mold="rounded" value="@bind(fx.outroContacto)"
 															width="150px" />
 													</vlayout>
@@ -221,7 +219,7 @@
 														<label
 															value="Nº Doc Identificação" sclass="flabel" />
 														<textbox
-															id="numeroBi" readonly="@load(vm.makeAsReadOnly)"
+															id="numeroBi" readonly="@load(fx.lockEdit)"
 															mold="rounded" value="@bind(fx.numeroDoc)" width="130px" />
 													</vlayout>
 													<vlayout>
@@ -230,7 +228,7 @@
 														<listbox
 															model="@bind(vm.tipoDocs)"
 															selectedItem="@bind(fx.tipoDoc)" mold="select"
-															id="tipoDocsLista" width="110px">
+															id="tipoDocsLista" width="110px" disabled="@load(fx.lockEdit)">
 															<template
 																name="model">
 																<listitem
@@ -242,7 +240,7 @@
 														<label
 															value="Data Emissão" sclass="flabel" />
 														<datebox
-															id="dataEmissao" readonly="@load(vm.makeAsReadOnly)"
+															id="dataEmissao" disabled="@load(fx.lockEdit)"
 															mold="rounded" width="100px"
 															value="@bind(fx.dataEmissao)" constraint="no future"
 															format="dd-MM-yyyy" />
@@ -251,7 +249,7 @@
 														<label
 															value="Data Validade" sclass="flabel" />
 														<datebox
-															id="dataValidade" readonly="@load(vm.makeAsReadOnly)"
+															id="dataValidade" disabled="@load(fx.lockEdit)"
 															mold="rounded" width="100px"
 															value="@bind(fx.dataValidade)" format="dd-MM-yyyy" />
 													</vlayout>
@@ -260,7 +258,7 @@
 														<label
 															value="Local Emissão" sclass="flabel" />
 														<textbox
-															id="localEmissao" readonly="@load(vm.makeAsReadOnly)"
+															id="localEmissao" readonly="@load(fx.lockEdit)"
 															mold="rounded" value="@bind(fx.localEmissao)"
 															width="120px" />
 													</vlayout>
@@ -268,7 +266,7 @@
 														<label
 															value="NUIT" sclass="flabel" />
 														<textbox
-															id="numeroNuit" readonly="@load(vm.makeAsReadOnly)"
+															id="numeroNuit" readonly="@load(fx.lockEdit)"
 															mold="rounded" value="@bind(fx.numeroNuit)"
 															width="120px" />
 													</vlayout>
@@ -277,7 +275,7 @@
 															sclass="flabel" value=" " />
 														<button
 															label="Upload Doc" upload="true"
-															onUpload="@command('onUploadPDF' ,upEvent=event)" />
+															onUpload="@command('onUploadPDF' ,upEvent=event)" disabled="@load(fx.lockEdit)"/>
 													</vlayout>
 												</hlayout>
 											</row>
@@ -292,7 +290,7 @@
 
 				<tabpanel><!-- start 2 <div form="@id('fedu') @load(vm.formacao) @save(vm.formacao, before='onAddFormacao')">-->
 					<div
-						form="@id('fedu') @load(vm.formacao)  @save(vm.formacao,after='onAddFormacao')">
+						form="@id('fedu') @load(vm.formacao) @save(vm.formacao, before='onAddFormacao')">
 						<grid sclass="vgrid">
 							<columns>
 								<column
@@ -374,8 +372,7 @@
 
 													<listbox
 														id="listaFormacao" mold="paging" pageSize="11"
-														pagingPosition="top" sclass="mylist"
-														selectedItem="@bind(vm.formacao)"
+														pagingPosition="top" sclass="mylist"														
 														model="@load(vm.formacoesAdicionadas)">
 														<listhead
 															sizable="true">
@@ -409,7 +406,7 @@
 																		<image
 																			onClick="@command('onRemoveFormacao',eduRemoved=p2)"
 																			sclass="fimageDelete"
-																			tooltiptext="Apagar este registo ">
+																			tooltiptext="Apagar este registo " visible="@load(not p2.lockEdit)">
 																		</image>
 
 																	</hbox>
@@ -582,7 +579,7 @@
 																		<image
 																			onClick="@command('onRemoveExperiencia',expRemoved=p1)"
 																			sclass="fimageDelete"
-																			tooltiptext="Apagar este registo ">
+																			tooltiptext="Apagar este registo" visible="@load(not p1.lockEdit)">
 																		</image>
 
 																	</hbox>
@@ -601,10 +598,14 @@
 					</div>
 					<grid sclass="vgrid">
 						<rows>
-							<row>
-								<button label="${param.requisicaoMode}"
+							<row >
+								<!--  <button label="${param.requisicaoMode}"
 									onClick="@command('saveThis')"
-									sclass="mybutton button blue medium" id="btnSalvar"/>
+									sclass="mybutton button blue medium" id="btnSalvar"/>-->
+									
+								<button label="Prosseguir"
+									onClick="@command('saveThis')"
+									sclass="mybutton button blue medium" id="btnSalvar" />
 							</row>
 						</rows>
 					</grid>

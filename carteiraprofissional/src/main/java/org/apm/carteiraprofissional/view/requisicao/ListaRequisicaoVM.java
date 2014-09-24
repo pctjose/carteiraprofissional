@@ -8,6 +8,7 @@ import java.util.List;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
+import org.apm.carteiraprofissional.utils.PageUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -29,7 +30,6 @@ public class ListaRequisicaoVM {
 	private List<Requisicao> listaRequisicoes;	
 	private String numeroRequisicao;
 	private String nomeRequisitante;
-	private String apelidoRequisitante;
 	private Date dataRequisicao1;
 	private Date dataRequisicao2;
 	
@@ -60,13 +60,7 @@ public class ListaRequisicaoVM {
 		this.nomeRequisitante = nomeRequisitante;
 	}
 
-	public String getApelidoRequisitante() {
-		return apelidoRequisitante;
-	}
-
-	public void setApelidoRequisitante(String apelidoRequisitante) {
-		this.apelidoRequisitante = apelidoRequisitante;
-	}
+	
 
 	public Date getDataRequisicao1() {
 		return dataRequisicao1;
@@ -123,11 +117,8 @@ public class ListaRequisicaoVM {
 		
 		if(nomeRequisitante !=null && nomeRequisitante.trim().length()>0){
 			retorno=true;
-		}
+		}	
 		
-		if(apelidoRequisitante !=null && apelidoRequisitante.trim().length()>0){
-			retorno=true;
-		}
 		
 		if(dataRequisicao1!=null && dataRequisicao2!=null){
 			retorno=true;
@@ -143,10 +134,13 @@ public class ListaRequisicaoVM {
 	public void pesquisar(){
 		
 		if(validateSearch()){
-			listaRequisicoes = requisicaoService.getRequisicaoByAttributes(numeroRequisicao, nomeRequisitante, apelidoRequisitante, dataRequisicao1, dataRequisicao2, null, null);
-			if(listaRequisicoes==null || listaRequisicoes.size()<=0){
-				Clients.showNotification("Não foi encontrado nenhuma requisição com os parâmetros introduzidos.");
-			}
+			listaRequisicoes = requisicaoService.getRequisicaoByAttributes(numeroRequisicao, nomeRequisitante,dataRequisicao1, dataRequisicao2, null, null);
+			
+			//listaRequisicoes=requisicaoService.getAllRequisicoes();
+			//System.out.println("Requisicoes: "+listaRequisicoes.size());
+			//if(listaRequisicoes==null || listaRequisicoes.size()<=0){
+			//	Clients.showNotification("Não foi encontrado nenhuma requisição com os parâmetros introduzidos.");
+			//}
 		}else{
 			Clients.showNotification("Deve introduzir pelo menos um parâmetro de pesquisa.");
 		}
@@ -192,8 +186,9 @@ public class ListaRequisicaoVM {
 	}
 	
 	@Command
-	public void onEdit(){
-		Clients.showNotification("Funcionalidade em implementação...");
+	public void onEdit(@BindingParam("requisicaoRecord") Requisicao requisicao){		
+		Sessions.getCurrent().setAttribute("requisitante", requisicao.getRequisitante());		
+		PageUtils.redirectTo("/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=EDIT");
 	}
 	
 	

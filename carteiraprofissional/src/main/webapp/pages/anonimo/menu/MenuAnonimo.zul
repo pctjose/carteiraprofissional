@@ -9,7 +9,7 @@
 			<treeitem label="Menu" open="true">
 				<treechildren>
 					<treeitem label="Pesquisar requisição" value="/pages/anonimo/requisicao/startSearch.zul" image="/imgs/world.gif"/>
-					<treeitem label="Requisitar Carteira" value="/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=NEW" image="/imgs/application_form_edit.gif"/>
+					<treeitem label="Requisitar Carteira" value="/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=NEW" image="/imgs/plus.png"/>
 					<treeitem label="Alterar/Nova Carteira" value="/pages/anonimo/requisicao/SolicitarAlteracaoDados.zul" image="/imgs/application_form_edit.gif"/>
 					<treeitem label="Área Restrita" value="/pages/login/login.zul" image="/imgs/login.png"/>
 				</treechildren>

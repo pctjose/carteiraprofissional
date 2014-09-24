@@ -99,7 +99,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<Carteira> getAllByAttributes(String numeroCarteira,
-			String nomeTitular, String apelidoTitular, Date startDateEmissao,
+			String nomeTitular,Date startDateEmissao,
 			Date endDateEmissao, Date startDateValidade, Date endDateValidade,
 			Boolean emitida) {
 		Session sessao = sessionFactory.getCurrentSession();
@@ -115,12 +115,7 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 		if (nomeTitular != null && !nomeTitular.trim().isEmpty()) {
 			cr.add(Restrictions.like("req2.nome", nomeTitular,
 					MatchMode.ANYWHERE));
-		}
-
-		if (apelidoTitular != null && !apelidoTitular.trim().isEmpty()) {
-			cr.add(Restrictions.like("req2.apelido", apelidoTitular,
-					MatchMode.ANYWHERE));
-		}
+		}		
 
 		if (startDateEmissao != null && endDateEmissao != null) {
 			cr.add(Restrictions.between("dataEmissao", startDateEmissao,

@@ -5,24 +5,34 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.NumeroRequisicao;
+import org.apm.carteiraprofissional.PropriedadesGlobais;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.service.NumeroRequisicaoService;
+import org.apm.carteiraprofissional.service.PropriedadesGlobaisService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.utils.EnviarEmail;
+import org.apm.carteiraprofissional.utils.PageUtils;
+import org.apm.carteiraprofissional.utils.PropriedadeGlobalUtils;
+import org.apm.carteiraprofissional.utils.UtilizadorUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 public class RequisicaoVM extends SelectorComposer<Component> {
@@ -37,6 +47,8 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 	private String recordMode;
 	private Requisitante requisitante;
 
+	private static Logger log = Logger.getLogger(RequisicaoVM.class);
+
 	@WireVariable
 	protected RequisitanteService requisitanteService;
 
@@ -46,8 +58,23 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 	@WireVariable
 	protected NumeroRequisicaoService numeroRequisicaoService;
 
+	@WireVariable
+	protected PropriedadesGlobaisService propriedadesGlobaisService;
+
 	@Wire
 	private Window requisicao;
+	
+	@Wire
+	Datebox dataRequisiao;
+	
+	@Wire
+	Textbox localRequisicao;
+	
+	@Wire
+	Checkbox assinouCompromisso;
+	
+	@Wire
+	Checkbox concordaTermos;
 
 	public Requisicao getSelectedRecord() {
 		return selectedRecord;
@@ -112,19 +139,23 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
+		validate();
+		
 		if (requisitante.getId() == null) {
 			requisitante.setUuid(UUID.randomUUID().toString());
 			requisitante.setDataCriacao(new Date());
+			requisitante.setCriadoPor(UtilizadorUtils.getLogedUser());
 		}
 
 		if (this.selectedRecord.getRequisicaoId() == null) {
 			this.selectedRecord.setUuid(UUID.randomUUID().toString());
 			this.selectedRecord.setDataCriacao(new Date());
+			this.selectedRecord.setCriadoPor(UtilizadorUtils.getLogedUser());
 
 			List<NumeroRequisicao> numeros = numeroRequisicaoService
 					.getAllNumeros();
 			NumeroRequisicao numero;
-			if (numeros != null) {
+			if (numeros != null && numeros.size() > 0) {
 				numero = numeros.get(0);
 				Integer ano = numero.getAno();
 				Integer numInt = numero.getNumero();
@@ -170,20 +201,45 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 			requisicaoService.saveRequisicao(selectedRecord);
 
-			EnviarEmail
-					.sendEmail(
-							requisitante.getEmail(),
-							"Requisicao de Carteira Profissional - APM",
-							"Registamos a sua requisicao de carteira profissional no nosso sistema. \n\n Para todos efeitos o numero de requisição é: "
-									+ selectedRecord.getNumeroRequisicao());
+			/*PropriedadesGlobais emailApmFrom = propriedadesGlobaisService
+					.getPropriedadeById("email.apm");*/
+			
+			PropriedadesGlobais emailApmFrom=PropriedadeGlobalUtils.getEmailAPM();
+			
+			if (emailApmFrom != null && requisitante.getEmail() != null
+					&& !requisitante.getEmail().isEmpty()) {
+				String subject = "Requisicao de Carteira Profissional - APM: "
+						+ requisitante.getNome();
+				String message = "Registamos a sua requisicao de carteira profissional no nosso sistema. \n\n";
+				message += "Se pretender efectual alguma consulta dentro do nosso sistema, o número da requisição é: \n\n";
+				message += selectedRecord.getNumeroRequisicao() + "\n\n";
+				message += "Obrigado. \n\n A Gerência.";
 
-			Clients.showNotification("Requisição Registada e um email foi enviado.");
-		}else{
+				try {
+					EnviarEmail.sendEmail(emailApmFrom.getValor(),
+							emailApmFrom.getValor2(), requisitante.getEmail(),
+							subject, message);
+					PageUtils
+							.redirectTo("/pages/anonimo/requisicao/startSearch.zul");
+					Clients.showNotification("Requisição Registada e um email foi enviado com o numero de requisicao.");
+				} catch (Exception e) {
+					log.debug(e.getStackTrace());
+					PageUtils
+							.redirectTo("/pages/anonimo/requisicao/startSearch.zul");
+					Clients.showNotification("Requisição Registada mas não foi possível enviar email com o numero de requisição.");
+				}
+			}
+
+			
+
+		} else {
+			requisitante.setAlteradoPor(UtilizadorUtils.getLogedUser());
+			requisitante.setDataAlteracao(new Date());
 			requisitanteService.saveRequisitante(requisitante);
 			requisicaoService.saveRequisicao(selectedRecord);
-		}
-		
-		//IR PARA PESQUISA DE REQUISICAO
+			PageUtils.redirectTo("/pages/anonimo/requisicao/startSearch.zul");
+			Clients.showNotification("Requisição Actualizada.");
+		}	
 
 	}
 
@@ -191,6 +247,27 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 	public void close() {
 
 		requisicao.detach();
+	}
+	
+	public void validate(){
+		if (dataRequisiao == null || dataRequisiao.getValue() == null) {			
+			throw new WrongValueException(dataRequisiao,
+					"Data de requisição é um campo obrigatório");
+		}
+		if (localRequisicao == null || localRequisicao.getValue().isEmpty()) {
+			
+			throw new WrongValueException(localRequisicao, "Local de requisição deve ser preenchido");
+		}
+		
+		if (assinouCompromisso==null || !assinouCompromisso.isChecked()) {
+			throw new WrongValueException(assinouCompromisso,
+					"Deve indicar que assinou o termo de compromisso");
+		}
+		
+		if (concordaTermos==null || !concordaTermos.isChecked()) {
+			throw new WrongValueException(concordaTermos,
+					"Deve ler e concordar com o regulamento da Carteira Profissional");
+		}
 	}
 
 }

@@ -12,7 +12,10 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import org.apm.carteiraprofissional.Carteira;
+import org.apm.carteiraprofissional.Experiencia;
 import org.apm.carteiraprofissional.FormaPagamento;
+import org.apm.carteiraprofissional.Formacao;
+import org.apm.carteiraprofissional.PropriedadesGlobais;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
 import org.apm.carteiraprofissional.Utilizador;
@@ -24,6 +27,8 @@ import org.apm.carteiraprofissional.utils.BarcodeUtil;
 import org.apm.carteiraprofissional.utils.DateUtil;
 import org.apm.carteiraprofissional.utils.EnviarEmail;
 import org.apm.carteiraprofissional.utils.PathUtils;
+import org.apm.carteiraprofissional.utils.PropriedadeGlobalUtils;
+import org.apm.carteiraprofissional.utils.UtilizadorUtils;
 import org.apm.carteiraprofissional.utils.WritePDFCarteira;
 import org.apm.carteiraprofissional.utils.ZipDirUtil;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -57,7 +62,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	private boolean makeAsReadOnly;
 	private String recordMode;
 	private Requisicao requisicao;
-	private Utilizador logedInUser;
+	// private Utilizador logedInUser;
 
 	@Wire
 	private Window frmCriarCarteira;
@@ -70,7 +75,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 	@Wire
 	private Checkbox enviarEmissao;
-	
+
 	@Wire
 	private Decimalbox valorCobrado;
 
@@ -153,8 +158,6 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	public void setEnviarEmissao(Checkbox enviarEmissao) {
 		this.enviarEmissao = enviarEmissao;
 	}
-	
-	
 
 	public Decimalbox getValorCobrado() {
 		return valorCobrado;
@@ -172,7 +175,8 @@ public class CarteiraVM extends SelectorComposer<Component> {
 		final HashMap<String, Object> map = (HashMap<String, Object>) Sessions
 				.getCurrent().getAttribute("carteiraValues");
 		formasPagamento = formaPagamentoService.getAllFormas();
-		logedInUser= (Utilizador)Sessions.getCurrent().getAttribute("utilizador");
+		// logedInUser=
+		// (Utilizador)Sessions.getCurrent().getAttribute("utilizador");
 		if (map != null) {
 			this.recordMode = (String) map.get("recordMode");
 			if (this.recordMode.equalsIgnoreCase("NEW")) {
@@ -199,9 +203,8 @@ public class CarteiraVM extends SelectorComposer<Component> {
 
 		Calendar calendario = Calendar.getInstance();
 		calendario.setTime(dataEmissao.getValue());
-		
-		if (this.selectedRecord.getRequisicao().getRequisitante()
-				.isMembro()) {
+
+		if (this.selectedRecord.getRequisicao().getRequisitante().isMembro()) {
 			calendario.add(Calendar.YEAR, 3);
 		} else {
 			calendario.add(Calendar.YEAR, 2);
@@ -216,8 +219,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	public void saveThis() throws Exception {
 
 		validate();
-		
-		
+
 		Requisitante requisitante = requisitanteService
 				.getRequisitanteById(this.selectedRecord.getRequisicao()
 						.getRequisitante().getId());
@@ -239,21 +241,38 @@ public class CarteiraVM extends SelectorComposer<Component> {
 			this.selectedRecord.setUuid(UUID.randomUUID().toString());
 			this.selectedRecord.setEmitida(false);
 			this.selectedRecord.setDataCriacao(new Date());
-			this.selectedRecord.setCriadoPor(logedInUser);
+			this.selectedRecord.setCriadoPor(UtilizadorUtils.getLogedUser());
 
 		} else {
 			if (this.recordMode.equalsIgnoreCase("EDIT")) {
 				this.selectedRecord.setDataAlteracao(new Date());
-				this.selectedRecord.setAlteradoPor(logedInUser);
+				this.selectedRecord.setAlteradoPor(UtilizadorUtils
+						.getLogedUser());
 			}
 		}
 
 		if (enviarEmissao.isChecked()) {
 			this.selectedRecord.setEnviarEmissao(true);
 			this.requisicao.setLockEdit(Boolean.TRUE);
+			requisitante.setLockEdit(true);
+
+			for (Experiencia e : requisitante.getExperiencias())
+				e.setLockEdit(true);
+
+			for (Formacao f : requisitante.getFormacoes())
+				f.setLockEdit(true);
+
 		} else {
 			this.selectedRecord.setEnviarEmissao(false);
-			this.requisicao.setLockEdit(Boolean.FALSE);
+			this.requisicao.setLockEdit(false);
+			requisitante.setLockEdit(false);
+
+			for (Experiencia e : requisitante.getExperiencias())
+				e.setLockEdit(false);
+
+			for (Formacao f : requisitante.getFormacoes())
+				f.setLockEdit(false);
+			
 		}
 		this.selectedRecord.setDataValidade(dataValidade.getValue());
 
@@ -309,27 +328,32 @@ public class CarteiraVM extends SelectorComposer<Component> {
 				sms += "Os outros dados da carteira encontram-se no anexo deste email. \n\n";
 				sms += "Obrigado.";
 
-				EnviarEmail.sendEmail(
-						"circlemz2@yahoo.com",
-						"Envio de Dados Para Produção de Carteira: "
-								+ this.selectedRecord.getNumeroCarteira(),
-						sms,
-						dataZipDir + "/"
+				PropriedadesGlobais emailAPM = PropriedadeGlobalUtils.getEmailAPM();
+				
+				PropriedadesGlobais emailGrafica=PropriedadeGlobalUtils.getEmailGrafica();
+				
+				EnviarEmail.sendEmail(emailAPM.getValor(), emailAPM.getValor2(), emailGrafica.getValor(), "Envio de Dados Para Produção de Carteira: "
+								+ this.selectedRecord.getNumeroCarteira(), sms, dataZipDir + "/"
 								+ this.selectedRecord.getNumeroCarteira()
-								+ ".zip");
+								+ ".zip");				
+				
 				Clients.clearBusy();
+				Clients.showNotification("Carteira: "
+						+ this.selectedRecord.getNumeroCarteira()
+						+ " Registada/Actualizada com sucesso");
 			} catch (Exception e) {
 				Clients.clearBusy();
 				Clients.showNotification("Dados gravados com sucesso. Mas houve erro no envio de email com dados para a produção da carteira");
 			}
 
-		}	
+		}else{
+			Clients.showNotification("Carteira: "
+					+ this.selectedRecord.getNumeroCarteira()
+					+ " Registada/Actualizada com sucesso");
+		}
 
 		
-		Clients.showNotification("Carteira: "
-				+ this.selectedRecord.getNumeroCarteira()
-				+ " Registada/Actualizada com sucesso");
-		
+
 		frmCriarCarteira.detach();
 	}
 
@@ -337,16 +361,19 @@ public class CarteiraVM extends SelectorComposer<Component> {
 	public void cancel() {
 		frmCriarCarteira.detach();
 	}
-	
-	public void validate(){
-		if(dataEmissao.getValue()==null || dataEmissao.toString().isEmpty()){
-			throw new WrongValueException(dataEmissao, "A data de emissão deve ser preenchida");
+
+	public void validate() {
+		if (dataEmissao == null || dataEmissao.getValue() == null
+				|| dataEmissao.toString().isEmpty()) {
+			throw new WrongValueException(dataEmissao,
+					"A data de emissão deve ser preenchida");
 		}
-		
-		if(valorCobrado.getValue()==null ){
-			throw new WrongValueException(valorCobrado, "O valor cobrado deve ser preenchido");
+
+		if (valorCobrado == null || valorCobrado.getValue() == null) {
+			throw new WrongValueException(valorCobrado,
+					"O valor cobrado deve ser preenchido");
 		}
-		
-		//return true;
+
+		// return true;
 	}
 }

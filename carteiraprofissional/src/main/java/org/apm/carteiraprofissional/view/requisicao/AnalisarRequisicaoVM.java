@@ -1,9 +1,12 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
 import org.apache.log4j.Logger;
+import org.apm.carteiraprofissional.PropriedadesGlobais;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.utils.EnviarEmail;
+import org.apm.carteiraprofissional.utils.PropriedadeGlobalUtils;
+import org.apm.carteiraprofissional.utils.UtilizadorUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -23,7 +26,7 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private static Logger log = Logger.getLogger(AnalisarRequisicaoVM.class);
 
 	private Requisicao selectedRecord;
@@ -95,19 +98,23 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 	public void saveThis() {
 		if (this.aceiteString.equals("S")) {
 			this.selectedRecord.setAceite(true);
+			this.selectedRecord.setAceitePor(UtilizadorUtils.getLogedUser());
 		} else {
 			this.selectedRecord.setAceite(false);
+			this.selectedRecord.setAceitePor(null);
 		}
+
 		requisicaoService.saveRequisicao(selectedRecord);
-		
-		try{
-			
+
+		try {
+
 			Clients.showBusy("Enviando email ao requisitante...");
-			
+
 			String title = "";
 
 			String mensagem = "Exmo(a) Srº(ª): "
-					+ selectedRecord.getRequisitante().getNomeCompleto() + "\n\n";
+					+ selectedRecord.getRequisitante().getNomeCompleto()
+					+ "\n\n";
 			mensagem += "Vimos informar que a sua requisição de carteira profissional solicitada a APM foi: \n\n";
 			if (selectedRecord.isAceite()) {
 				mensagem += "ACEITE \n\n";
@@ -125,18 +132,22 @@ public class AnalisarRequisicaoVM extends SelectorComposer<Component> {
 
 			mensagem += "\n\n OBRIGADO.";
 
-			EnviarEmail.sendEmail(selectedRecord.getRequisitante().getEmail(),
+			PropriedadesGlobais emailApmFrom = PropriedadeGlobalUtils
+					.getEmailAPM();
+
+			EnviarEmail.sendEmail(emailApmFrom.getValor(), emailApmFrom
+					.getValor2(), selectedRecord.getRequisitante().getEmail(),
 					title, mensagem);
-			
+
+			Clients.showNotification("Requisição actualizada e um email foi enviado ao requisitante: "
+					+ selectedRecord.getRequisitante().getNomeCompleto());
+
 			Clients.clearBusy();
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.debug(e);
+			Clients.clearBusy();
+			Clients.showNotification("Requisição actualizada mas não foi possível enviar email de notificação da decisão ao requisitante");
 		}
-
-		
-
-		Clients.showNotification("Requisição actualizada e um email foi enviado ao requisitante: "
-				+ selectedRecord.getRequisitante().getNomeCompleto());
 
 		frmAnalisarRequisicao.detach();
 	}

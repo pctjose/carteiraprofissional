@@ -34,7 +34,6 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 	private Date endDateValidade;
 	private String numeroCarteira;
 	private String nomeTitular;
-	private String apelidoTitular;
 	private boolean emitida;
 	private String emitidaString;
 
@@ -124,13 +123,7 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 		this.nomeTitular = nomeTitular;
 	}
 
-	public String getApelidoTitular() {
-		return apelidoTitular;
-	}
-
-	public void setApelidoTitular(String apelidoTitular) {
-		this.apelidoTitular = apelidoTitular;
-	}
+	
 
 	public boolean isEmitida() {
 		return emitida;
@@ -161,7 +154,7 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 		if (validateSearch()) {
 			listaCarteiras = carteiraService.getAllByAttributes(numeroCarteira,
-					nomeTitular, apelidoTitular, startDataEmissao,
+					nomeTitular, startDataEmissao,
 					endDateEmissao, startDateValidade, endDateValidade,
 					emitiBool);
 			if (listaCarteiras == null || listaCarteiras.size() <= 0) {
@@ -181,11 +174,7 @@ public class ListaCarteiraVM extends SelectorComposer<Component> {
 
 		if (nomeTitular != null && nomeTitular.trim().length() > 0) {
 			retorno = true;
-		}
-
-		if (apelidoTitular != null && apelidoTitular.trim().length() > 0) {
-			retorno = true;
-		}
+		}		
 
 		if (startDataEmissao != null && endDateEmissao != null) {
 			retorno = true;

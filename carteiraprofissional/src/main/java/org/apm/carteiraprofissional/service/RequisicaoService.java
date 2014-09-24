@@ -23,7 +23,7 @@ public interface RequisicaoService {
 	public Requisicao getRequisicaoByRequisitante(Requisitante requisitante);
 	
 	public List<Requisicao> getRequisicaoByAttributes(String numeroRequisicao,
-			String nome, String apelido, Date dataInicial, Date dataFinal,
+			String nome, Date dataInicial, Date dataFinal,
 			Boolean aceite, Boolean completa);
 
 }
