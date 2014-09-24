@@ -32,7 +32,7 @@ public class Categoria implements Serializable {
 	@Column(name="descricao")
 	private String descricao;
 
-	// private List<SubCategoria> subCategorias;
+	
 
 	public String getDesignacao() {
 		return designacao;
@@ -42,12 +42,7 @@ public class Categoria implements Serializable {
 		this.designacao = designacao;
 	}
 
-	/*
-	 * public List<SubCategoria> getSubCategorias() { return subCategorias; }
-	 * 
-	 * public void setSubCategorias(List<SubCategoria> subCategorias) {
-	 * this.subCategorias = subCategorias; }
-	 */
+	
 
 	public Integer getId() {
 		return id;
