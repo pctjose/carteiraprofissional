@@ -29,7 +29,7 @@ public class SolicitarEditarCarteiraDAOImpl implements
 
 	@Transactional
 	public void saveOrUpdate(SolicitarEditarCarteira solicitacao) {
-		sessionFactory.getCurrentSession().save(solicitacao);
+		sessionFactory.getCurrentSession().saveOrUpdate(solicitacao);
 
 	}
 
@@ -58,11 +58,11 @@ public class SolicitarEditarCarteiraDAOImpl implements
 
 	}
 
-	public SolicitarEditarCarteira getByCarteiraAndNaoTratada(Carteira carteira) {
+	public SolicitarEditarCarteira getByCarteira(Carteira carteira,boolean tratada) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(
 				SolicitarEditarCarteira.class);
-		c.add(Restrictions.eq("carteira", carteira));
-		c.add(Restrictions.eq("tratada", false));
+		c.add(Restrictions.eq("carteira", carteira));		
+		c.add(Restrictions.eq("tratada", tratada));
 		return (SolicitarEditarCarteira) c.uniqueResult();
 	}
 

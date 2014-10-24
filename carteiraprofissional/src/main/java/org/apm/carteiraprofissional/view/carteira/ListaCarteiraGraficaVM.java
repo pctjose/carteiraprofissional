@@ -52,7 +52,9 @@ public class ListaCarteiraGraficaVM {
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view) {
 		Selectors.wireComponents(view, this, false);
 
-		listaCarteiras = carteiraService.getAllCarteiraNaoEmitidas();
+		//listaCarteiras = carteiraService.getAllCarteiraNaoEmitidas();
+		
+		listaCarteiras=carteiraService.getAllToGrafica();
 
 	}
 

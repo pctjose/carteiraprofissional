@@ -3,13 +3,18 @@ package org.apm.carteiraprofissional;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="solicitar_editar_carteira")
 public class SolicitarEditarCarteira implements Serializable {
 
 	/**
@@ -34,6 +39,13 @@ public class SolicitarEditarCarteira implements Serializable {
 	private boolean tratada;
 	@Column(name = "uuid")
 	private String uuid;
+	@Column(name="autorizada")
+	private boolean autorizada;
+	@ManyToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name="autorizado_por")
+	private Utilizador autorizadaPor;
+	@Column(name="data_autorizacao")
+	private Date dataAutorizacao;
 
 	public Integer getSolicitacaoId() {
 		return solicitacaoId;
@@ -92,5 +104,31 @@ public class SolicitarEditarCarteira implements Serializable {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+
+	public boolean isAutorizada() {
+		return autorizada;
+	}
+
+	public void setAutorizada(boolean autorizada) {
+		this.autorizada = autorizada;
+	}
+
+	public Utilizador getAutorizadaPor() {
+		return autorizadaPor;
+	}
+
+	public void setAutorizadaPor(Utilizador autorizadaPor) {
+		this.autorizadaPor = autorizadaPor;
+	}
+
+	public Date getDataAutorizacao() {
+		return dataAutorizacao;
+	}
+
+	public void setDataAutorizacao(Date dataAutorizacao) {
+		this.dataAutorizacao = dataAutorizacao;
+	}
+	
+	
 
 }

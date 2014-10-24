@@ -38,19 +38,38 @@ public class Carteira extends BaseModel {
 	private Date dataPagamento;
 	@Column(name = "enviar_emissao")
 	private boolean enviarEmissao;
-	@Column(name="expirou")
-	private boolean expirou;
+	
+	@Column(name="lock_edit")
+	private boolean lockEdit;
+	@Column(name="observacao")
+	private String observacao;
 	
 	
+	
+	
+	
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
+	public boolean isLockEdit() {
+		return lockEdit;
+	}
+
+	public void setLockEdit(boolean lockEdit) {
+		this.lockEdit = lockEdit;
+	}
 
 	public boolean isExpirou() {
-		return expirou;
+		return new Date().after(this.dataValidade);
 	}
 
-	public void setExpirou(boolean expirou) {
-		this.expirou = expirou;
-	}
-
+	
 	public Requisicao getRequisicao() {
 		return requisicao;
 	}

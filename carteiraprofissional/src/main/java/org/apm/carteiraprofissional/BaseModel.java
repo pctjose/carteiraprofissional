@@ -40,7 +40,7 @@ public class BaseModel {
     private Utilizador alteradoPor;
 	
 	@Column(name="anulado")
-    private Boolean anulado=Boolean.FALSE;
+    private boolean anulado;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_anulado")
@@ -103,15 +103,16 @@ public class BaseModel {
         this.alteradoPor = alteradoPor;
     }
 
-    public Boolean isAnulado() {
+    public boolean isAnulado() {
         return anulado;
     }
     
-    public Boolean getAnulado(){
+    @Deprecated
+    public boolean getAnulado(){
     	return isAnulado();
     }
 
-    public void setAnulado(Boolean anulado) {
+    public void setAnulado(boolean anulado) {
         this.anulado = anulado;
     }
 

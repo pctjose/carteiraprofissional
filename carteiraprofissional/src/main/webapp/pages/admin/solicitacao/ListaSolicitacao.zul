@@ -1,0 +1,59 @@
+<?page title="Lista de Categorias Profissionais" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window id="frmListaSolicitacao" border="normal" sizable="true" 
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.solicitacao.ListaSolicitacaoVM')" >
+		<separator />
+			
+		<div width="100%">
+			<div sclass="sectionTitle">
+				<separator />
+				<label value="SOLICITAÇÕES DE ALTERAÇÃO DE CARTEIRA" sclass="sectionTitleLabel" />
+				<separator />
+			</div>
+			<div style="clear: both;"></div>
+			<div sclass="sectionSeperator"></div>
+		</div>
+		<separator />
+		<listbox id="dataSet" mold="paging" pageSize="10" pagingPosition="top"
+			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
+			model="@load(vm.dataSet)">
+			<listhead sizable="true">
+				<listheader label="Nº CARTEIRA"/>
+				<listheader label="PROPRIETÁRIO"/>
+				<listheader label="CONTACTO"/>
+				<listheader label="DATA" sort="auto(dataSolicitacao)" />
+				<listheader label="MOTIVO" sort="auto(motivo)" />
+				<listheader label="DESCRIÇÃO"/>
+				<listheader label="ACCAO" />
+			</listhead>
+			<template name="model" var="p1">
+				<listitem>
+					<listcell label="@load(p1.carteira.numeroCarteira)" />
+					<listcell label="@load(p1.carteira.requisicao.requisitante.nomeCompleto)" />
+					<listcell label="@load(p1.carteira.requisicao.requisitante.contacto1)" />
+					<listcell label="@load(p1.dataSolicitacao) @converter('formatedDate',format='dd-MM-yyyy')" />
+					<listcell label="@load(p1.motivo)" />
+					<listcell label="@load(p1.descricao)" />
+					<listcell>
+						<hbox spacing="20px">
+						
+							
+							<image
+								onClick="@command('onEdit',userRecord=p1)" sclass="fimageedit"
+								tooltiptext="Para aceitar esta solicitação">
+							</image>
+							<image
+								onClick="@command('onDelete',userRecord=p1)"
+								sclass="fimageDelete" tooltiptext="Apagar esta solicitação">
+							</image>
+							
+							
+						</hbox>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</window>
+</zk>

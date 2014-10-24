@@ -140,4 +140,21 @@ public class CarteiraDAOImpl implements CarteiraDAO {
 		return (Carteira) cr.uniqueResult();
 	}
 
+	@Transactional(readOnly=true)
+	public Carteira getCarteiraByNumero(String numero) {
+		Session sessao = sessionFactory.getCurrentSession();
+		Criteria cr = sessao.createCriteria(Carteira.class);
+		cr.add(Restrictions.eq("numeroCarteira", numero));
+		return (Carteira) cr.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Carteira> getAllParaGrafica() {
+		Session sessao = sessionFactory.getCurrentSession();
+		Criteria cr = sessao.createCriteria(Carteira.class);
+		cr.add(Restrictions.eq("emitida", false));
+		cr.add(Restrictions.eq("enviarEmissao", true));
+		return cr.list();
+	}
+
 }

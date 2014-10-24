@@ -40,7 +40,7 @@
 								<vlayout>
 									<label value="Número de Carteira"
 										sclass="flabel" />
-									<textbox id="numeroCarteira"
+									<textbox id="carteiraValidate"
 										mold="rounded" value="@bind(vm.numeroCarteira)" width="200px"
 										constraint="no empty: Deve indicar o número da carteira" />
 								</vlayout>
@@ -67,7 +67,7 @@
 										sclass="flabel" />
 									<datebox id="dataSolicitacao"
 										mold="rounded" width="100px" value="@bind(fx.dataSolicitacao)"
-										constraint="no future" format="dd-MM-yyyy" />
+										constraint="no empty,no future: Deve seleccionar a data de solicitação" format="dd-MM-yyyy" />
 								</vlayout>
 							</row>
 							<row>
@@ -87,6 +87,10 @@
 								<hlayout>
 									<button label="Registar" mold="trendy"
 										onClick="@command('saveThis')"
+										sclass="mybutton button blue small" />
+										
+									<button label="Fechar" mold="trendy"
+										onClick="@command('fechar')"
 										sclass="mybutton button blue small" />
 								</hlayout>
 

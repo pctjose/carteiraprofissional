@@ -15,6 +15,9 @@
 						<treeitem label="Requisitar Carteira"
 							value="/pages/anonimo/requisicao/NovoRequisitante.zul?requisicaoMode=NEW"
 							image="/imgs/plus.png" />
+						<treeitem label="Autorizar Alteração"
+							value="/pages/admin/solicitacao/ListaSolicitacao.zul"
+							image="/imgs/plus.png" />
 					</treechildren>
 				</treeitem>
 

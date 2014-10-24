@@ -26,4 +26,8 @@ public interface CarteiraDAO {
 	
 	public Carteira getCarteiraByRequisicao(Requisicao requisicao);
 	
+	public Carteira getCarteiraByNumero(String numero);
+	
+	public List<Carteira>getAllParaGrafica();
+	
 }

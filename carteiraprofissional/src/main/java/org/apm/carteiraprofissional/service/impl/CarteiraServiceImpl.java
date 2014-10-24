@@ -79,18 +79,25 @@ public class CarteiraServiceImpl implements CarteiraService {
 	}
 
 	public List<Carteira> getAllByAttributes(String numeroCarteira,
-			String nomeTitular, Date startDateEmissao,
-			Date endDateEmissao, Date startDateValidade, Date endDateValidade,
-			Boolean emitida) {
+			String nomeTitular, Date startDateEmissao, Date endDateEmissao,
+			Date startDateValidade, Date endDateValidade, Boolean emitida) {
 
 		return carteiraDAO.getAllByAttributes(numeroCarteira, nomeTitular,
-				startDateEmissao, endDateEmissao,
-				startDateValidade, endDateValidade, emitida);
+				startDateEmissao, endDateEmissao, startDateValidade,
+				endDateValidade, emitida);
 	}
 
 	public Carteira getCarteiraByRequisicao(Requisicao requisicao) {
-		
+
 		return carteiraDAO.getCarteiraByRequisicao(requisicao);
+	}
+
+	public Carteira getCarteiraByNumero(String numero) {
+		return carteiraDAO.getCarteiraByNumero(numero);
+	}
+
+	public List<Carteira> getAllToGrafica() {
+		return carteiraDAO.getAllParaGrafica();
 	}
 
 }

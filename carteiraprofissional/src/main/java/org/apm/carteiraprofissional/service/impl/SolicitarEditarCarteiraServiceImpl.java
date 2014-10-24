@@ -44,9 +44,9 @@ public class SolicitarEditarCarteiraServiceImpl implements
 
 	}
 
-	public SolicitarEditarCarteira getByCarteiraAndNaoTratada(Carteira carteira) {
+	public SolicitarEditarCarteira getByCarteira(Carteira carteira,boolean tratada) {
 
-		return solicitarEditarCarteiraDAO.getByCarteiraAndNaoTratada(carteira);
+		return solicitarEditarCarteiraDAO.getByCarteira(carteira,tratada);
 	}
 
 }

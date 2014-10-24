@@ -117,6 +117,10 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	
+	<bean id="solicitarEditarCarteiraDAO" class="org.apm.carteiraprofissional.dao.impl.SolicitarEditarCarteiraDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
 
 	<!-- SERVICOS -->
 	<bean id="grupoUtilizadorService" class="org.apm.carteiraprofissional.service.impl.GrupoUtilizadorServiceImpl"/>
@@ -181,5 +185,9 @@
 	
 	<bean id="propriedadesGlobaisService" class="org.apm.carteiraprofissional.service.impl.PropriedadesGlobaisServiceImpl">
 		<property name="propriedadesGlobaisDAO" ref="propriedadesGlobaisDAO"/>
+	</bean>
+	
+	<bean id="solicitarEditarCarteiraService" class="org.apm.carteiraprofissional.service.impl.SolicitarEditarCarteiraServiceImpl">
+		<property name="solicitarEditarCarteiraDAO" ref="solicitarEditarCarteiraDAO"/>
 	</bean>
 </beans>

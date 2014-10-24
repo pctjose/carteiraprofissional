@@ -15,5 +15,5 @@ public interface SolicitarEditarCarteiraService {
 
 	public void delete(SolicitarEditarCarteira solicitacao);
 	
-	public SolicitarEditarCarteira getByCarteiraAndNaoTratada(Carteira carteira);
+	public SolicitarEditarCarteira getByCarteira(Carteira carteira,boolean tratada);
 }

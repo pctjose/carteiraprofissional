@@ -22,6 +22,7 @@
 					sort="auto(enviarEmissao)" width="140px" />
 				<listheader label="Produzida" sort="auto(emitida)"
 					width="80px" />
+				<listheader label="Observação" width="80px" />
 				<listheader label="Acções" />
 			</listhead>
 			<template name="model" var="p1">
@@ -36,6 +37,8 @@
 					<listcell
 						label="@load(p1.enviarEmissao ? 'SIM':'NÃO')" />
 					<listcell label="@load(p1.emitida ? 'SIM':'NÃO')" />
+					<listcell
+						label="@load(p1.observacao)" />
 					<listcell>
 						<hbox spacing="20px">
 							<button label="Baixar Dados"

@@ -28,4 +28,8 @@ public void saveCarteira(Carteira carteira);
 	public List<Carteira> getAllByAttributes(String numeroCarteira,String nomeTitular,Date startDateEmissao,Date endDateEmissao,Date startDateValidade,Date endDateValidade,Boolean emitida);
 	
 	public Carteira getCarteiraByRequisicao(Requisicao requisicao);
+	
+	public Carteira getCarteiraByNumero(String numero);
+	
+	public List<Carteira> getAllToGrafica();
 }
