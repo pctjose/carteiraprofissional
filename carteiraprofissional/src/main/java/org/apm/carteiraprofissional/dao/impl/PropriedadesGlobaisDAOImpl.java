@@ -44,4 +44,9 @@ public class PropriedadesGlobaisDAOImpl implements PropriedadesGlobaisDAO {
 				.createCriteria(PropriedadesGlobais.class).list();
 	}
 
+	public void delete(PropriedadesGlobais propriedade) {
+		sessionFactory.getCurrentSession().delete(propriedade);
+		
+	}
+
 }

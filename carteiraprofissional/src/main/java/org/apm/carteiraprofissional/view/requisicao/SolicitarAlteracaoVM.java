@@ -85,6 +85,11 @@ public class SolicitarAlteracaoVM {
 						"Existe uma solicitação ainda não tratada para esta carteira");
 			}
 			
+			if(!carteira.isEmitida()){
+				throw new WrongValueException(carteiraValidate,
+						"A carteira ainda não foi emitida, portanto não deve solicitar qualquer alteração de dados");
+			}
+			
 			if(motivo.getSelectedItem().getValue().toString().equalsIgnoreCase("NOVA")){
 				if(!carteira.isExpirou()){
 					throw new WrongValueException(motivo,

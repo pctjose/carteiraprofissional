@@ -2,14 +2,20 @@ package org.apm.carteiraprofissional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "propriedade_global")
 public class PropriedadesGlobais {
+	
 	@Id
-	@Column(name = "propriedade")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id" )
+	private Integer id;	
+	@Column(name = "propriedade",unique=true)
 	private String propriedade;
 	@Column(name = "valor")
 	private String valor;
@@ -20,7 +26,14 @@ public class PropriedadesGlobais {
 	@Column(name="valor2")
 	private String valor2;
 	
-	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getValor2() {
 		return valor2;

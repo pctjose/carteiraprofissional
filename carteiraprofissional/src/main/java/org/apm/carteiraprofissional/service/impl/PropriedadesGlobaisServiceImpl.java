@@ -39,4 +39,9 @@ public class PropriedadesGlobaisServiceImpl implements
 		return propriedadesGlobaisDAO.getAllPropriedades();
 	}
 
+	public void delete(PropriedadesGlobais propriedade) {
+		propriedadesGlobaisDAO.delete(propriedade);
+		
+	}
+
 }

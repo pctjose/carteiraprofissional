@@ -1,0 +1,115 @@
+<?page title="Categoria Profissional" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+	<window id="frmPropriedadesGlobais" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.parametro.PropriedadesGlobaisVM')"
+		width="25%">
+		<div
+			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, before='saveThis')">
+
+
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+
+								<label id="lcaption"
+									sclass="sectionTitleLabel"
+									value="@load(vm.makeAsReadOnly ? 'VISUALIZAÇÃO DA PROPRIEDADE GLOBAL': empty fx.id ?'REGISTO DE PROPRIEDADE GLOBAL':'ACTUALIZAÇÃO DE PROPRIEDADE GLOBAL')" />
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>			
+			
+				<panel width="100%" sclass="sectionPanel">
+					<panelchildren>
+						<grid sclass="vgrid">
+							<columns>
+								<column label="PROPRIEDADE GLOBAL" />
+							</columns>
+							<rows>
+								
+								<row>
+									<vlayout>
+									<separator/>
+										<label value="Propriedade:"
+											sclass="flabel" />
+										<textbox id="propriedade"											
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
+											value="@bind(fx.propriedade)" constraint="no empty: O nome da propriedade deve ser preenchida" hflex="1"/>
+									</vlayout>
+								</row>
+								
+								<row>
+									<vlayout>
+										<label value="Valor:"
+											sclass="flabel" />
+										<textbox id="valor"											
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
+											value="@bind(fx.valor)" hflex="1" constraint="no empty: O valor da propriedade deve ser preenchido"/>
+									</vlayout>
+								</row>
+								
+								<row>
+									<vlayout>
+										<label value="Valor 2:"
+											sclass="flabel" />
+										<textbox id="valor2"	type="password"										
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
+											value="@bind(fx.valor2)" hflex="1"/>
+									</vlayout>
+								</row>
+								
+								<row>
+									<vlayout>
+										<label value="Descrição:"
+											sclass="flabel" />
+										<textbox id="descricao"											
+											readonly="@load(vm.makeAsReadOnly)" mold="rounded" width="150px"
+											value="@bind(fx.descricao)" rows="3" cols="50" hflex="1"/>
+									</vlayout>
+								</row>									
+							</rows>
+						</grid>
+					</panelchildren>
+				</panel>		
+			<separator />
+			<separator />
+			<panel width="100%" sclass="sectionPanel">
+				<panelchildren>
+					<grid sclass="vgrid">
+						<columns>
+							<column />
+						</columns>
+						<rows>
+							<row align="center">
+								<hlayout>
+									<button label="Gravar" mold="trendy"
+										visible="@load(not vm.makeAsReadOnly)"
+										onClick="@command('saveThis')"
+										sclass="mybutton button blue small">
+									</button>
+									<button
+										label="@load(vm.makeAsReadOnly ?'Fechar':'Cancelar')"
+										mold="trendy" onClick="@command('cancel')"
+										sclass="mybutton button blue small">
+									</button>
+								</hlayout>
+							</row>
+
+						</rows>
+					</grid>
+				</panelchildren>
+			</panel>
+
+		</div>
+	</window>
+</zk>
