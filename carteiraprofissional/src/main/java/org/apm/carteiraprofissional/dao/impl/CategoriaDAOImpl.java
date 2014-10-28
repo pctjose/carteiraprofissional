@@ -26,6 +26,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+	
 
 	@Transactional
 	public void saveCategoria(Categoria profissao) {

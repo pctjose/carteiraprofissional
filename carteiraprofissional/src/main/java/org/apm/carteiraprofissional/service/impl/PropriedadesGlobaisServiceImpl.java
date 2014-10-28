@@ -29,9 +29,9 @@ public class PropriedadesGlobaisServiceImpl implements
 
 	}
 
-	public PropriedadesGlobais getPropriedadeById(String propName) {
+	public PropriedadesGlobais getPropriedadeById(Integer id) {
 
-		return propriedadesGlobaisDAO.getPropriedadeById(propName);
+		return propriedadesGlobaisDAO.getPropriedadeById(id);
 	}
 
 	public List<PropriedadesGlobais> getAllPropriedades() {
@@ -42,6 +42,11 @@ public class PropriedadesGlobaisServiceImpl implements
 	public void delete(PropriedadesGlobais propriedade) {
 		propriedadesGlobaisDAO.delete(propriedade);
 		
+	}
+
+	public PropriedadesGlobais getPropriedadeByName(String name) {
+		
+		return propriedadesGlobaisDAO.getPropriedadeByName(name);
 	}
 
 }

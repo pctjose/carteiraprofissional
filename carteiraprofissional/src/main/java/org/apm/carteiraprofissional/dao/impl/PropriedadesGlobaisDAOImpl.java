@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.apm.carteiraprofissional.PropriedadesGlobais;
 import org.apm.carteiraprofissional.dao.PropriedadesGlobaisDAO;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +33,10 @@ public class PropriedadesGlobaisDAOImpl implements PropriedadesGlobaisDAO {
 	}
 
 	@Transactional(readOnly = true)
-	public PropriedadesGlobais getPropriedadeById(String propName) {
+	public PropriedadesGlobais getPropriedadeById(Integer id) {
 
 		return (PropriedadesGlobais) sessionFactory.getCurrentSession().get(
-				PropriedadesGlobais.class, propName);
+				PropriedadesGlobais.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,7 +49,14 @@ public class PropriedadesGlobaisDAOImpl implements PropriedadesGlobaisDAO {
 
 	public void delete(PropriedadesGlobais propriedade) {
 		sessionFactory.getCurrentSession().delete(propriedade);
-		
+
+	}
+
+	public PropriedadesGlobais getPropriedadeByName(String name) {
+		Session sessao = sessionFactory.getCurrentSession();
+		Criteria cr = sessao.createCriteria(PropriedadesGlobais.class);
+		cr.add(Restrictions.eq("propriedade", name));
+		return (PropriedadesGlobais) cr.uniqueResult();
 	}
 
 }

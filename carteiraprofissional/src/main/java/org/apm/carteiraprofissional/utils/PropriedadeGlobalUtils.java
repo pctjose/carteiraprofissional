@@ -8,10 +8,10 @@ public class PropriedadeGlobalUtils {
 	private static PropriedadesGlobaisService propriedadesGlobaisService=(PropriedadesGlobaisService) SpringUtil
 			.getBean("propriedadesGlobaisService");;
 	public static PropriedadesGlobais getEmailAPM(){
-		return propriedadesGlobaisService.getPropriedadeById("email.apm");
+		return propriedadesGlobaisService.getPropriedadeByName("email.apm");
 	}
 	
 	public static PropriedadesGlobais getEmailGrafica(){
-		return propriedadesGlobaisService.getPropriedadeById("email.grafica");
+		return propriedadesGlobaisService.getPropriedadeByName("email.grafica");
 	}
 }
