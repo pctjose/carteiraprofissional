@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,8 +11,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "carteira")
-public class Carteira extends BaseModel {
+public class Carteira extends BaseModel implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8637040578016444839L;
 	@ManyToOne
 	@JoinColumn(name = "requisicao_id")
 	private Requisicao requisicao;

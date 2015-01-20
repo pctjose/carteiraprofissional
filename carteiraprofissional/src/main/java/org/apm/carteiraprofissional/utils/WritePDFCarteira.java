@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import org.apache.log4j.Logger;
 import org.apm.carteiraprofissional.Carteira;
 import org.apm.carteiraprofissional.Requisitante;
 
@@ -15,30 +17,44 @@ import com.lowagie.text.pdf.PdfStamper;
 
 public class WritePDFCarteira {
 
+	private static Logger log = Logger.getLogger(WritePDFCarteira.class);
 	public static byte[] produzirPDFCarteira(Carteira carteira,
 			Requisitante requisitante) throws IOException, DocumentException {
 
-		String dir = PathUtils.getWebInfPath() + "/data/"
-				+ carteira.getRequisicao().getNumeroRequisicao();
-
-		PdfReader reader = new PdfReader(PathUtils.getWebInfPath()
-				+ "/pdftemp/CARTAODATA.pdf");
-		PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dir
-				+ "/" + carteira.getNumeroCarteira() + ".pdf"));
-		fillForm(stamper.getAcroFields(), carteira, requisitante);
-		stamper.close();
-
+		//String dir = PathUtils.getWebInfPath() + "/data/"
+		//		+ carteira.getRequisicao().getNumeroRequisicao();
 		
-		File pdf = new File(dir + "/" + carteira.getNumeroCarteira() + ".pdf");
-		FileInputStream pdfTemplate = new FileInputStream(pdf);
+		
+		String dir = PathUtils.getEnvDataDir() + "/datareal/"
+				+ carteira.getRequisicao().getNumeroRequisicao();
+		
 
-		byte[] conteudo = new byte[(int) pdf.length()];
+		//PdfReader reader = new PdfReader(PathUtils.getWebInfPath()
+		//		+ "/pdftemp/CARTAODATA.pdf");
+		File pdfTamplate = new File(PathUtils.getEnvDataDir()
+				+ "/pdftemp/CARTAODATA.pdf");
+								
+			InputStream in = new FileInputStream(pdfTamplate);
+			
+			PdfReader reader = new PdfReader(in);
+			
+			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dir
+					+ "/" + carteira.getNumeroCarteira() + ".pdf"));
+			fillForm(stamper.getAcroFields(), carteira, requisitante);
+			stamper.close();
 
-		pdfTemplate.read(conteudo);
+			
+			File pdf = new File(dir + "/" + carteira.getNumeroCarteira() + ".pdf");
+			FileInputStream pdfTemplate = new FileInputStream(pdf);
 
-		pdfTemplate.close();
+			byte[] conteudo = new byte[(int) pdf.length()];
 
-		return conteudo;
+			pdfTemplate.read(conteudo);
+
+			pdfTemplate.close();
+
+			return conteudo;	
+		
 	}
 
 	private static void fillForm(AcroFields form, Carteira carteira,

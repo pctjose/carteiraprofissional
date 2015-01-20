@@ -184,7 +184,11 @@ public class CompletarRequisiaoVM extends SelectorComposer<Component> {
 			requisitanteService.saveRequisitante(requisitante);
 			requisicaoService.saveRequisicao(requisicao);
 
-			String dataDirPath = PathUtils.getWebInfPath() + "/data/"
+			//String dataDirPath = PathUtils.getWebInfPath() + "/data/"
+			//		+ this.requisicao.getNumeroRequisicao();
+			
+
+			String dataDirPath = PathUtils.getEnvDataDir() + "/datareal/"
 					+ this.requisicao.getNumeroRequisicao();
 
 			File dataDir = new File(dataDirPath);

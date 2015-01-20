@@ -1,7 +1,7 @@
 <?page title="" contentType="text/html;charset=UTF-8"?>
 
  
-<window id="win" title="LOGIN" border="normal" width="300px"
+<window id="win" title="ENTRADA NO SISTEMA" border="normal" width="200px"
     position="center" mode="overlapped">
 
     <html style="color:red" if="${not empty param.login_error}">
@@ -10,29 +10,34 @@
          
     </html>
  	
-   <groupbox>
-        <caption>Login</caption>
+   <groupbox sclass="sectionPanel">
+        <caption>Credenciais</caption>
         <h:form id="f" name="f" action="/carteiraprofissional/j_spring_security_check"
          method="POST" xmlns:h="http://www.w3.org/1999/xhtml">
             <grid>
                 <columns sizable="false">
-                 <column width="50%" />
-                    <column width="50%" />
+                 <column/>                    
                 </columns>
                 <rows>
                     <row>
-                     <label value="Nome Utilizador:" />
+                    <vlayout>
+                     <label value="Nome Utilizador:" sclass="flabel"/>
                        <textbox id="u" name="j_username" />
+                      </vlayout>
                   </row>
                     <row>
-                     <label value="Senha:" />
+                    <vlayout>
+                     <label value="Senha:" sclass="flabel"/>
                        <textbox id="p" type="password"
                           name="j_password" />
+                     </vlayout>
                  </row>
                     <row spans="2">
                        <div align="center">
-                          <h:input type="submit" value="Entrar" />
-                           <h:input type="reset" value="Limpar" />
+                       	<hlayout>
+                          <h:input type="submit" value="Entrar" sclass="mybutton button blue small" />
+                           <h:input type="reset" value="Limpar" sclass="mybutton button blue small"/>
+                          </hlayout>
                         </div>
                     </row>
                 </rows>

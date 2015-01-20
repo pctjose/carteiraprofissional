@@ -19,15 +19,9 @@
 						<rows>
 							<row>
 								<hlayout>
-									<label value="Apelido"
-										sclass="flabel" />
-									<textbox id="apelido" mold="rounded"
-										value="@bind(vm.apelido)" width="200px" />
-
-
-									<label value="Nome" sclass="flabel" />
+									<label value="Nome Completo" sclass="flabel" />
 									<textbox id="nome" mold="rounded"
-										value="@bind(vm.nome)" width="200px" />
+										value="@bind(vm.nomeCompleto)" width="200px" />
 
 								</hlayout>
 							</row>
@@ -62,7 +56,7 @@
 							<row align="center">
 								<button label="Pesquisar"
 									onClick="@command('pesquisar')" mold="trendy"
-									sclass="mybutton button blue small" />
+									sclass="mybutton button blue small"/>
 							</row>
 						</rows>
 					</grid>
@@ -91,9 +85,8 @@
 			sclass="mylist" selectedItem="@bind(vm.selectedItem)"
 			model="@load(vm.dataSet)">
 			<listhead sizable="true">
-				<listheader label="NOME" sortDirection="ascending"
+				<listheader label="NOME COMPLETO" sortDirection="ascending"
 					sort="auto(nome)" />
-				<listheader label="APELIDO" sort="auto(apelido)" />
 				<listheader label="CONTACTO" sort="auto(contacto)" />
 				<listheader label="EMAIL" sort="auto(email)" />
 				<listheader label="PERFIL" sort="auto(grupo)" />
@@ -101,14 +94,13 @@
 			</listhead>
 			<template name="model" var="p1">
 				<listitem>
-					<listcell label="@load(p1.nome)" />
-					<listcell label="@load(p1.apelido)" />
+					<listcell label="@load(p1.nomeCompleto)" />
 					<listcell label="@load(p1.contacto)" />
 					<listcell label="@load(p1.email)" />
 					<listcell label="@load(p1.grupo)" />
 					<listcell>
 						<hbox spacing="20px">
-							<button label="Editar"
+							<!--  <button label="Editar"
 								onClick="@command('onEdit',userRecord=p1)">
 							</button>
 							<button label="Visualizar"
@@ -116,7 +108,26 @@
 							</button>
 							<button label="Apagar"
 								onClick="@command('onDelete',userRecord=p1)">
-							</button>
+							</button>-->
+							
+							
+							<image
+								onClick="@command('onEdit',userRecord=p1)" sclass="fimageedit"
+								tooltiptext="Para editar este utilizador">
+							</image>
+
+							<image
+								onClick="@command('openAsReadOnly',userRecord=p1)"
+								sclass="fimageView" tooltiptext="Visualizar este utilizador">
+							</image>
+
+							<image
+								onClick="@command('onDelete',userRecord=p1)"
+								sclass="fimageDelete" tooltiptext="Apagar este utilizador ">
+							</image>
+							
+							
+							
 						</hbox>
 					</listcell>
 				</listitem>

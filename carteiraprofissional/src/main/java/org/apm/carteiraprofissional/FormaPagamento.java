@@ -1,5 +1,7 @@
 package org.apm.carteiraprofissional;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="forma_pagamento")
-public class FormaPagamento {
+public class FormaPagamento implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8908188122939773571L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "forma_pagamento_id")

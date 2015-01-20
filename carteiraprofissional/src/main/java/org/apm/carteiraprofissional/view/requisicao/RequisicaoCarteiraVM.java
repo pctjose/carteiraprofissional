@@ -37,7 +37,6 @@ import org.zkoss.image.Image;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Path;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.UploadEvent;
@@ -47,7 +46,6 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Include;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -844,14 +842,9 @@ public class RequisicaoCarteiraVM extends SelectorComposer<Component> {
 
 			if (Arrays.binarySearch(PDF_FORMAT, media.getContentType()) >= 0) {
 
-				// selectedRecord = new Requisitante();
-				// selectedRecord.setNumeroDoc(numeroBi.getValue());
-				// selectedRecord.setDataEmissao(dataEmissao.getValue());
-				// selectedRecord.setDataValidade(dataValidade.getValue());
-				// selectedRecord.setLocalEmissao(localEmissao.getValue());
+				
 				selectedRecord.setCopiaDoc(media.getByteData());
-				// selectedRecord.setNumeroNuit(numeroNuit.getValue());
-				// selectedRecord.setTipoDoc(selectedRecord.getTipoDoc());
+				
 
 			}
 		}

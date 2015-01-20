@@ -28,18 +28,28 @@ public class BarcodeUtil {
 
 		BufferedImage imagem = MatrixToImageWriter.toBufferedImage(bitmatrix);
 
-		/*System.out.println("Valor Lido:" + decodePDF417(imagem));
+		return imagem;
 
-		File PDF417File = new File("C:\\barcode\\PDF_4171.png");
+	}
+	
+	
+	public static BufferedImage encodeCode128(String content) throws Exception {
 
-		MatrixToImageWriter.writeToStream(bitmatrix, "png",
-				new FileOutputStream(PDF417File));*/
+		BitMatrix bitmatrix;
+
+		MultiFormatWriter writer = new MultiFormatWriter();
+
+		bitmatrix = writer.encode(content, BarcodeFormat.CODE_128, 80, 40);
+
+		BufferedImage imagem = MatrixToImageWriter.toBufferedImage(bitmatrix);
 
 		return imagem;
 
 	}
+	
+	
 
-	public static String decodePDF417(BufferedImage imagem) throws Exception {
+	public static String decodeBarcode(BufferedImage imagem) throws Exception {
 		if (imagem == null)
 			throw new IllegalArgumentException(
 					"Não foi possivel descodificar a imagem do PDF417");
@@ -51,7 +61,7 @@ public class BarcodeUtil {
 
 	}
 
-	public static String decodePDF417(String sourceImage) throws Exception {
+	public static String decodeBarcode(String sourceImage) throws Exception {
 		BufferedImage buff = ImageIO.read(new File(sourceImage));
 
 		LuminanceSource source = new BufferedImageLuminanceSource(buff);

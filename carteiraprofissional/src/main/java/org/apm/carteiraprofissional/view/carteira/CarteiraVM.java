@@ -18,13 +18,11 @@ import org.apm.carteiraprofissional.Formacao;
 import org.apm.carteiraprofissional.PropriedadesGlobais;
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.Requisitante;
-import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.FormaPagamentoService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.utils.BarcodeUtil;
-import org.apm.carteiraprofissional.utils.DateUtil;
 import org.apm.carteiraprofissional.utils.EnviarEmail;
 import org.apm.carteiraprofissional.utils.PathUtils;
 import org.apm.carteiraprofissional.utils.PropriedadeGlobalUtils;
@@ -224,9 +222,14 @@ public class CarteiraVM extends SelectorComposer<Component> {
 				.getRequisitanteById(this.selectedRecord.getRequisicao()
 						.getRequisitante().getId());
 
-		String dataDirectory = PathUtils.getWebInfPath() + "/data/"
+		//String dataDirectory = PathUtils.getWebInfPath() + "/data/"
+		//		+ this.requisicao.getNumeroRequisicao();
+		//String dataZipDir = PathUtils.getWebInfPath() + "/data/datazip";
+		
+		String dataDirectory = PathUtils.getEnvDataDir() + "/datareal/"
 				+ this.requisicao.getNumeroRequisicao();
-		String dataZipDir = PathUtils.getWebInfPath() + "/data/datazip";
+		String dataZipDir = PathUtils.getEnvDataDir() + "/datazip";
+
 
 		if (this.recordMode.equalsIgnoreCase("NEW")) {
 			String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWYXZ";
@@ -276,7 +279,7 @@ public class CarteiraVM extends SelectorComposer<Component> {
 		}
 		this.selectedRecord.setDataValidade(dataValidade.getValue());
 
-		String valorPDF417 = this.selectedRecord.getNumeroCarteira() + "_";
+		/*String valorPDF417 = this.selectedRecord.getNumeroCarteira() + "_";
 		valorPDF417 += requisitante.getNomeCompleto();
 		valorPDF417 += "_" + DateUtil.ptDate(requisitante.getDataNascimento())
 				+ "_" + requisitante.getSexo();
@@ -288,20 +291,22 @@ public class CarteiraVM extends SelectorComposer<Component> {
 		valorPDF417 += "_" + DateUtil.ptDate(selectedRecord.getDataEmissao())
 				+ "_" + DateUtil.ptDate(selectedRecord.getDataValidade()) + "_"
 				+ requisitante.getNumeroDoc() + "_"
-				+ requisitante.getTipoDoc().getDesignacao();
+				+ requisitante.getTipoDoc().getDesignacao();*/
 		// Produzir o PDF417
-		BufferedImage pdf417 = BarcodeUtil.encodePDF417(valorPDF417);
+		//BufferedImage pdf417 = BarcodeUtil.encodePDF417(valorPDF417);
+		
+		BufferedImage cod128 = BarcodeUtil.encodeCode128(selectedRecord.getNumeroCarteira());
 
-		selectedRecord.setPdf417(Images.encode("pdf417.png", pdf417)
+		selectedRecord.setPdf417(Images.encode("pdf417.png", cod128)
 				.getByteData());
 		// Colocar a Imagem PDF417 no directorio /WEB-INF/data/
 		File dataDir = new File(dataDirectory);
 		if (dataDir.exists()) {
-			ImageIO.write(pdf417, "PNG", new File(dataDirectory + "/"
+			ImageIO.write(cod128, "PNG", new File(dataDirectory + "/"
 					+ this.selectedRecord.getNumeroCarteira() + ".png"));
 		} else {
 			if (dataDir.mkdir()) {
-				ImageIO.write(pdf417, "PNG", new File(dataDirectory + "/"
+				ImageIO.write(cod128, "PNG", new File(dataDirectory + "/"
 						+ this.selectedRecord.getNumeroCarteira() + ".png"));
 			}
 		}

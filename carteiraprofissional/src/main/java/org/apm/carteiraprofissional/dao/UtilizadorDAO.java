@@ -21,7 +21,7 @@ public interface UtilizadorDAO {
 	    
 	    public void delete(Utilizador utilizador);
 	    
-	    public List<Utilizador> getUserByAttributes(String apelido,String nome,String sexo,GrupoUtilizador grupo,Boolean incluirAnulado);
+	    public List<Utilizador> getUserByAttributes(String nomeCompleto,String sexo,GrupoUtilizador grupo,Boolean incluirAnulado);
 	    
 	   public List<Utilizador> getAllUtilizador();
 	   

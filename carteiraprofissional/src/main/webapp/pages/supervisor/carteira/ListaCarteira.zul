@@ -85,7 +85,7 @@
 								<div style="float:right">
 									<button label="Pesquisar"
 										onClick="@command('pesquisar')" mold="trendy"
-										sclass="mybutton button blue small" />
+										sclass="mybutton button blue small" type="submit" />
 								</div>
 							</row>
 
@@ -99,7 +99,7 @@
 		<separator />
 		<listbox id="listaCarteiras" mold="paging" pageSize="11"
 			pagingPosition="top" sclass="mylist"
-			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)">
+			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)" emptyMessage="Não existem carteiras por visualizar">
 			<listhead sizable="true">
 				<listheader label="Número Carteira"
 					sortDirection="ascending" sort="auto(numeroCarteira)"

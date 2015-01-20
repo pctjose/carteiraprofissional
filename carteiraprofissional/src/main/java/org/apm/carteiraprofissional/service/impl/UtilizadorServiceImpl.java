@@ -83,10 +83,10 @@ public class UtilizadorServiceImpl implements UtilizadorService, UserDetailsServ
 
 
 	@Transactional(readOnly=true)
-	public List<Utilizador> getUserByAttributes(String apelido, String nome,
+	public List<Utilizador> getUserByAttributes(String nomeCompleto,
 			String sexo, GrupoUtilizador grupo, Boolean incluirAnulado) {
 		
-		return utilizadorDAO.getUserByAttributes(apelido, nome, sexo, grupo, incluirAnulado);
+		return utilizadorDAO.getUserByAttributes(nomeCompleto, sexo, grupo, incluirAnulado);
 	}
 	
 	

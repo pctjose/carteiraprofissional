@@ -25,10 +25,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class Utilizador extends BaseModel implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;
-	@Column(name = "nome")
-	private String nome;
-	@Column(name = "apelido")
-	private String apelido;
+	@Column(name = "nome_completo")
+	private String nomeCompleto;
 	@Column(name = "contacto")
 	private String contacto;
 	@Column(name = "email")
@@ -53,22 +51,10 @@ public class Utilizador extends BaseModel implements Serializable, UserDetails {
 
 	public Utilizador() {
 
-	}
+	}	
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getApelido() {
-		return apelido;
-	}
-
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
 	public String getContacto() {
@@ -121,7 +107,7 @@ public class Utilizador extends BaseModel implements Serializable, UserDetails {
 
 	@Override
 	public String toString() {
-		return nome;
+		return nomeCompleto;
 	}
 
 	public String getNomeCompleto() {
@@ -163,14 +149,7 @@ public class Utilizador extends BaseModel implements Serializable, UserDetails {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		GrupoUtilizador roles = this.getGrupo();
 		authorities.add(new GrantedAuthorityImpl(roles.getAuthority()));
-/*
-		if(roles != null)
-		{
-			for (GrupoUtilizador role : roles) {
-				//SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getDescricao());
-				authorities.add(new GrantedAuthorityImpl(role.getAuthority()));
-			}
-		}*/
+
 		return authorities;
 	}
 

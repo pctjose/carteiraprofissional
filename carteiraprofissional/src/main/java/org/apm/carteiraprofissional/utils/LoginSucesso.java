@@ -32,7 +32,7 @@ public class LoginSucesso implements AuthenticationSuccessHandler{
 			UserDetails utilizador1 = (UserDetails) auth.getPrincipal();
 			utilizador = utilizadorService.getUtilizador(utilizador1.getUsername());
 			if(utilizador1 != null && auth.isAuthenticated()){
-				req.getSession().setAttribute("logedIn", utilizador.getNome());
+				req.getSession().setAttribute("logedIn", utilizador.getNomeCompleto());
 				req.getSession().setAttribute("utilizador", utilizador);
 				String grupo = utilizador1.getAuthorities().isEmpty() ? null : utilizador1.getAuthorities().toArray()[0].toString();
 				resp.sendRedirect(req.getContextPath()+roleUrlMap.get(grupo));

@@ -20,7 +20,6 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
@@ -37,27 +36,20 @@ public class ListaUtilizadorVM {
 	
 	Window frmListaUtilizador;
 
-	private String nome;
-	private String apelido;
+	private String nomeCompleto;
 	private String sexo;
 	private GrupoUtilizador grupo;
 	private Boolean incluirAnulado;
 	private List<GrupoUtilizador> inUserGrupos;
 
-	public String getNome() {
-		return nome;
+	
+
+	public String getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getApelido() {
-		return apelido;
-	}
-
-	public void setApelido(String apelido) {
-		this.apelido = apelido;
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
 	public String getSexo() {
@@ -173,7 +165,7 @@ public class ListaUtilizadorVM {
 
 	@Command
 	public void pesquisar() {
-		allReordsInDB = utilizadorService.getUserByAttributes(apelido, nome,
+		allReordsInDB = utilizadorService.getUserByAttributes(nomeCompleto,
 				sexo, grupo, incluirAnulado);
 		BindUtils.postNotifyChange(null, null, ListaUtilizadorVM.this,
 				"dataSet");

@@ -9,12 +9,12 @@ import org.apm.carteiraprofissional.GrupoUtilizador;
 import org.apm.carteiraprofissional.Utilizador;
 import org.apm.carteiraprofissional.service.GrupoUtilizadorService;
 import org.apm.carteiraprofissional.service.UtilizadorService;
+import org.apm.carteiraprofissional.utils.UtilizadorUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
@@ -36,13 +36,12 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	@WireVariable
 	protected GrupoUtilizadorService grupoUtilizadorService;
 	
-	Window criarUtilizador;
+	@Wire
+	private Window criarUtilizador;
 		
 	@Wire
-	Textbox nome;
+	Textbox nomeCompleto;
 	
-	@Wire
-	Textbox apelido;
 	
 	@Wire
 	Textbox contacto;
@@ -100,22 +99,14 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 
 	public void setRepetirSenha(String repetirSenha) {
 		this.repetirSenha = repetirSenha;
+	}	
+
+	public Textbox getNomeCompleto() {
+		return nomeCompleto;
 	}
 
-	public Textbox getNome() {
-		return nome;
-	}
-
-	public void setNome(Textbox nome) {
-		this.nome = nome;
-	}
-
-	public Textbox getApelido() {
-		return apelido;
-	}
-
-	public void setApelido(Textbox apelido) {
-		this.apelido = apelido;
+	public void setNomeCompleto(Textbox nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
 	}
 
 	public Textbox getContacto() {
@@ -166,8 +157,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	}
 
 	private void setDados(Utilizador user){
-		user.setNome(nome.getValue());
-		user.setApelido(apelido.getValue());
+		user.setNomeCompleto(nomeCompleto.getValue());
 		user.setContacto(contacto.getValue());
 		user.setEmail(email.getValue());
 		user.setUserName(userName.getValue());
@@ -229,13 +219,20 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 	@Command
 	public void saveThis() {
 
-		Utilizador logedInUser = (Utilizador) Sessions.getCurrent()
-				.getAttribute("utilizador");
+		Utilizador logedInUser = UtilizadorUtils.getLogedUser();
+		
 		setDados(this.selectedRecord);
 		if (this.selectedRecord.getId() == null) {
 			this.selectedRecord.setDataCriacao(new Date());
 			this.selectedRecord.setAnulado(false);
 			this.selectedRecord.setUuid(UUID.randomUUID().toString());
+			
+			if (logedInUser != null) {
+				this.selectedRecord.setCriadoPor(logedInUser);
+			} else {
+				this.selectedRecord.setCriadoPor(selectedRecord);
+			}
+			
 		} else {
 			this.selectedRecord.setDataAlteracao(new Date());
 			if (logedInUser != null) {
@@ -245,11 +242,7 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 			}
 		}
 
-		if (logedInUser != null) {
-			this.selectedRecord.setCriadoPor(logedInUser);
-		} else {
-			this.selectedRecord.setCriadoPor(selectedRecord);
-		}
+		
 
 		if (this.selectedRecord.isAnulado()) {
 			this.selectedRecord.setDataAnulado(new Date());
@@ -259,46 +252,19 @@ public class UtilizadorVM extends SelectorComposer<Component> {
 				this.selectedRecord.setAnuladoPor(selectedRecord);
 			}
 		}
-		/*
-		 * if(logedInUser!=null){
-		 * if(!logedInUser.getGrupo().getUuid().equalsIgnoreCase
-		 * ("6b9a194d-e73d-11e3-8e8f-a4db30f2439a")){ //home
-		 * Executions.sendRedirect("/pages/pagebased/index.zul"); }else{
-		 * Executions
-		 * .sendRedirect("/pages/pagebased/index-utilizador-lista.zul"); }
-		 * 
-		 * }else{ Executions.sendRedirect("/pages/pagebased/index-login.zul"); }
-		 */
+		
 		utilizadorService.saveUtilizador(this.selectedRecord);
 		
-		//criarUtilizador.detach();
+		criarUtilizador.detach();
 		
 		Clients.showNotification("Utilizador Registado/Actualizado");
 		
-		//Executions.sendRedirect("/pages/admin/index-utilizador-lista.zul");
+		
 
 	}
 
 	@Command
-	public void cancel() {
-		/*Boolean logedIn = (Boolean) Sessions.getCurrent().getAttribute(
-				"logedIn");
-		if (logedIn != null) {
-			if (logedIn) {
-				if (!((GrupoUtilizador) logedInUser.getGrupo()).getUuid()
-						.equalsIgnoreCase(
-								"6b9a194d-e73d-11e3-8e8f-a4db30f2439a")) {
-					Executions.sendRedirect("/pages/admin/index.zul");
-				} else {
-					Executions
-							.sendRedirect("/pages/admin/index-utilizador-lista.zul");
-				}
-
-			} else {
-				Executions.sendRedirect("/pages/admin/index-login.zul");
-			}
-
-		}*/
+	public void cancel() {		
 		
 		criarUtilizador.detach();
 

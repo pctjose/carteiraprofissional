@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-01-19T22:39:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RequisicaoExperiencias" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aab69f68-9340-4b30-a43e-c4bec86f447d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="APMDATACONNECTION"/>
+	<parameter name="requisitanteID" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Parametro para seleccionar experiencias de um requisitante especifico]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT 	if(actual,"SIM","NÃO") as actual,
+				data_final,
+				data_inicial,
+				empregador,
+				empregador_contacto,
+				empregador_endereco,
+				experiencia_relevante,
+				funcao_exercida,
+				designacao as categoria
+FROM 	requisitante_experiencia re
+				INNER JOIN categoria c on re.categoria_id=c.categoria_id
+WHERE 	re.requisitante_id= $P{requisitanteID} ]]>
+	</queryString>
+	<field name="actual" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_final" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_inicial" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="empregador" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="empregador_contacto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="empregador_endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="experiencia_relevante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="funcao_exercida" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="categoria" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="-19" y="3" width="259" height="20" uuid="01390d57-7877-439d-8f5a-782a91a37cbf"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[EXPERIÊNCIAS PROFISSIONAIS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="5" width="100" height="15" uuid="a9ddf489-4a87-4b44-98ae-ecbc645beda5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empregador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="5" width="40" height="15" uuid="d60b5973-8d2e-4866-9e7d-5184c0b49a31"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Actual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="4" width="100" height="16" uuid="5b4c0b39-4e9b-4fc0-b96a-58f7a196ac9c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="4" width="70" height="16" uuid="33c05c4d-1142-4f00-b7bc-e4d7194e1a92"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="4" width="100" height="16" uuid="0af2f768-5d86-4a82-b539-ac3b925b2163"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Funcão Exercida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="4" width="124" height="17" uuid="48d7a308-1948-49a5-a3b6-f809a92ea34c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Experiência Relevante]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="4" width="100" height="20" uuid="1ecc76c9-35cc-4c51-962a-e16b5ba94ce2"/>
+				<textFieldExpression><![CDATA[$F{empregador}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="4" width="40" height="20" uuid="574be990-1014-4ddf-86bf-4b219db6ad3e"/>
+				<textFieldExpression><![CDATA[$F{actual}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="4" width="100" height="20" uuid="b9446f06-1d75-41ae-b44f-bbf6b908538e"/>
+				<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="250" y="0" width="70" height="22" uuid="153c328b-64c7-4ca2-b473-4d4378cda248"/>
+				<textFieldExpression><![CDATA[$F{data_inicial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="-1" width="100" height="30" uuid="cdd1dd42-2886-4f19-b759-bd6b19a413e2"/>
+				<textFieldExpression><![CDATA[$F{funcao_exercida}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="440" y="4" width="124" height="30" uuid="67282ed9-b7f9-4ef4-a810-1faf8e268275"/>
+				<textFieldExpression><![CDATA[$F{experiencia_relevante}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -71,18 +71,18 @@
 			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)"
 			emptyMessage="Não há requisições de carteira por visualizar">
 			<listhead sizable="true">
-				<listheader label="Número Requisição"
+				<listheader label="Nº Requisição"
 					sortDirection="ascending" sort="auto(numeroRequisicao)"
-					width="130px" />
+					width="100px" />
 				<listheader label="Requisitante"
 					sortDirection="ascending" sort="auto(requisitante.NomeCompleto)"
-					width="250px" />
+					width="200px" />
 				<listheader label="Data Requisição"
-					sort="auto(dataRequisiao)" width="100px" />
+					sort="auto(dataRequisiao)" width="80px" />
 				<listheader label="Completa" sort="auto(completa)"
 					width="70px" />
 				<listheader label="Aceite" sort="auto(aceite)"
-					width="70px" />
+					width="60px" />
 				<listheader label="Acções" />
 			</listhead>
 			<template name="model" var="p1">
@@ -132,6 +132,11 @@
 								onClick="@command('completar',requisicaoRecord=p1)"
 								sclass="mybutton button blue small"/>
 
+							<button
+								tooltiptext="Imprimir esta requisição para análise" label="Imprimir"								
+								onClick="@command('imprimir',requisicaoRecord=p1)"
+								sclass="mybutton button blue small"/>
+								
 							<button
 								tooltiptext="Analisar a requisição e aceitar ou não" label="Analisar"
 								disabled="@load(p1.lockEdit)"

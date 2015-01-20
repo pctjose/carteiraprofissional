@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.service.RequisitanteService;
 import org.apm.carteiraprofissional.utils.EnviarEmail;
 import org.apm.carteiraprofissional.utils.PageUtils;
+import org.apm.carteiraprofissional.utils.PathUtils;
 import org.apm.carteiraprofissional.utils.PropriedadeGlobalUtils;
 import org.apm.carteiraprofissional.utils.UtilizadorUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -63,16 +65,16 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 	@Wire
 	private Window requisicao;
-	
+
 	@Wire
 	Datebox dataRequisiao;
-	
+
 	@Wire
 	Textbox localRequisicao;
-	
+
 	@Wire
 	Checkbox assinouCompromisso;
-	
+
 	@Wire
 	Checkbox concordaTermos;
 
@@ -140,7 +142,7 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 	public void saveThis() {
 
 		validate();
-		
+
 		if (requisitante.getId() == null) {
 			requisitante.setUuid(UUID.randomUUID().toString());
 			requisitante.setDataCriacao(new Date());
@@ -201,11 +203,17 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 			requisicaoService.saveRequisicao(selectedRecord);
 
-			/*PropriedadesGlobais emailApmFrom = propriedadesGlobaisService
-					.getPropriedadeById("email.apm");*/
-			
-			PropriedadesGlobais emailApmFrom=PropriedadeGlobalUtils.getEmailAPM();
-			
+			String dataDirPath = PathUtils.getEnvDataDir() + "/datareal/"
+					+ this.selectedRecord.getNumeroRequisicao();
+
+			File dataDir = new File(dataDirPath);
+
+			if (!dataDir.exists())
+				dataDir.mkdir();
+
+			PropriedadesGlobais emailApmFrom = PropriedadeGlobalUtils
+					.getEmailAPM();
+
 			if (emailApmFrom != null && requisitante.getEmail() != null
 					&& !requisitante.getEmail().isEmpty()) {
 				String subject = "Requisicao de Carteira Profissional - APM: "
@@ -230,8 +238,6 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 				}
 			}
 
-			
-
 		} else {
 			requisitante.setAlteradoPor(UtilizadorUtils.getLogedUser());
 			requisitante.setDataAlteracao(new Date());
@@ -239,7 +245,7 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 			requisicaoService.saveRequisicao(selectedRecord);
 			PageUtils.redirectTo("/pages/anonimo/requisicao/startSearch.zul");
 			Clients.showNotification("Requisição Actualizada.");
-		}	
+		}
 
 	}
 
@@ -248,23 +254,24 @@ public class RequisicaoVM extends SelectorComposer<Component> {
 
 		requisicao.detach();
 	}
-	
-	public void validate(){
-		if (dataRequisiao == null || dataRequisiao.getValue() == null) {			
+
+	public void validate() {
+		if (dataRequisiao == null || dataRequisiao.getValue() == null) {
 			throw new WrongValueException(dataRequisiao,
 					"Data de requisição é um campo obrigatório");
 		}
 		if (localRequisicao == null || localRequisicao.getValue().isEmpty()) {
-			
-			throw new WrongValueException(localRequisicao, "Local de requisição deve ser preenchido");
+
+			throw new WrongValueException(localRequisicao,
+					"Local de requisição deve ser preenchido");
 		}
-		
-		if (assinouCompromisso==null || !assinouCompromisso.isChecked()) {
+
+		if (assinouCompromisso == null || !assinouCompromisso.isChecked()) {
 			throw new WrongValueException(assinouCompromisso,
 					"Deve indicar que assinou o termo de compromisso");
 		}
-		
-		if (concordaTermos==null || !concordaTermos.isChecked()) {
+
+		if (concordaTermos == null || !concordaTermos.isChecked()) {
 			throw new WrongValueException(concordaTermos,
 					"Deve ler e concordar com o regulamento da Carteira Profissional");
 		}

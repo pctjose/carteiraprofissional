@@ -15,4 +15,8 @@ public class PathUtils {
 
 	    return filePath;
 	}
+	
+	public static String getEnvDataDir(){
+		return System.getenv("APM_DATA_DIR");
+	}
 }

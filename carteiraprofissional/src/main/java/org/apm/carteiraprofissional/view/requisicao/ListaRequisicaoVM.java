@@ -1,20 +1,24 @@
 package org.apm.carteiraprofissional.view.requisicao;
 
 
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apm.carteiraprofissional.Requisicao;
 import org.apm.carteiraprofissional.service.CarteiraService;
 import org.apm.carteiraprofissional.service.RequisicaoService;
 import org.apm.carteiraprofissional.utils.PageUtils;
+import org.apm.carteiraprofissional.utils.ReportGeneratorJasper;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -22,6 +26,7 @@ import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Window;
 
 public class ListaRequisicaoVM {
@@ -154,6 +159,45 @@ public class ListaRequisicaoVM {
 		Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/requisicao/CompletarRequisicao.zul", null, null);
 		cRequisicao.setParent(formlistaRequisicao);
 		cRequisicao.doModal();
+	}
+	
+	@Command
+	public void imprimir(@BindingParam("requisicaoRecord") Requisicao requisicao) throws Exception{
+		Sessions.getCurrent().setAttribute("requisicao", requisicao);
+		
+		String reportDir = Executions.getCurrent().getDesktop().getWebApp()
+				.getRealPath("/reports");
+		String reportFile = reportDir + "/requisicao.jrxml";
+		
+		Map<String,Object> params=new HashMap<String, Object>();
+		params.put("requisitanteID", requisicao.getRequisitante().getId());
+		params.put("SUBREPORT_DIR", reportDir);
+		
+		if(requisicao.getRequisitante().getFoto()!=null){
+			//requisicao.getRequisitante().getFoto().
+			params.put("PHOTO_IMAGE", new ByteArrayInputStream(requisicao
+						.getRequisitante().getFoto()));
+		}
+		
+		//ReportGeneratorJasper.generateReport(reportFile, params);
+		
+		Window cRequisicao=(Window)Executions.createComponents("/pages/showReport.zul", null, null);
+		cRequisicao.setParent(formlistaRequisicao);
+		
+		
+		Iframe iframePdf = (Iframe) cRequisicao.getFellow("reportShow");		
+		AMedia media = new AMedia("APMCARTEIRA", "pdf", "application/pdf", ReportGeneratorJasper.generateReport(reportFile, params));
+		iframePdf.setContent(media);
+		
+		cRequisicao.doModal();
+		
+		
+		
+		
+		
+		//Window cRequisicao=(Window)Executions.createComponents("/pages/supervisor/requisicao/CompletarRequisicao.zul", null, null);
+		//cRequisicao.setParent(formlistaRequisicao);
+		//cRequisicao.doModal();
 	}
 	
 	@Command

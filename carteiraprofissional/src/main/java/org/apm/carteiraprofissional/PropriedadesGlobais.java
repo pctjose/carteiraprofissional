@@ -1,5 +1,7 @@
 package org.apm.carteiraprofissional;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +11,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "propriedade_global")
-public class PropriedadesGlobais {
+public class PropriedadesGlobais implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6790878710862984678L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id" )

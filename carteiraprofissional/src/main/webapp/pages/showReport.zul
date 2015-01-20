@@ -1,0 +1,17 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="APM - VISUALIZAÇÃO DE RELATORIOS" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="APM - VISUALIZAÇÃO DE RELATÓRIOS" border="normal"
+		width="600px" height="530px" closable="false"
+		apply="org.zkoss.bind.BindComposer" id="frmShowReport"
+		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.ShowReportVM')"
+		>
+		
+		<vbox>
+		<iframe id="reportShow" width="550px" height="450px" />			
+
+			<button label="Fechar" onClick="@command('fechar')"
+				sclass="mybutton button blue small" />
+		</vbox>
+	</window>
+</zk>

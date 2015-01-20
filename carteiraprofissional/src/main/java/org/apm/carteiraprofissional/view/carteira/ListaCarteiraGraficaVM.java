@@ -61,8 +61,12 @@ public class ListaCarteiraGraficaVM {
 	@Command
 	public void onBaixarDados(@BindingParam("carteiraRecord") Carteira carteira) {
 
-		File zipDocs = new File(PathUtils.getWebInfPath() + "/data/datazip/"
+		//File zipDocs = new File(PathUtils.getWebInfPath() + "/data/datazip/"
+		//		+ carteira.getNumeroCarteira() + ".zip");
+		
+		File zipDocs = new File(PathUtils.getEnvDataDir() + "/datazip/"
 				+ carteira.getNumeroCarteira() + ".zip");
+
 
 		if (zipDocs.exists()) {
 			try {

@@ -5,12 +5,12 @@
 	<window id="criarUtilizador" border="none"
 		apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.utilizador.UtilizadorVM')"
-		width="70%">
+		width="50%">
 		<div
 			form="@id('fx') @load(vm.selectedRecord) @save(vm.selectedRecord, after='saveThis')">
 			<separator />
 
-			<panel width="605px" sclass="sectionPanel">
+			<panel width="100%" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -29,7 +29,7 @@
 				</panelchildren>
 			</panel>
 
-			<panel width="605px" sclass="sectionPanel">
+			<panel width="100%" sclass="sectionPanel">
 				<panelchildren>
 					<grid sclass="vgrid">
 						<columns>
@@ -39,26 +39,15 @@
 						<rows>
 							<row>
 								<hlayout>
-									<label value="Nome*"
+									<label value="Nome Completo*"
 										sclass="flabel" />
-									<textbox id="nome"
+									<textbox id="nomeCompleto"
 										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-										value="@bind(fx.nome)"
+										value="@bind(fx.nomeCompleto)"
 										constraint="no empty: O NOME deve ser preenchido"
 										width="200px" />
 								</hlayout>
-							</row>
-							<row>
-								<hlayout>
-									<label value="Apelido*"
-										sclass="flabel" />
-									<textbox id="apelido"
-										readonly="@load(vm.makeAsReadOnly)" mold="rounded"
-										value="@bind(fx.apelido)"
-										constraint="no empty: O APELIDO deve ser preenchido"
-										width="200px" />
-								</hlayout>
-							</row>
+							</row>						
 
 							<row>
 

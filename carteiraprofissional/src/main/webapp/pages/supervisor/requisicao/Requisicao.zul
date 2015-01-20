@@ -53,42 +53,63 @@
 								</hlayout>
 							</row>
 
+
+
 							<row>
 
-								<checkbox id="assinouCompromisso"
-									value="@bind(fx.assinouCompromisso)"
-									label="Assinou termo de compromisso" />
+								<hlayout>
+									<checkbox id="concordaTermos"
+										value="@bind(fx.concordaTermos)"
+										label="Concordo com o regulamento de carteiras profissionais da APM" />
+
+
+									<button
+										label="Visualizar Regulamento"
+										sclass="mybutton button blue small">
+										<attribute name="onClick"><![CDATA[
+	Filedownload.save("/docs/termos/Regulamento.pdf", "pdf");
+]]></attribute>
+									</button>
+
+								</hlayout>
+
+
 
 							</row>
 
 							<row>
 								<vlayout>
 									<hlayout>
-										<checkbox id="concordaTermos"
-											value="@bind(fx.concordaTermos)"
-											label="Concordo com os termos" />
+										<checkbox
+											id="assinouCompromisso" value="@bind(fx.assinouCompromisso)"
+											label="Assinou termo de compromisso" />
 
 
-										<button
-											label="Visualizar Termos">
+										<button label="Visualizar Termo"
+											sclass="mybutton button blue small">
 											<attribute name="onClick"><![CDATA[
-	Filedownload.save("/docs/termos/Regulamento.pdf", "pdf");
+	Filedownload.save("/docs/termos/TERMO_COMPROMISSO.pdf", "pdf");
 ]]></attribute>
 										</button>
 
 									</hlayout>
+									<separator />
+									<separator />
 									<label
-										value="Ao seleccionar em 'Concordo com os termos' considera-se que está assinando e concorda com os termos" />
-
+										value="Ao seleccionar em 'Concordo com o regulamento...' e 'Assinou termo de compromisso' considera-se uma assinatura válida" />
 								</vlayout>
 
 							</row>
+
+
 							<row>
 								<hlayout>
 									<button label="Voltar"
-										onClick="@command('voltar')" />
+										onClick="@command('voltar')"
+										sclass="mybutton button blue medium" />
 									<button label="Registar"
-										onClick="@command('saveThis')" />
+										onClick="@command('saveThis')"
+										sclass="mybutton button blue medium" />
 								</hlayout>
 
 							</row>

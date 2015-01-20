@@ -7,7 +7,7 @@
 		viewModel="@id('vm') @init('org.apm.carteiraprofissional.view.carteira.ListaCarteiraGraficaVM')">
 		<listbox id="listaCarteiras" mold="paging" pageSize="11"
 			pagingPosition="top" sclass="mylist"
-			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)">
+			selectedItem="@bind(vm.selectedItem)" model="@load(vm.dataSet)" emptyMessage="Não existem carteiras por emitir">
 			<listhead sizable="true">
 				<listheader label="Número Carteira"
 					sortDirection="ascending" sort="auto(numeroCarteira)"

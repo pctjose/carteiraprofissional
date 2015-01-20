@@ -1,6 +1,5 @@
 package org.apm.carteiraprofissional;
 
-import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Path;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
@@ -13,7 +12,7 @@ import org.zkoss.zul.Treeitem;
 @SuppressWarnings("rawtypes")
 public class MenuForm extends GenericForwardComposer  {
 	
-	private Logger log = Logger.getLogger(getClass());
+	//private Logger log = Logger.getLogger(getClass());
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,10 +22,10 @@ public class MenuForm extends GenericForwardComposer  {
 	private Include incConteudo;
 		
 	public void onClick$treeMenu(Event event) {
-		log.info("loadPage called...");
+		//log.info("loadPage called...");
 		Treeitem item = treeMenu.getSelectedItem();
 		String paginaPretendida = item != null ? (String) item.getValue() : null;
-		log.info("paginaPretendida "+paginaPretendida);
+		//log.info("paginaPretendida "+paginaPretendida);
 
 		incConteudo = (Include)Path.getComponent("//main/wndMain/contentSrc");
 		
@@ -35,7 +34,7 @@ public class MenuForm extends GenericForwardComposer  {
 		incConteudo.setSrc(null);
 		incConteudo.setSrc(paginaPretendida);
 		
-		log.info("Src "+incConteudo.getSrc());
+		//log.info("Src "+incConteudo.getSrc());
 	}
 
 }

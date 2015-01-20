@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-01-19T23:16:40 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="requisicao" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3aaed777-ca41-413c-ad73-af2f670016a0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="APMDATACONNECTION"/>
+	<parameter name="requisitanteID" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Parametro para seleccionar uma requisicao especifica]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="PHOTO_IMAGE" class="java.io.InputStream" isForPrompting="false">
+		<parameterDescription><![CDATA[Imagem do requisitante]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT  r.cidade,
+ 				r.contacto1 ,
+ 				r.contacto2,
+ 				r.data_emissao,
+ 				r.data_nascimento ,
+ 				r.data_validade ,
+ 				r.email ,
+ 				r.endereco ,
+ 				r.foto ,
+ 				r.local_emissao ,
+ 				if(r.membro,"SIM","NÃO") as membro ,
+ 				r.numero_membro,
+ 				r.numero_doc,
+ 				r.numero_nuit,
+ 				r.outro_contacto,
+ 				r.sexo,
+ 				r.nome_completo,
+ 				r.id as requisitante_id, 
+				req.requisicao_id,
+				req.aceite as req_aceite,
+				if(req.assinou_compromisso,"SIM","NÃO") as req_assinouCompromisso,
+				if(req.concorda_termos,"SIM","NÃO") as req_concordaTermos,
+				req.data_aceite as req_dataAceite,
+				req.data_requisicao as req_dataRequisicao,
+				req.justificacao_aceite as req_justificacaoAceite,
+				req.local_requisicao as req_localRequisicao,
+				req.numero_requisicao as req_numeroRequisicao,
+				if(req.tem_carteira,"SIM","NÃO") as req_temCarteira,
+				p.designacao as provincia,
+				pa.designacao as pais,
+				td.designacao as tipo_doc,
+				ne.designacao as nivelEscolaridade
+FROM 	requisicao req 
+				INNER JOIN requisitante r ON req.requisitante_id=r.id
+				LEFT JOIN provincia p ON r.provincia_id=p.id
+				LEFT JOIN pais pa ON r.pais_id=pa.id
+				LEFT JOIN tipo_documento td ON r.tipodoc_id=td.id
+				LEFT JOIN nivel_escolaridade ne ON r.escolaridade_id=ne.id
+WHERE 	r.id = $P{requisitanteID}]]>
+	</queryString>
+	<field name="cidade" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contacto1" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contacto2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_emissao" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_nascimento" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_validade" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="foto" class="java.lang.Object">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="local_emissao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="membro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero_doc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero_nuit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="outro_contacto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome_completo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="requisicao_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="requisitante_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="provincia" class="java.lang.String"/>
+	<field name="pais" class="java.lang.String"/>
+	<field name="tipo_doc" class="java.lang.String"/>
+	<field name="nivelEscolaridade" class="java.lang.String"/>
+	<field name="req_aceite" class="java.lang.Boolean"/>
+	<field name="req_assinouCompromisso" class="java.lang.String"/>
+	<field name="req_concordaTermos" class="java.lang.String"/>
+	<field name="req_dataAceite" class="java.sql.Timestamp"/>
+	<field name="req_dataRequisicao" class="java.sql.Timestamp"/>
+	<field name="req_justificacaoAceite" class="java.lang.String"/>
+	<field name="req_localRequisicao" class="java.lang.String"/>
+	<field name="req_numeroRequisicao" class="java.lang.String"/>
+	<field name="req_temCarteira" class="java.lang.String"/>
+	<field name="numero_membro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<staticText>
+				<reportElement x="120" y="1" width="420" height="30" uuid="64fb5a8c-cd3e-49e2-8c3e-2929769a829d"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[FICHA DE REQUISIÇÃO DE CARTEIRA PROFISSIONAL - APM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="37" width="139" height="13" uuid="c31f8f6b-043e-4440-91ce-2d4a5161ec83"/>
+				<text><![CDATA[NÚMERO DE REQUISIÇÃO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="260" y="36" width="80" height="14" uuid="73d1c757-bf9d-4bd9-aee0-80320ce6853b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{req_numeroRequisicao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="36" width="90" height="14" uuid="884908b6-3893-4431-b5ed-679f7a53a028"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("DD-MM-YYYY").format($F{req_dataRequisicao})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="351" y="36" width="80" height="14" uuid="acb6c402-7155-4845-9029-7ee3f8f3bf3c"/>
+				<text><![CDATA[Data Requisição: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="55" width="100" height="20" uuid="1519791a-3a54-44ba-8d87-fc7cc8eb66a2"/>
+				<text><![CDATA[Local de Requisição: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="57" width="300" height="20" uuid="632289b1-3d3c-4db4-b4f0-a58eadb4163b"/>
+				<textFieldExpression><![CDATA[$F{req_localRequisicao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="81" width="246" height="20" uuid="5d66e70c-973e-4986-81c9-595fd847f1d9"/>
+				<text><![CDATA[Concorda com o regulamento de carteira profissional: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="366" y="81" width="154" height="20" uuid="ba190ba3-39c4-4e2c-a8e2-728010062ea9"/>
+				<textFieldExpression><![CDATA[$F{req_concordaTermos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="121" y="100" width="149" height="20" uuid="0372cdf0-5fba-4ecf-a324-7c1d824aefa7"/>
+				<text><![CDATA[Assinou termo de compromisso: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="270" y="100" width="250" height="20" uuid="334712d3-cfe2-49c2-936c-4d23b9aec24f"/>
+				<textFieldExpression><![CDATA[$F{req_assinouCompromisso}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="121" width="555" height="1" uuid="7c49f1e5-5ed7-473a-9ff1-b709c6f854cf"/>
+			</line>
+			<image>
+				<reportElement x="-1" y="1" width="121" height="119" uuid="5a91ea27-a8f1-49ba-b01f-06bb2a187590"/>
+				<imageExpression><![CDATA[$P{PHOTO_IMAGE}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="571" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="20" width="200" height="18" uuid="9fb46b53-47b2-4ca0-a638-89d1748918bf"/>
+				<textFieldExpression><![CDATA[$F{nome_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="80" height="18" uuid="c308ca6e-c10d-4fd0-9cc1-3930111ac6f9"/>
+				<text><![CDATA[Nome Completo: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="0" width="151" height="20" uuid="ba8430bc-33b9-4481-a989-86859713440e"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DEMOGRAFICOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="30" height="17" uuid="77a2076c-0d07-4682-99ff-f9474b97b4ee"/>
+				<text><![CDATA[Sexo: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="40" width="40" height="17" uuid="9050281e-71d1-4a17-9252-6755d6d33b70"/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="84" y="40" width="100" height="17" uuid="22cd7df5-2e07-438f-92eb-94f7e924ea38"/>
+				<text><![CDATA[Data de Nascimento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="184" y="38" width="96" height="19" uuid="67f0222b-460b-4bc5-a8f2-1fd260fe5430"/>
+				<textFieldExpression><![CDATA[$F{data_nascimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="61" width="83" height="19" uuid="5e99b497-3025-4761-8152-4d1e01c499b9"/>
+				<text><![CDATA[Nível Acadêmico:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="61" width="140" height="19" uuid="160ccd5e-4bc9-4090-a904-a03846b17a7b"/>
+				<textFieldExpression><![CDATA[$F{nivelEscolaridade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="83" width="83" height="17" uuid="da282af1-e824-4f0d-b203-dbf81ebbc53a"/>
+				<text><![CDATA[Membro da APM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="84" y="84" width="56" height="16" uuid="bf1da016-f041-48de-91e3-eb953545cabc"/>
+				<textFieldExpression><![CDATA[$F{membro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="104" width="100" height="17" uuid="a32e914d-cf69-4daa-95d2-777335ddb797"/>
+				<textFieldExpression><![CDATA[$F{numero_membro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="104" width="100" height="17" uuid="ef8326ea-d984-4bfb-8eea-c82dcc0022f5"/>
+				<text><![CDATA[Número do Membro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="151" height="20" uuid="66937bb5-d141-4ce2-9096-32dd5818095f"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ENDEREÇO E CONTACTO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="320" y="20" width="90" height="18" uuid="27d1e4b4-ac19-411f-bc44-db044cc4f7cc"/>
+				<textFieldExpression><![CDATA[$F{pais}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="20" width="30" height="18" uuid="4c633909-faec-4b81-a510-6a31f76f72c2"/>
+				<text><![CDATA[País: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="20" width="90" height="18" uuid="f4946c97-9312-40ae-8810-23d1156b8b54"/>
+				<textFieldExpression><![CDATA[$F{provincia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="420" y="20" width="50" height="18" uuid="dabaa108-10af-4736-a15a-925c08bcd037"/>
+				<text><![CDATA[Província:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="40" width="190" height="21" uuid="57a09e5a-b198-4cae-aa29-9ad8fd0e0ca1"/>
+				<textFieldExpression><![CDATA[$F{cidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="40" width="80" height="20" uuid="13cd5175-e97a-4f4b-8803-7786b3523475"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Distrito/Cidade:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="60" width="190" height="20" uuid="6bf661ea-4f67-4590-927d-f6f958cdce59"/>
+				<textFieldExpression><![CDATA[$F{endereco}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="61" width="80" height="19" uuid="5893955d-e97d-49dd-a11b-51ef03464eb1"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Endereço: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="350" y="84" width="80" height="16" uuid="d8f9ef40-b9b9-4af4-a268-af70e31e1a7d"/>
+				<textFieldExpression><![CDATA[$F{contacto1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="84" width="60" height="16" uuid="1d731ce2-0428-4428-8b8c-6a993a7ca80e"/>
+				<text><![CDATA[Contacto 1:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="495" y="83" width="75" height="17" uuid="b4ad9b5b-0956-4ca0-b31d-bc70a3a73605"/>
+				<textFieldExpression><![CDATA[$F{contacto2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="435" y="84" width="60" height="16" uuid="c3ad6783-2fde-4de4-9d27-d98373351b7c"/>
+				<text><![CDATA[Contacto 2:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="104" width="230" height="17" uuid="fe6eecee-fedc-4a27-a34a-0698130b3677"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="104" width="40" height="17" uuid="57f602e0-c0d8-4369-ab92-a7b1500128bb"/>
+				<text><![CDATA[Email: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="125" width="190" height="15" uuid="813a4c85-3ba7-4e62-8461-24ba5a7f7c98"/>
+				<textFieldExpression><![CDATA[$F{outro_contacto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="125" width="80" height="15" uuid="e44feaf1-7766-4a75-bc27-cd63c1bfc067"/>
+				<text><![CDATA[Outro Contacto: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="146" width="151" height="20" uuid="99fc8451-8c1e-4eda-8a5c-28f4378967f9"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[IDENTIFICAÇÃO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="170" width="90" height="18" uuid="b2d79bba-5412-4f9e-add8-4f3e57a80e57"/>
+				<textFieldExpression><![CDATA[$F{numero_doc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="170" width="46" height="18" uuid="e7a9559c-a921-49ff-b7a5-1e7b18a5f77f"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Nº Doc: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="170" width="78" height="18" uuid="efc2ae4f-877b-4ec7-a5ba-3229ee3c6c61"/>
+				<textFieldExpression><![CDATA[$F{tipo_doc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="170" width="50" height="18" uuid="fa759f66-9279-42cd-92db-74c214b33bc2"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tipo Doc: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="335" y="170" width="85" height="18" uuid="6877990a-8dc8-44ee-942b-59a1328fc9ad"/>
+				<textFieldExpression><![CDATA[$F{data_validade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="170" width="50" height="18" uuid="d190dd74-3a06-4660-96fb-733baaa688c1"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Validade: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="495" y="170" width="75" height="18" uuid="f58678ff-2d53-4d69-9fac-bdd53b041fb1"/>
+				<textFieldExpression><![CDATA[$F{local_emissao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="425" y="170" width="70" height="18" uuid="119ba2c1-2e41-4425-9ae3-6185cf2ee016"/>
+				<text><![CDATA[Local Emissão: ]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="195" width="555" height="155" uuid="add5823d-a410-4820-8862-fe144a6ed888"/>
+				<subreportParameter name="requisitanteID">
+					<subreportParameterExpression><![CDATA[$P{requisitanteID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"/RequisitanteFormacao.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="0" y="359" width="555" height="200" uuid="dd3961a8-add7-4a67-bf5b-3ae371827260"/>
+				<subreportParameter name="requisitanteID">
+					<subreportParameterExpression><![CDATA[$P{requisitanteID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"/RequisicaoExperiencias.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

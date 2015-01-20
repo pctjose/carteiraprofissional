@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-01-19T22:39:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RequisitanteFormacao" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b24bd7cd-1037-4f79-8cfc-af053c83baa7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="APMDATACONNECTION"/>
+	<parameter name="requisitanteID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 	ano,
+				instituicao,
+				localizacao,
+				designacao as nivelEscolaridade
+FROM 	requisitante_formacao rf
+				INNER JOIN nivel_escolaridade ne ON rf.grauobtido_id=ne.id
+WHERE 	rf.requisitante_id= $P{requisitanteID} ]]>
+	</queryString>
+	<field name="ano" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="instituicao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="localizacao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nivelEscolaridade" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="0" width="346" height="20" uuid="8832a21b-d1b2-4630-bec8-7d6cdbc83cb4"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[FORMAÇÕES ACADÊMICAS E PROFISSIONAIS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="-19" y="0" width="160" height="20" uuid="3f0757a8-0c3c-4568-9629-b3990c69b951"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Instituição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="150" height="20" uuid="e40d5904-606f-4f9c-a817-e191f47ef143"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Localização]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="346" y="0" width="54" height="20" uuid="5cfdbb5b-13eb-444f-bbee-cef8c4c6dfbf"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ano]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="140" height="20" uuid="ac48fbee-09d5-49b5-aa0b-7990646310b2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grau Obtido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="49" splitType="Stretch">
+			<textField>
+				<reportElement x="-19" y="6" width="161" height="24" uuid="8f017be7-1bb8-4278-85c4-a2998d5e348f"/>
+				<textFieldExpression><![CDATA[$F{instituicao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="6" width="150" height="24" uuid="999fffc1-d5ce-4fe5-ad68-3f6d077f6213"/>
+				<textFieldExpression><![CDATA[$F{localizacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="346" y="6" width="54" height="24" uuid="ab9fec70-ecb2-467d-82d6-9dd640b909f0"/>
+				<textFieldExpression><![CDATA[$F{ano}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="6" width="140" height="24" uuid="db262838-e4b9-42d0-9a3c-3a1a1cf1c6c0"/>
+				<textFieldExpression><![CDATA[$F{nivelEscolaridade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

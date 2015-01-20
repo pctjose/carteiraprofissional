@@ -1,5 +1,6 @@
 package org.apm.carteiraprofissional;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,7 +14,12 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "numero_requisicao")
-public class NumeroRequisicao {
+public class NumeroRequisicao implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4217425809786468578L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

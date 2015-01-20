@@ -107,7 +107,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		Session sessao = sessionFactory.getCurrentSession();
 		//Transaction tx = sessao.beginTransaction();
 		Criteria c = sessao.createCriteria(Utilizador.class);
-		c.addOrder(Order.asc("apelido"));
+		c.addOrder(Order.asc("nomeCompleto"));
 		if (!includeVoided) {
 			c.add(Restrictions.eq("anulado", false));
 		}
@@ -182,18 +182,15 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Utilizador> getUserByAttributes(String apelido, String nome,
+	public List<Utilizador> getUserByAttributes(String nomeCompleto,
 			String sexo, GrupoUtilizador grupo, Boolean incluirAnulado) {
 
 		Session sessao = sessionFactory.getCurrentSession();
 		// Transaction tx = sessao.beginTransaction();
 		Criteria c = sessao.createCriteria(Utilizador.class);
 
-		if (apelido != null)
-			c.add(Restrictions.like("apelido", apelido, MatchMode.ANYWHERE));
-
-		if (nome != null)
-			c.add(Restrictions.like("nome", nome, MatchMode.ANYWHERE));
+		if (nomeCompleto != null)
+			c.add(Restrictions.like("nomeCompleto", nomeCompleto, MatchMode.ANYWHERE));
 
 		if (sexo != null)
 			c.add(Restrictions.eq("sexo", sexo));
@@ -207,7 +204,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 			}
 		}
 
-		c.addOrder(Order.asc("apelido"));
+		c.addOrder(Order.asc("nomeCompleto"));
 		List<Utilizador> users = c.list();
 		// tx.commit();
 		return users;
@@ -230,8 +227,7 @@ public class UtilizadorDAOImpl implements UtilizadorDAO {
 		
 		if(getAllUtilizador().isEmpty()){
 			utilizador.setActivo(true);
-			utilizador.setApelido("Administrador");
-			utilizador.setNome("Administrador");
+			utilizador.setNomeCompleto("Administrador");
 			utilizador.setContacto("+258");
 			utilizador.setEmail("email");
 			grupo.setId(1);

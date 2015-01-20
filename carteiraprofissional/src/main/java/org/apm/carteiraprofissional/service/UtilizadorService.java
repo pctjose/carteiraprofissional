@@ -24,7 +24,7 @@ public interface UtilizadorService {
 	
 	public void delete(Utilizador user);
 	
-	public List<Utilizador> getUserByAttributes(String apelido,String nome,String sexo,GrupoUtilizador grupo,Boolean incluirAnulado);
+	public List<Utilizador> getUserByAttributes(String nomeCompleto,String sexo,GrupoUtilizador grupo,Boolean incluirAnulado);
 	 
 	public List<Utilizador> getAllUtilizador();
 	
